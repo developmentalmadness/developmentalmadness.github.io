@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: git: Collaborate Using Pull Requests</title>
+<meta content='Following is my take on the Integration-Manager Workflow: I hope to help others better understand how to implement collaborative workflows with ...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='git: Collaborate Using Pull Requests' property='og:title'>
+<meta content='Following is my take on the Integration-Manager Workflow: I hope to help others better understand how to implement collaborative workflows with ...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2016/02/16/git-collaborate-using-pull-requests/' property='og:url'>
+<meta content='2016-02-16' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='git: Collaborate Using Pull Requests' name='twitter:title'>
+<meta content='Following is my take on the Integration-Manager Workflow: I hope to help others better understand how to implement collaborative workflows with ...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2016/02/16/git-collaborate-using-pull-requests/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>git: Collaborate Using Pull Requests</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-02-16'>
+16 February 2016
+</time>
+on <a href='/tag/git/'>git</a>, <a href='/tag/github/'>github</a>
+</section>
+</header>
+<section class='post-content'><p>Following is my take on the <a href="https://git-scm.com/book/en/v2/Distributed-Git-Distributed-Workflows#Integration-Manager-Workflow" rel="nofollow">Integration-Manager Workflow</a>:</p>
+
+<p><img src="https://git-scm.com/book/en/v2/book/05-distributed-git/images/integration-manager.png" alt="Integration-Manager Workflow" /></p>
+
+<p>I hope to help others better understand how to implement collaborative workflows with git and github and improve my own understanding. Let&rsquo;s dive in:</p>
+
+<h2>Creating A Pull Request</h2>
+
+<p>We&rsquo;ll start with the steps to create a pull request, then we&rsquo;ll show you how to review and merge a pull request.</p>
+
+<h4>Update: 4/12/16</h4>
+
+<p>Originally this post described a setup where the <code>developer public</code> fork was setup under the remote alias <code>origin</code>. A few team members had a little trouble with this setup and so I&rsquo;ve reworked this post so that <code>blessed repository</code> is aliased as <code>origin</code> instead. In the end I believe this is a little more intuitive so I have updated this post to reflect this new setup. Feel free to message me on twitter if you would like to discuss it.</p>
+
+<h3>Forking</h3>
+
+<p>Create a fork from the <a href="https://github.com/developmentalmadness/Comb" rel="nofollow">developmentalmadness/Comb</a> repository:</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2016/02_15/github-fork.png" alt="Github fork" /></p>
+
+<p>For the purposes of this exercise, the developmentalmadness/Comb repository is the &lsquo;blessed repository&rsquo; shown in the workflow diagram at the beginning of this post.</p>
+
+<p>You can find the button to fork the repository right under your profile picture on Github. Just click the &#39;Fork&rsquo; button and you&rsquo;ve got your own copy of the repository. Your copy of the repository corresponds to the &#39;developer public&rsquo; box in the workflow diagram. &#39;Public&rsquo; in this case only means it is reachable by others - compared to a local copy which we&rsquo;ll refer to as &#39;private&rsquo; because only you can reach it. The actual visibility of your fork on github will match the repository you forked from.</p>
+
+<h3>Cloning</h3>
+
+<p>Next we&rsquo;ll also <code>clone</code> the blessed repository locally. To <code>clone</code> the blessed repository locally first copy the SSH url by clicking the icon that sits above the list of files on the repository page and looks like a clipboard:</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2016/02_15/github-repository-url.png" alt="Github repository url" /></p>
+
+<p>Then enter the following command:</p>
+<pre class="highlight plaintext"><code>$ git clone git@github.com:developmentalmadness/Comb.git
+</code></pre>
+<p>The <code>git@github.com</code> portion of the url tells git to connect using the SSH protocol. The portion after the <code>:</code> is the path to your blessed repository. It will be specific to the owner and will have either a user or organization name before the name of the repository.</p>
+
+<p>Once your run the <code>clone</code> command from your shell you should see something like this:</p>
+<pre class="highlight plaintext"><code>Cloning into 'Comb'...
+remote: Counting objects: 14, done.
+remote: Total 14 (delta 0), reused 0 (delta 0), pack-reused 14
+Receiving objects: 100% (14/14), 4.50 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (1/1), done.
+Checking connectivity... done.
+</code></pre>
+<p>Change directories into your newly cloned private fork:</p>
+<pre class="highlight plaintext"><code>$ cd Comb
+</code></pre>
+<h3>Branching</h3>
+
+<p>Unless you&rsquo;re working on a very small project you probably won&rsquo;t be working off the <code>master</code> branch. But if you just cloned the blessed repository for the first time and check your local branches:</p>
+<pre class="highlight plaintext"><code>$ git branch
+</code></pre>
+<p>You&rsquo;ll see you only have the <code>master</code> branch locally. Your result should look like this:</p>
+<pre class="highlight plaintext"><code>* master
+</code></pre>
+<p>If you want to base your changes on another branch, which could be named <code>integration</code> you&rsquo;ll want to <code>checkout</code> that branch by name:</p>
+<pre class="highlight plaintext"><code>$ git checkout integration
+</code></pre>
+<p>You should see the following result:</p>
+<pre class="highlight plaintext"><code>Branch integration set up to track remote branch integration from origin.
+Switched to a new branch 'integration'
+</code></pre>
+<p>Now if you list your branches:</p>
+<pre class="highlight plaintext"><code>$ git branch
+</code></pre>
+<p>You should see:</p>
+<pre class="highlight plaintext"><code>* integration
+  master
+</code></pre>
+<h3>Remotes</h3>
+
+<p>Next, add your public fork as a remote - this will allow you to <code>rebase</code> your local branch from the blessed repository, then push that branch to your public fork so you can create a pull request. It will make reviewing your changes easier for the owner thus more likely to be accepted and your history will be cleaner as well.</p>
+<pre class="highlight plaintext"><code>$ git remote add public git@github.com:inContact/Comb.git
+</code></pre>
+<p>Here <code>public</code> is an arbitrary name chosen to match the naming in the workflow diagram and is just a short name you will use to refer to your public fork in future commands instead of using the remote url.</p>
+
+<p>You should be able to check your remotes setup like this:</p>
+<pre class="highlight plaintext"><code>$ git remote -v
+</code></pre>
+<p>Which should display:</p>
+<pre class="highlight plaintext"><code>origin  git@github.com:developmentalmadness/Comb.git (fetch)
+public  git@github.com:inContact/Comb.git (fetch)
+public  git@github.com:inContact/Comb.git (push)
+</code></pre>
+<p>Usually, the result should look like the output above since you probably don&rsquo;t have <code>push</code> rights to the blessed repository. <code>origin</code> is simply the default name given by git when you create a new clone and it automatically creates a remote for you. </p>
+
+<ul>
+<li>NOTE: the steps of cloning and adding a remote can be inverted - it doesn&rsquo;t really matter which you clone from and which you add as a remote, the result will be the same.</li>
+</ul>
+
+<p><strong>Optional:</strong> If it&rsquo;s been a while since you last cloned or updated from the blessed repository - pull them now. The fewer changes you need to integrate the easier your <code>rebase</code> will be.</p>
+<pre class="highlight plaintext"><code>$ git pull origin integration
+</code></pre>
+<p>This will get any changes you may be missing from the blessed repository so your local clone will have all the latest changes.</p>
+
+<h3>Topic Branch</h3>
+
+<p>Now that our private fork is in sync with the blessed repository, create a topic branch off the branch you intend to merge into:</p>
+<pre class="highlight plaintext"><code>$ git checkout -b my_pr integration
+Switched to a new branch 'my_pr'
+</code></pre>
+<p>This will create a new branch <code>-b</code> named <code>my_pr</code> (pr is short for pull request) based on the branch named <code>integration</code> and check out that branch. If you want to see which branch you on currently you have two options:</p>
+<pre class="highlight plaintext"><code>$ git status
+On branch my_pr
+nothing to commit, working directory clean
+</code></pre>
+<p>Or sometimes easier to read is:</p>
+<pre class="highlight plaintext"><code>$ git branch
+  integration
+  master
+* my_pr
+</code></pre>
+<p>Where the asterisk <code>*</code> indicates the current branch.</p>
+
+<p>Make your changes to the project files and commit them to your local, source branch. As an example you might do this:</p>
+<pre class="highlight plaintext"><code>$ touch new_file_to_add.txt
+$ touch another_file_to_add.txt
+$ git add .
+$ git commit -m "added some new files"
+</code></pre>
+<p>Once you&rsquo;re done your changes need to be integrated. In other VCS tools this would be done using a <code>merge</code> command. Git allows this as well, but a better way is to use <code>rebase</code>. Why? The short answer is it will make reviewing and merging your PR much easier for the person responsible - which is just polite. The benefit to you is your PR is more likely to be accepted. Here&rsquo;s <a href="http://www.git-scm.com/book/en/v2/Git-Branching-Rebasing" rel="nofollow">an explanation of rebase</a>. And in our current demo, here&rsquo;s how you would rebase your topic branch:</p>
+<pre class="highlight plaintext"><code>$ git checkout integration
+$ git pull origin
+$ git checkout my_pr
+$ git rebase integration
+</code></pre>
+<h3>Squashing (optional)</h3>
+
+<h4>Update: 4/12/16</h4>
+
+<p>As of April 1st (not a prank - really!) Github announced a new feature for pull requests: <a href="https://help.github.com/articles/about-pull-request-merge-squashing/" rel="nofollow">Squash and Merge</a>. This allows the reviewer to decide if they want the PR squashed or not. You can still squash your commits locally as described below, but there&rsquo;s even less of a reason to now.</p>
+
+<p>Your work may have involved multiple commits before you were ready to create your PR. Many maintainers prefer a nice commit history and atomic changes that are easy to apply or roll back as a single unit. If your PR has multiple commits then you may be asked to squash your changes.</p>
+
+<p>Let&rsquo;s make an additional change to our PR:</p>
+<pre class="highlight plaintext"><code>$ touch another_new_file_to_add.txt
+$ git add .
+$ git commit -m "added another file to project"
+</code></pre>
+<p>Let&rsquo;s look at our log:</p>
+<pre class="highlight plaintext"><code>$ git log
+
+commit a9b165a7a9612d50933414a18b8d28b4abe6a2b0
+Author: Mark J. Miller &lt;developmentalmadness@gmail.com&gt;
+Date:   Mon Feb 15 17:29:21 2016 -0700
+
+    added another file to project
+
+commit 72208b4e7de0c1b21947d3ab794b41d930e7ac3c
+Author: Mark J. Miller &lt;developmentalmadness@gmail.com&gt;
+Date:   Mon Feb 15 16:33:22 2016 -0700
+
+    added some new files
+
+commit 3d2dcffe042f376c9f404cf685f4f710eb9d06e9
+Author: Mark J. Miller &lt;developmentalmadness@gmail.com&gt;
+Date:   Sat Mar 10 13:48:08 2012 -0700
+
+    Updating readme
+</code></pre>
+<p>Here we see the last 3 commits (the last 2 are ours). What we want to do is squash our two changes into a single commit that can be merged without cluttering up the history of the blessed repository. </p>
+
+<p>Start with an interactive <code>-i</code> rebase of the last two <code>HEAD~2</code> commits:</p>
+<pre class="highlight plaintext"><code>$ git rebase -i HEAD~2
+</code></pre>
+<p>If you&rsquo;re working from the command line (bash shell) then this will open up the <code>vi</code> text editor with something that looks like this:</p>
+<pre class="highlight plaintext"><code>pick 72208b4 added some new files
+pick a9b165a added another file to project
+
+# Rebase 3d2dcff..a9b165a onto 3d2dcff (2 command(s))
+#
+# Commands:
+# p, pick = use commit
+# r, reword = use commit, but edit the commit message
+# e, edit = use commit, but stop for amending
+# s, squash = use commit, but meld into previous commit
+# f, fixup = like "squash", but discard this commit's log message
+# x, exec = run command (the rest of the line) using shell
+# d, drop = remove commit
+#
+# These lines can be re-ordered; they are executed from top to bottom.
+#
+# If you remove a line here THAT COMMIT WILL BE LOST.
+#
+# However, if you remove everything, the rebase will be aborted.
+#
+# Note that empty commits are commented out
+</code></pre>
+<p>In order to combine the two commits into a single commit you want to leave the top (the most recent) commit as <code>pick</code> and change any other commits to <code>squash</code> while leaving the hash and comments in place. The result should look something like this:</p>
+<pre class="highlight plaintext"><code>pick 72208b4 added some new files
+squash a9b165a added another file to project
+</code></pre>
+<p>Once you&rsquo;ve finished your changes and saved them (<code>esc</code>, then <code>:wq</code> in <code>vi</code>). You&rsquo;ll get a second edit in <code>vi</code> that will look like this:</p>
+<pre class="highlight plaintext"><code># This is a combination of 2 commits.
+# The first commit's message is:
+
+added some new files
+
+# This is the 2nd commit message:
+
+added another file to project
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Mon Feb 15 16:33:22 2016 -0700
+#
+# interactive rebase in progress; onto 3d2dcff
+# Last commands done (2 commands done):
+#    pick 72208b4 added some new files
+#    squash a9b165a added another file to project
+# No commands remaining.
+# You are currently editing a commit while rebasing branch 'my_pr' on '3d2dcff'.
+#
+# Changes to be committed:
+#       new file:   another_file_to_add.txt
+#       new file:   another_new_file_to_add.txt
+#       new file:   new_file_to_add.txt
+#
+</code></pre>
+<p>If you want to leave all the individual commit messages you can just save and quit <code>vi</code> like before. Otherwise edit the uncommented lines to be the message you&rsquo;d like to commit and then save and quit <code>vi</code> again. For our purposes, just comment out the second commit message &#39;added another&hellip;&rsquo; by putting a hash symbol <code>#</code> at the beginning. Save and quit and then you&rsquo;ll see this result:</p>
+<pre class="highlight plaintext"><code>[detached HEAD d627ac6] added some new files
+ Date: Mon Feb 15 16:33:22 2016 -0700
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 another_file_to_add.txt
+ create mode 100644 another_new_file_to_add.txt
+ create mode 100644 new_file_to_add.txt
+Successfully rebased and updated refs/heads/my_pr.
+</code></pre>
+<p>Now that you&rsquo;re done, if you didn&rsquo;t do it before rebase your private branch by pulling any new changes from the blessed repository to your private repository, and rebasing your topic branch (same as above):</p>
+<pre class="highlight plaintext"><code>$ git checkout integration
+$ git pull origin
+$ git checkout my_pr
+$ git rebase integration
+</code></pre>
+<h3>The pull request</h3>
+
+<p>Push your local branch <code>my_pr</code> up to your public fork - if you&rsquo;re doing it correctly this should create a new branch in your fork which is a copy of your local source branch:</p>
+<pre class="highlight plaintext"><code>$ git push my_pr public
+</code></pre>
+<p>Once the <code>push</code> completes navigate to the main page for your fork on github.com. You should be able to see your local branch is now on github by clicking on the &ldquo;branches&rdquo; link in the header above the repository&rsquo;s git url. </p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2016/02_15/github-code-header.png" alt="github pull request" /></p>
+
+<p>Select the tab labeled &ldquo;All branches&rdquo; and you should see your <code>my_pr</code> branch:</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2016/02_15/github-all-branches.png" alt="github all branches" /></p>
+
+<p>If it isn&rsquo;t there sometimes it takes a minute, just wait and refresh. </p>
+
+<p>You can now create your pull request from your <code>my_pr</code> topic branch. Just click &ldquo;New pull request&rdquo; for the branch <code>my_pr</code>. You should see this page:</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2016/02_15/github-open-pull-request.png" alt="github open pull request" /></p>
+
+<p>The <code>master</code> branch usually seems to be selected (for me) so make sure the base fork points to the blessed repository and base branch is what your PR was based from - in our case <code>integration</code>, then select the head fork to be your public fork and the branch <code>my_pr</code> to be the source for your PR:</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2016/02_15/github-change-pr-base.png" alt="github change pr base" /></p>
+
+<p>Leave any comments to describe your changes. These will become part of the pull request but not the repository history. Then click &ldquo;create pull reqeust&rdquo;. At this point you wait to hear back from the owner, or whoever will be reviewing your changes. </p>
+
+<p><strong>Optional:</strong> whoever reviews your PR may have some suggested changes before they accept your PR and merge it to the target repository. If so, then just make the suggested changes, <code>commit</code>, <code>rebase</code> from blessed, squash (<code>rebase -i</code>), and <code>push</code>. The changes will automatically be added to your PR and the reviewer can be notified to repeat the review process.</p>
+
+<p><strong>NOTE:</strong> If you&rsquo;re squashing your commits and adding changes after your first <code>push</code> then when you <code>push</code> after subsequent squashes you&rsquo;ll need to include the <code>-f</code> option with your push because you are overwriting the history of a remote (public) repository. Anyone who has pulled your <code>my_pr</code> branch (eg. the reviewer) will need to delete the branch and <code>pull</code> again. This shouldn&rsquo;t be a big problem because no one should be using this branch for any development anyhow.</p>
+
+<h3>Accepting A Pull Request</h3>
+
+<p>As long as the PR was created following the above workflow then github will most likely tell you that there are no merge conflicts. If this is the case there&rsquo;s a nice button that allows you to accept the changes and they will be merged into your branch for you. If you have a full suite of tests that will run and you have high confidence in your test suite then this might work for you. However, I&rsquo;d recommend pulling the changes locally, reviewing them in context, and then building your project, running the tests yourself, running the project and validating the changes are what you wanted. Here&rsquo;s how you would do that:</p>
+
+<h3>Review Branch</h3>
+
+<p>Create new branch named <code>review_my_pr</code> from a branch named <code>integration</code> so you can review the changes locally. <code>review_my_pr</code> is just an arbitrary name, but <code>integration</code> should match the name of the base branch from the PR:</p>
+<pre class="highlight plaintext"><code>$ git checkout -b review_my_pr integration 
+</code></pre>
+<p>You now have the <code>review_my_pr</code> branch checked out. Pull the <code>my_pr</code> topic branch from the repository where the PR originated:</p>
+<pre class="highlight plaintext"><code>$ git pull git://github.com/inContact/Comb.git my_pr
+</code></pre>
+<h3>Remotes for frequent contributors</h3>
+
+<p>If the developer who submitted the PR is a frequent contributor or team member you may want to add a remote to their public fork so you can use a short name to refer to their public fork instead of the full url:</p>
+<pre class="highlight plaintext"><code>$ git remote add committer_mark git://github.com/inContact/Comb.git
+</code></pre>
+<p>Now you can use this instead to pull their <code>my_pr</code> branch:</p>
+<pre class="highlight plaintext"><code>$ git pull committer_mark my_pr
+</code></pre>
+<p>From here review the changes, build, test and run the project to validate if you&rsquo;ll accept the pull request.</p>
+
+<p><code>rebase</code> your review branch from the blessed repository the latest for the <code>integration</code> branch to ensure you are up to date:</p>
+<pre class="highlight plaintext"><code>$ git pull --rebase origin integration
+</code></pre>
+<p>Merge into branch (&ndash;no-ff)</p>
+<pre class="highlight plaintext"><code>$ git checkout integration
+$ git merge --no-ff review_my_pr
+</code></pre>
+<p>Push to remote (target)</p>
+<pre class="highlight plaintext"><code>$ git push origin integration
+</code></pre>
+<p>Github sees the push and automatically marks the PR as merged. The topic branch can now be deleted, although resist the urge and allow the owner of the branch control over their own repository.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><strong>Clone</strong>: copying an entire repository to your local machine</li>
+<li><strong>Fork</strong>: copying an entire repository to a new (personal) repository in Github</li>
+<li><strong>Commit</strong>: a changeset within a repository. It&rsquo;s important not to conflate this with the &#39;commit&rsquo; command which save a change to a local branch. You may need to change your vocabulary and stop referring to the &#39;push&rsquo; operation as &#39;committing changes&rsquo; to a remote repository because it conflates two operations that have different results when working in a distributed source control system.</li>
+<li><strong>Pull</strong>: fetching any commits from another repository which don&rsquo;t exist in your local repository and merging them into the current branch.</li>
+<li><strong>Push</strong>: sending any commits from the current branch in your local repository to a remote repository.</li>
+<li><strong>Pull Request (PR)</strong>: The changes you want to submit to the intended project repository.</li>
+<li><strong>Blessed Repository</strong>: The main project repository</li>
+<li><strong>Developer Public Repository</strong>: A fork of the blessed repository, where the developer pushes topic branches to submit as PRs.</li>
+<li><strong>Developer Private Repository</strong>: A local clone of the developer public repository where changes are made on a topic branch before pushing to the developer public repository.</li>
+</ul>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=git: Collaborate Using Pull Requests&amp;amp;url=http://www.developmentalmadness.com/2016/02/16/git-collaborate-using-pull-requests/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2016/02/16/git-collaborate-using-pull-requests/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2016/02/16/git-collaborate-using-pull-requests/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/02/04/aws-hosting-a-static-website-in-s3/'>
+<section class='post'>
+<h2>AWS: Hosting a Static Website in S3</h2>
+<p>My team at work has decided to adopt the Thoughtworks Technology Radar as a means to communicate what our&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/02/18/security-theres-a-password-in-my-repository/'>
+<section class='post'>
+<h2>security: There's a password in my repository!</h2>
+<p>TLDR - Environment Variables Where possible you won&rsquo;t see me do this anymore: url = "jdbc:postgresql://127.0.0.1:5432/postgres?user=postgres&amp;password=12345" Or this: &lt;connectionStrings&gt;&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

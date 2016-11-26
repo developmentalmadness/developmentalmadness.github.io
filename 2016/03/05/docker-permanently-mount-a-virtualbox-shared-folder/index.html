@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Docker: Permanently Mount a VirtualBox Shared Folder</title>
+<meta content='While this technique works for both Windows and OSX, most Windows developers I know don&amp;rsquo;t keep their source code in the Users folder on th...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Docker: Permanently Mount a VirtualBox Shared Folder' property='og:title'>
+<meta content='While this technique works for both Windows and OSX, most Windows developers I know don&amp;rsquo;t keep their source code in the Users folder on th...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/' property='og:url'>
+<meta content='2016-03-05' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Docker: Permanently Mount a VirtualBox Shared Folder' name='twitter:title'>
+<meta content='While this technique works for both Windows and OSX, most Windows developers I know don&amp;rsquo;t keep their source code in the Users folder on th...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Docker: Permanently Mount a VirtualBox Shared Folder</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-03-05'>
+05 March 2016
+</time>
+on <a href='/tag/docker/'>docker</a>, <a href='/tag/virtualbox/'>virtualbox</a>
+</section>
+</header>
+<section class='post-content'><p>While this technique works for both Windows and OSX, most Windows developers I know don&rsquo;t keep their source code in the <code>Users</code> folder on the system drive. Historically there have been too many problems:</p>
+
+<ul>
+<li>The path used to start with <code>C:\Documents and Settings\[USER_NAME]\</code></li>
+<li><code>msbuild</code> blows up when your path is longer than 256 characters</li>
+<li>There&rsquo;s no convenient <code>~/</code> command-line shortcut when typing the path on the command-line.</li>
+</ul>
+
+<p>However, that&rsquo;s the only default path you get when you create a <code>boot2docker</code> image for VirtualBox. </p>
+
+<p>In my <a href="http://www.developmentalmadness.com/2016/02/27/working-with-docker/" rel="nofollow">last post</a> I showed how to mount a VirtualBox shared folder but as soon as you restart (<em>that</em> never happens on a Windows box) you&rsquo;ve lost it and have to create the mount all over again. </p>
+
+<h1>Mount a shared folder</h1>
+
+<p>Just to review, so you don&rsquo;t have to read the last post: </p>
+
+<ol>
+  <li>
+    <p>Create a shared folder in VirtualBox:</p>
+    <p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2016/03_05/virtual-box-shared-folders.png" /></p>
+  </li>
+  <li>
+    <p><code>ssh</code> into your Guest OS (Docker VM):</p>
+    <pre>
+$ docker-machine ssh defualt</pre>
+  </li>
+  <li>
+    <p>Create a new folder for your mount:</p>
+    <pre>$ sudo mkdir -p /mnt/src</pre>
+    <p>The <code>-p</code> is just in case <code>/mnt</code> doesn&rsquo;t already exist.</p>
+  </li>
+  <li>
+    <p>Add your new mount:</p>
+    <pre>$ sudo mount -t vboxsf -o defaults,uid=`id -u docker`,gid=`id -g docker` src /mnt/src</pre>
+    <p><code>id -u docker</code> and <code>id -g docker</code> will use the user id and group id respectively. You could just enter <code>1000</code> and <code>50</code> respectively and you&rsquo;d be fine. I think the longer version is more clear and safe. 
+</p><p>
+You should now be able to view the contents of your directory within your Docker VM:</p>
+    <pre>$ ls /mnt/src</pre>
+  </li>
+</ol>
+
+<h1>Make It Permanent</h1>
+
+<p>The problem is everything gets erased whenever you restart your VM. What we need is a setup script that won&rsquo;t be erased and will run on startup. It turns out it&rsquo;s pretty easy. Create a file named <code>bootlocal.sh</code> at the following location:</p>
+<pre class="highlight plaintext"><code>$ sudo touch /mnt/sda1/var/lib/boot2docker/bootlocal.sh
+</code></pre>
+<p>Now add the following to the file (no <code>sudo</code> needed):</p>
+<pre class="highlight plaintext"><code>mkdir -p /mnt/src
+mount -t vboxsf -o defaults,uid=`id -u docker`,gid=`id -g docker` src /mnt/src
+</code></pre>
+<p>Make sure you save and close the file. That&rsquo;s it! If you <code>exit</code> your <code>ssh</code> session, then restart your VM:</p>
+<pre class="highlight plaintext"><code>$ docker-machine restart default
+</code></pre>
+<p>Once it&rsquo;s finished, log back in and verify it&rsquo;s there:</p>
+<pre class="highlight plaintext"><code>$ docker-machine ssh default
+$ ls /mnt/src
+</code></pre>
+<p>You should see the contents of your shared folder.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Docker: Permanently Mount a VirtualBox Shared Folder&amp;amp;url=http://www.developmentalmadness.com/2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/02/27/working-with-docker/'>
+<section class='post'>
+<h2>Working with Docker</h2>
+<p>Every developer has a workflow: how their environment is configured and how they access tools and resources. Personally, I&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/03/05/nesting-docker-containers-stop/'>
+<section class='post'>
+<h2>Nesting Docker Containers? Stop!</h2>
+<p>In a recent blog post I pointed out Docker is about microservices, and you should compose your containers instead&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

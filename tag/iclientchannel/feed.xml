@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: iclientchannel</title>
+  <subtitle>Posts tagged with iclientchannel</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/iclientchannel/feed.xml" rel="self"/>
+  <updated>2010-03-08T19:00:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>MVVM with Prism 101 – Part 6b: Wrapping IClientChannel</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2010/03/08/mvvm-with-prism-101-ndash-part-6b-wrapping-iclientchannel/"/>
+    <id>http://www.developmentalmadness.com/2010/03/08/mvvm-with-prism-101-ndash-part-6b-wrapping-iclientchannel/</id>
+    <published>2010-03-08T19:00:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Source Code
+
+
+Part 1: The Bootstrapper
+Part 2: The Shell
+
+Part 3: Regions
+
+
+Part 3b: View Injection and The Controller Pattern
+
+
+Part 4: Modules
+
+Part 5: The View-Model
+
+
+Part 5b: ServiceLocator vs Dependency Injection
+
+
+
+Part 6: Commands
+
+
+Part 6b: Wrapping
+
+
+</summary>
+  </entry>
+</feed>

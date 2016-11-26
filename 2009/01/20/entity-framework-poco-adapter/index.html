@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Entity Framework POCO Adapter + System.Web.DynamicData == POCO Loco</title>
+<meta content='This month I started with a new client. I&amp;rsquo;m excited because we&amp;rsquo;ll be rewriting a legacy app using Entity Framework against an Oracle...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Entity Framework POCO Adapter + System.Web.DynamicData == POCO Loco' property='og:title'>
+<meta content='This month I started with a new client. I&amp;rsquo;m excited because we&amp;rsquo;ll be rewriting a legacy app using Entity Framework against an Oracle...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/01/20/entity-framework-poco-adapter/' property='og:url'>
+<meta content='2009-01-20' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Entity Framework POCO Adapter + System.Web.DynamicData == POCO Loco' name='twitter:title'>
+<meta content='This month I started with a new client. I&amp;rsquo;m excited because we&amp;rsquo;ll be rewriting a legacy app using Entity Framework against an Oracle...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/01/20/entity-framework-poco-adapter/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Entity Framework POCO Adapter + System.Web.DynamicData == POCO Loco</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-01-20'>
+20 January 2009
+</time>
+on <a href='/tag/ef_poco_adapter/'>ef_poco_adapter</a>, <a href='/tag/metamodel/'>metamodel</a>, <a href='/tag/system_web_dynamicdata/'>system_web_dynamicdata</a>, <a href='/tag/entity_framwork/'>entity_framwork</a>
+</section>
+</header>
+<section class='post-content'><p>This month I started with a new client. I&rsquo;m excited because we&rsquo;ll be rewriting a legacy app using Entity Framework against an Oracle backend, and possibly ASP.NET MVC. The team is full of good, experinced developers, any of which could lead their own team. </p>
+
+<p>But as with all new technologies we&rsquo;re experiencing pains with early adoption. One of design goals is to be testible. We&rsquo;re not quite talking TDD here. None of us have been on a TDD project here so we&rsquo;re more just talking about trying to move in a direction we think will be beneficial. </p>
+
+<p>Additionally, the project specifications require us to store meta data about our data model and create a relationship between the meta data and the users&rsquo; roles. The relationship will tell us which fields a user can view or edit based on their role. So we&rsquo;re looking into wither we can use System.Web.DynamicData.MetaModel to collect the meta data about our model by using the MetaModel.RegisterContext method. </p>
+
+<p>Because we&rsquo;d like to make as much of this testible as possible we decided to try Jaroslaw Kowalski&rsquo;s POCO Adapter to allow our data layer to be more testible. So as an exercise I fired up a new project, added a new ADO.NET Entity Data Model (.edmx) file and created a data model using the AdventureWorks database. Then I used the EFPocoClassGen utility to create my POCO classes, container and adapter based on my edmx file. Here&rsquo;s the Pre-build event commands in my project:</p>
+<pre class="highlight plaintext"><code>"$(SolutionDir)EFPocoClassGen.exe" /mode:PocoClasses /inedmx:"$(ProjectDir)Data\AdventureWorks.edmx" /outputDir:"$(ProjectDir)Data"
+
+"$(SolutionDir)EFPocoClassGen.exe" /mode:PocoContainer /inedmx:"$(ProjectDir)Data\AdventureWorks.edmx" /outputfile:"$(ProjectDir)Data\PocoContainer.cs"
+
+"$(SolutionDir)EFPocoClassGen.exe" /mode:PocoAdapter /inedmx:"$(ProjectDir)Data\AdventureWorks.edmx" /outputfile:"$(ProjectDir)Data\PocoAdapter.cs"
+</code></pre>
+<p>Then I added the RegisterContext code to my global.asax:</p>
+<pre class="highlight plaintext"><code>var model = new MetaModel();
+model.RegisterContext(typeof(AdventureWorksEntitiesAdapter),
+ new ContextConfiguration { ScaffoldAllTables = true });
+</code></pre>
+<p>I ran my project and was greeted by with yellow screen of death bearing this message:</p>
+<pre class="highlight plaintext"><code>Error: An item with the same key has already been added.
+
+
+[ArgumentException: An item with the same key has already been added.]  
+System.ThrowHelper.ThrowArgumentException(ExceptionResource resource) +51  
+System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add) +7460188  
+System.Data.Metadata.Edm.AssemblyCacheEntry.LoadRelationshipTypes(LoadingContext context) +2061  
+System.Data.Metadata.Edm.AssemblyCacheEntry.LoadTypesFromAssembly(LoadingContext context) +17  
+System.Data.Metadata.Edm.AssemblyCacheEntry.InternalLoadAssemblyFromCache(LoadingContext context) +244  
+System.Data.Metadata.Edm.AssemblyCacheEntry.LoadAssemblyFromCache(Assembly assembly, Boolean loadReferencedAssemblies, Dictionary`2 knownAssemblies, Dictionary`2&amp; typesInLoading, List`1&amp; errors) +137  
+System.Data.Metadata.Edm.ObjectItemCollection.LoadAssemblyFromCache(ObjectItemCollection objectItemCollection, Assembly assembly, Boolean loadReferencedAssemblies) +278  
+System.Data.Metadata.Edm.ObjectItemCollection.LoadFromAssembly(Assembly assembly) +61  
+System.Data.Metadata.Edm.MetadataWorkspace.LoadFromAssembly(Assembly assembly) +77  
+System.Web.DynamicData.ModelProviders.EFDataModelProvider..ctor(Object contextInstance, Func`1 contextFactory) +327  
+System.Web.DynamicData.ModelProviders.SchemaCreator.CreateDataModel(Object contextInstance, Func`1 contextFactory) +110  
+System.Web.DynamicData.MetaModel.RegisterContext(Func`1 contextFactory, ContextConfiguration configuration) +347  
+System.Web.DynamicData.MetaModel.RegisterContext(Type contextType, ContextConfiguration configuration) +79  
+AdventureWorksDDMVC.MvcApplication.RegisterRoutes(RouteCollection routes) in C:\Dev\AdventureWorksDDMVC\AdventureWorksDDMVC\Global.asax.cs:30  
+AdventureWorksDDMVC.MvcApplication.Application_Start() in C:\Dev\AdventureWorksDDMVC\AdventureWorksDDMVC\Global.asax.cs:36
+</code></pre>
+<p>If I removed the adapter and container created by the EFPocoClassGen utility the problem goes away. I tried <a href="http://blogs.msdn.com/sburke/archive/2008/01/16/configuring-visual-studio-to-debug-net-framework-source-code.aspx" rel="nofollow">debugging the DynamicData assembly</a> to see what the key was which was causing the exception, but it seems like the version of System.Web.DynamicData on my system (3.5 Sp 1) and the debug symbols on the server don&rsquo;t match because stepping through most of the code the current line didn&rsquo;t match what the debugger was seeing.</p>
+
+<p>Finally a collegue who had been using the DynamicData sample application (and wasn&rsquo;t having problems) compared his project with mine and pointed out that the sample project didn&rsquo;t have an edmx file, but was using the csdl, ssdl and msl from a compiled edmx. So we re-added the adapter and container classes from the POCO generator and deleted the designer.cs file generated by Visual Studio for the edmx. This fixed the problem. So then we went into the properties for the edmx and removed the value for the &ldquo;CustomTool&rdquo; property setting to prevent the designer.cs class from being regenerated.</p>
+
+<p>I&rsquo;d like to dig further and figure out exactly what was causing the duplicate key issue, but for now I just wanted to describe the issue and point out the solution/workaround.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Entity Framework POCO Adapter + System.Web.DynamicData == POCO Loco&amp;amp;url=http://www.developmentalmadness.com/2009/01/20/entity-framework-poco-adapter/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/01/20/entity-framework-poco-adapter/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/01/20/entity-framework-poco-adapter/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/01/09/modifying-xp-pro-permissions-for/'>
+<section class='post'>
+<h2>Modifying XP Pro Permissions For Workgroup Computers</h2>
+<p>Sql Server best practices recommend using a local, low-permissions account as the service account. But if your machine isn&rsquo;t&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/01/27/aspnet-mvc-compile-your-views-for/'>
+<section class='post'>
+<h2>ASP.NET MVC: Compile Your Views for Release Build Only</h2>
+<p>First of all I have to say I&rsquo;m excited. Today Scott Guthrie announced the Release Candidate (RC) for ASP.NET&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

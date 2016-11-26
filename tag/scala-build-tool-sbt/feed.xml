@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: scala-build-tool-sbt</title>
+  <subtitle>Posts tagged with scala-build-tool-sbt</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/scala-build-tool-sbt/feed.xml" rel="self"/>
+  <updated>2016-03-05T19:30:04+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Nesting Docker Containers? Stop!</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/03/05/nesting-docker-containers-stop/"/>
+    <id>http://www.developmentalmadness.com/2016/03/05/nesting-docker-containers-stop/</id>
+    <published>2016-03-05T19:30:04+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">In a recent blog post I pointed out Docker is about microservices, and you should compose your containers instead of building monolithic ones. I was referring to adding tools and utilities for troubleshooting and whatnot. But today I have an even better</summary>
+  </entry>
+</feed>

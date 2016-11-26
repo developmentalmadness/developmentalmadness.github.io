@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Java: using BigDecimal instead of double</title>
+<meta content='For the last two months I&amp;rsquo;ve been using Linux and Java exclusively. For the times I still need to do .NET development, my laptop is setup ...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Java: using BigDecimal instead of double' property='og:title'>
+<meta content='For the last two months I&amp;rsquo;ve been using Linux and Java exclusively. For the times I still need to do .NET development, my laptop is setup ...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2011/06/01/java-using-bigdecimal-instead-of-double/' property='og:url'>
+<meta content='2011-06-01' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Java: using BigDecimal instead of double' name='twitter:title'>
+<meta content='For the last two months I&amp;rsquo;ve been using Linux and Java exclusively. For the times I still need to do .NET development, my laptop is setup ...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2011/06/01/java-using-bigdecimal-instead-of-double/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Java: using BigDecimal instead of double</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2011-06-01'>
+01 June 2011
+</time>
+on <a href='/tag/lost_in_translation/'>lost_in_translation</a>, <a href='/tag/java/'>java</a>, <a href='/tag/types/'>types</a>, <a href='/tag/bigdecimal/'>bigdecimal</a>
+</section>
+</header>
+<section class='post-content'><p>For the last two months I&rsquo;ve been using Linux and Java exclusively. For the times I still need to do .NET development, my laptop is setup to dual-boot into Windows 7. But since I&rsquo;m learning a lot, I really want to try and catalog my experience of transitioning from Windows/.NET developer to Linux/Java developer.</p>
+
+<p>Am I giving up on .NET and Windows? No, but because I&rsquo;ve been moved to a Java project deployed on Linux I decided to jump in with both feet. I&rsquo;m enjoying how much I&rsquo;m learning and hopefully as I get back in the habit of blogging, I&rsquo;ll include stuff I&rsquo;m doing with .NET as well.</p>
+
+<p>However, I first started playing with .NET during it&rsquo;s beta stage and have been using it on a daily basis since v1.1. So, at least for the time being, I&rsquo;m likely to include comparisons with .NET when I post about Java in as much as I see it will benefit .NET developers who are making the same transition I am. Who knows, maybe my perspective will also be interesting to some Java developers as well.</p>
+
+<h1>Primitive Java Types</h1>
+
+<p>I&rsquo;ve been working on a test harness that publishes rates and at the moment all it does is publish a rate and check to see if the same value comes out the other end. I have a instance of a log4j Logger that I&rsquo;m using to output debug info to the console as I develop this and I was noticing that when I would add two doubles together the results were imprecise. For example, the following:</p>
+<pre class="highlight plaintext"><code>private void doubleOutput(){
+        double rate = 1.37000;
+        double adjustment = 0.00001;
+        try {
+            while(System.in.available() == 0){
+                rate += adjustment;
+                log.debug("The new rate is: " + rate);
+                pause(500);
+            }
+        } catch (IOException e) {
+            log.error("IOException: " + e);
+        }
+    }
+</code></pre>
+<p>would give the these results:</p>
+<pre class="highlight plaintext"><code>2011-06-01 10:56:42,011 DEBUG [Main] The new rate is: 1.3700100000000002
+2011-06-01 10:56:42,512 DEBUG [Main] The new rate is: 1.3700200000000002
+2011-06-01 10:56:43,012 DEBUG [Main] The new rate is: 1.3700300000000003
+2011-06-01 10:56:43,513 DEBUG [Main] The new rate is: 1.3700400000000004
+2011-06-01 10:56:44,013 DEBUG [Main] The new rate is: 1.3700500000000004
+</code></pre>
+<p>It&rsquo;s been a while since I&rsquo;ve really looked into the issue. In .NET the de facto standard for monetary calculations is the decimal type (System.Decimal). System.Float and System.Double are binary floating types and will result in rounding errors. So in this sense, Java is the same: the double types on both platforms are binary floating types implemented according to the IEEE 754 standard.</p>
+
+<p>So what is the equivalent of System.Decimal in Java?</p>
+
+<h1>BigDecimal</h1>
+
+<p>The Java equivalent of System.Decimal is java.math.BigDecimal. Here&rsquo;s the equivalent of the above method, using BigDecimal:</p>
+<pre class="highlight plaintext"><code>private   void  roundingTests(){
+       BigDecimal rate = new BigDecimal("1.37000");
+       BigDecimal adjustment = new BigDecimal("0.00001");
+       try {
+           while(System.in.available() == 0){
+               rate = rate.add(adjustment);
+               log.debug("The new rate is: " + rate.doubleValue());
+               pause(500);
+           }
+       }  catch  (IOException e) {
+           log.error( "IOException: "  + e);
+       }
+   }
+</code></pre>
+<p>Which will give you this output:</p>
+<pre class="highlight plaintext"><code>2011-06-01 11:19:24,715 DEBUG [Main] The new rate is: 1.37001
+2011-06-01 11:19:25,216 DEBUG [Main] The new rate is: 1.37002
+2011-06-01 11:19:25,716 DEBUG [Main] The new rate is: 1.37003
+2011-06-01 11:19:26,217 DEBUG [Main] The new rate is: 1.37004
+</code></pre>
+<p>This is more what I was expecting. However, BigDecimal has some important differences with System.Decimal. First of all, and what took me the longest to catch on to, is that BigDecimal is immutable. Just like System.String in .NET. So how does this affect you? Look at the first line inside the loop above. What do you notice? Instead of using the standard addition operator, there&rsquo;s an &ldquo;add&rdquo; method. Also, I&rsquo;m assigning the result back to the &ldquo;rate&rdquo; variable, just like if I were doing string manipulations.</p>
+
+<p>If you modify the above sample and remove the assignment, and leave just the &ldquo;add&rdquo; operation the result you&rsquo;ll see in the console is that the rate is always &ldquo;1.37000&rdquo;.</p>
+
+<p>The second thing to note is the constructor. Notice how I am passing in a string representation of the values 1.37000 and 0.0001. The reason is (I&rsquo;m pretty sure about this) because if I were to pass in the values without the quotes I would be passing in double values and my results would be as follows:</p>
+<pre class="highlight plaintext"><code>2011-06-01 11:26:20,639 DEBUG [Main] The new rate is: 1.3700100000000002
+2011-06-01 11:26:21,141 DEBUG [Main] The new rate is: 1.37002
+2011-06-01 11:26:21,641 DEBUG [Main] The new rate is: 1.37003
+2011-06-01 11:26:22,142 DEBUG [Main] The new rate is: 1.3700400000000001
+2011-06-01 11:26:22,642 DEBUG [Main] The new rate is: 1.3700500000000002
+</code></pre>
+<p>All of a sudden I&rsquo;m back to my original problem. So I pass in my string representation to prevent my values from behaving like binary floating types.</p>
+
+<h1>Performance and Accuracy</h1>
+
+<p>A note about performance. Something I didn&rsquo;t know about System.Decimal (or at least it never occurred to me) was that it is an 128 bit value, capable of storing up to 29 significant digits. System.Double is 64 bits. java.lang.BigDecimal however is represented internally as an array of integers (java.lang.BigInteger) which has no size limit. So the size of it depends upon how large the number is. My assumption is that this also applies to accuracy such that there is no limit on the number of significant digits. I had been wondering why there was just BigDecimal and no Decimal class, my guess is that because it uses BigInteger internally and it really can be BIG, it makes sense to call it BigDecimal and with that, there&rsquo;s really no need for just Decimal since not only can it be really big, but it will also contract (I&rsquo;m not saying it actually trims the internal array, just that smaller values will result in less memory consumption) for smaller values.</p>
+
+<p>Either way there are implications on performance due to the implementations. If performance is really a concern then there are alternatives, but for most applications BigDecimal (and System.Decimal) should be just fine.</p>
+
+<p><strong>Update 6/2/11:</strong> Looking around some more today I noticed that if you don&rsquo;t want to use BigDecimal if you&rsquo;re just passing values around, but want to use it just when you&rsquo;re doing calculations you can use the static method <code>BigDecimal.valueOf(double);</code> According to javadocs this is the equivelent of <code>new BigDecimal(Double.toString(double));</code> Either way, as far as I can tell you can do this without running into rounding errors. If you&rsquo;re still worried about possible rounding errors you can use the BigDecimal instance method setScale which allows you to set the scale you want and optionally the RoundingMode. So when doing calculations your API can use &ldquo;double&rdquo; while you can use BigDecimal internally. In .NET you could do the same using the explicit <code>IConvertable.ToDecimal(IFormatProvider)</code> on an instace of <code>System.Double</code> (ex: <code>((IConvertable)rate).ToDecimal(null);</code> ) and the static <code>Decimal.ToDouble(Decimal)</code> to convert back and forth between Double and Decimal.</p>
+
+<p>References
+For more information on System.Decimal see: http://csharpindepth.com/Articles/General/Decimal.aspx, http://msdn.microsoft.com/en-us/library/system.decimal.aspx</p>
+
+<p>For more information on java.math.BigDecimal see: http://firstclassthoughts.co.uk/java/traps/big<em>decimal</em>traps.html, http://download.oracle.com/javase/1.4.2/docs/api/java/math/BigInteger.html</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Java: using BigDecimal instead of double&amp;amp;url=http://www.developmentalmadness.com/2011/06/01/java-using-bigdecimal-instead-of-double/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2011/06/01/java-using-bigdecimal-instead-of-double/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2011/06/01/java-using-bigdecimal-instead-of-double/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2011/02/25/jquery-highlight-table-elements-when-a-cell-is-clicked/'>
+<section class='post'>
+<h2>jQuery: Highlight table elements when a cell is clicked</h2>
+<p>In a recent interview I was given an assignment to be completed before the phone interview. The assignment was&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2015/12/29/tag-list/'>
+<section class='post'>
+<h2>Tags</h2>
+<p>&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

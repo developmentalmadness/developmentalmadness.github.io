@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: MVVM with Prism 101 – Part 1: The Bootstrapper</title>
+<meta content='Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The Controller Pattern Part 4: Modules Part 5...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='MVVM with Prism 101 – Part 1: The Bootstrapper' property='og:title'>
+<meta content='Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The Controller Pattern Part 4: Modules Part 5...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/' property='og:url'>
+<meta content='2009-10-03' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='MVVM with Prism 101 – Part 1: The Bootstrapper' name='twitter:title'>
+<meta content='Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The Controller Pattern Part 4: Modules Part 5...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>MVVM with Prism 101 – Part 1: The Bootstrapper</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-10-03'>
+03 October 2009
+</time>
+on <a href='/tag/silverlight/'>silverlight</a>, <a href='/tag/prism/'>prism</a>, <a href='/tag/mvvm/'>mvvm</a>, <a href='/tag/bootstrapper/'>bootstrapper</a>
+</section>
+</header>
+<section class='post-content'><p><a href="http://dvm-public-assets.s3.amazonaws.com/silverlight/Bootstrapper.zip" rel="nofollow">Source Code</a></p>
+
+<ul>
+<li><a href="/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/" rel="nofollow">Part 1: The Bootstrapper</a></li>
+<li><a href="/2009/10/12/mvvm-with-prism-101-ndash-part-2-the-shell/" rel="nofollow">Part 2: The Shell</a></li>
+<li><a href="/2009/10/14/mvvm-and-prism-101-ndash-part-3-regions/" rel="nofollow">Part 3: Regions</a>
+
+<ul>
+<li><a href="/2009/10/15/mvvm-with-prism-101-ndash-part-3b-view-injection-and/" rel="nofollow">Part 3b: View Injection and The Controller Pattern</a></li>
+</ul></li>
+<li><a href="/2009/10/23/mvvm-with-prism-101-ndash-part-4-modules/" rel="nofollow">Part 4: Modules</a></li>
+<li><a href="2009/10/28/mvvm-with-prism-101-ndash-part-4-modules/" rel="nofollow">Part 5: The View-Model</a>
+
+<ul>
+<li><a href="/2009/11/02/mvvm-with-prism-101-ndash-part-5b-servicelocator-vs-depdency/" rel="nofollow">Part 5b: ServiceLocator vs Dependency Injection</a></li>
+</ul></li>
+<li><a href="/2009/11/04/mvvm-with-prism-101-ndash-part-6-commands/" rel="nofollow">Part 6: Commands</a>
+
+<ul>
+<li><a href="/2010/03/08/mvvm-with-prism-101-ndash-part-6b-wrapping-iclientchannel/" rel="nofollow">Part 6b: Wrapping IClientChannel</a></li>
+</ul></li>
+</ul>
+
+<p>I recently spoke at a CodeCamp put on by the Northern Utah .NET User Group (NUNUG) on implementing MVVM using Prism. I hadn’t spoken in a long time and so I was over prepared – way over prepared. Then to top in off in my nervousness, I blew the whole presentation by starting 15 minutes late. I was the session after lunch and I assumed lunch was an hour, so I mistakenly assumed my session started at 1:00 PM. :p</p>
+
+<p>Embarrassing stories aside, I really learned a lot more about Prism and Silverlight and what an enterprise-class implementation of Prism looks like. So I am writing a redux of <a href="/2009/06/08/prism_for_silverlight_2_taking_hello_world_to_a_whole_new_level/" rel="nofollow">my previous post on Prism and Silverlight</a>. If you want a shorter overview of things, read that one first. However, I intend to introduce new concepts and go deeper than I did in my previous article. This is the first of this series.</p>
+
+<h1>MVVM</h1>
+
+<p>Before I get started I would like to just make a short comment about MVVM. The pattern known as Model View View-Model is in it’s pure form very simple. You have a Model (your business/domain model), a View (in the case of WPF/Silverlight is your Xaml file) and the distinguishing piece of the pattern: the View Model.</p>
+
+<p>The View-Model is a composite of the abstraction of you view’s state and behavior. The idea behind the View-Model is to create an abstraction of your view which has little to no dependencies on your view. There should be no references to UI controls or classes specific to the UI (like the Visibility enum). There should be no event handlers like what is common in a code-behind class. Your View-Model should know nothing of your UI.</p>
+
+<p>The reason for this and why it is possible has a strong tie to the way data biding works in WPF/Silverlight. I won’t directly get into the specifics of data binding, except to say that because of the specific way you can bind UI elements to objects in a strongly-typed manner MVVM has become the de facto standard pattern for developing applications for WPF/Silverlight.</p>
+
+<p>Once you get MVVM it will become second nature to you. Its power lies in its simplicity. The complexity of implementing MVVM is more about the framework you are using than actually using the pattern. I will explain more about that last statement in a future post. I when I actually get to discussing MVVM specifically I plan on demonstrating what I’d like to term “poor man’s MVVM” so I can demonstrate the MVVM in a more pure form. The rest of the series is either specific to Prism or specific features you’ll want to implement as you’re developing your application.</p>
+
+<h1>Bootstrapper</h1>
+
+<p>The <code>Bootstrapper</code> is your starting point when developing any application for Prism (aka Composite Application Library for WPF/Silverlight). The <code>Bootstrapper</code> is basically class representing your App<em>Startup method. Once you’ve completed your <code>Bootstrapper</code> you just initialize it and call <code>Run()</code> inside of `App</em>Startup`, like this:</p>
+<pre class="highlight plaintext"><code> private void Application_Startup(object sender, StartupEventArgs e)
+ {
+     //replaces the call to "this.RootVisual = new Shell();"
+     My`Bootstrapper` bootstrapper = new My`Bootstrapper`();
+     bootstrapper.Run();
+ }
+</code></pre>
+<p>Just remove the call (in Silverlight) to <code>this.RootVisual</code> and replace it by instantiating your <code>Bootstrapper</code> and calling <code>Run()</code>.</p>
+
+<p>The basic purpose of your <code>Bootstrapper</code> is to initialize your Inversion of Control (IoC) container and register all the types you’ll need for Dependency Injection (DI). Because of this your <code>Bootstrapper</code> will inherit from an abstract class named after your specific IoC implementation. You can use any library you choose: Ninject, StructureMap, Unity, etc. However, Prism actually only provides a single implementation of <code>Bootstrapper</code> – Unity<code>Bootstrapper</code>. If you want to use another container library, you’ll either have to write your own or find an implementation out on the web. This isn’t hard to do as there are a number of implementations out there for each of the widely used libraries.</p>
+
+<p>There are 3 common tasks that you’ll do every time your create a new <code>Bootstrapper</code>:</p>
+
+<ol>
+<li>Setup <code>ModuleCatalog</code></li>
+<li>Configure the Container (IoC)</li>
+<li>Create Shell</li>
+</ol>
+
+<p>I’ll go over each of these in detail:</p>
+
+<h1>Setup ModuleCatalog</h1>
+
+<p>A module (in terms of Prism) is a class which implements the <code>Microsoft.Practices.Composite.Modularity.IModule</code> interface. A module represents a pluggable piece of the composite whole. When planning your application you will isolate it into logical parts. If your application were an rss reader you might have modules for Content, Tags, PopularItems, RecentItems, Favorites, etc. They may or may not need to communicate, but you can certainly add , remove and rearrange each one without affecting the others. This is an example of a module.</p>
+
+<p>Think of <code>ModuleCatalog</code> as a registry of all the modules you plan to load in your application. Once you register them when your application loads they will be loaded in the order you registered them and then each module in turn will inject your views into the main window of your application.</p>
+
+<p>Setting up <code>ModuleCatalog</code> is simple:</p>
+<pre class="highlight plaintext"><code>public class Bootstrapper : UnityBootstrapper
+{
+  protected override IModuleCatalog GetModuleCatalog()
+  {
+    ModuleCatalog catalog = new ModuleCatalog();
+
+    catalog.AddModule(typeof(ServicesModule));
+    catalog.AddModule(typeof(EditorModule));
+    catalog.AddModule(typeof(HistoryModule));
+
+    return catalog;
+  }
+}
+</code></pre>
+<p>For the most part, that’s all that’s required. At the very minimum you must return an instance of <code>ModuleCatalog</code> – whether or not you register anything with it. But if you don’t you aren’t likely to see much more than just your shell when the application loads. So you’ll register each module you’ve defined and possibly declare any dependencies (more on that when we discuss modules) and finally you’ll return the catalog to the <code>Bootstrapper</code>.</p>
+
+<p>It is important to note that the order you register your modules is the order they will load in, so pay attention or you’ll have some troubles when your application starts up. I’ll address managing dependencies between modules later in the series when I talk about implementing modules.</p>
+
+<p>As a note I will mention that there are other ways to configure the module catalog and to load modules. Some are dependent upon whether you’re using WPF or Silverlight, but both technologies provide some way or another for you to load modules dynamically or on demand or to use configuration of some sort (WPF – config file / Silverlight app.xaml). But I won’t be going into any of these methods in this series.</p>
+
+<h1>Create Shell</h1>
+
+<p>The shell is comparable to an ASP.NET MasterPage. The shell is usually a UserControl or Page.  Whereas a MasterPage uses ContentPlaceHolder objects, Prism uses Regions (more on that in my next post). For now, a region is an attached property for specific xaml objects which designates where you can inject your views to display them.</p>
+
+<p>When it comes to Silverlight applications, an important thing to note about the shell is that it will become the RootVisual object. If you aren’t familiar with RootVisual, it is important to note that it can only be set once - you can’t change it once it has been set. But here’s the nice thing about using Prism, the regions you define later on allow you to dynamically replace or load additional content as you need. So your shell will provide the placeholders for you.</p>
+
+<p>Other than that all you really need to remember is to initialize the class which represents your UserControl or Page (the code behind), set it as the RootVisual (call Show() if you’re developing for WPF) and return the instance from your method. The <code>Bootstrapper</code> implementation you inherit from will then register any regions you’ve defined in your xaml with the RegionManager service. Here’s what your CreateShell method should look like:</p>
+<pre class="highlight plaintext"><code>protected override DependencyObject CreateShell()
+{
+  Shell shell = Container.Resolve&lt;Shell&gt;();
+
+  Application.Current.RootVisual = shell;
+
+  return shell;
+}
+</code></pre>
+<h1>Conclusion</h1>
+
+<p>I will continue this series next time by talking about the Shell and Regions. For now, here is a sample project which demonstrates what we’ve just discussed.</p>
+
+<p><a href="http://dvm-public-assets.s3.amazonaws.com/silverlight/Bootstrapper.zip" rel="nofollow">Source Code</a></p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=MVVM with Prism 101 – Part 1: The Bootstrapper&amp;amp;url=http://www.developmentalmadness.com/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/10/02/recommended-reading/'>
+<section class='post'>
+<h2>Recommended Reading</h2>
+<p>This post is as much for myself and for anyone. There are times when the flood of information is&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/10/12/mvvm-with-prism-101-ndash-part-2-the-shell/'>
+<section class='post'>
+<h2>MVVM with Prism 101 - Part 2: The Shell</h2>
+<p>Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: MVVM with Prism 101 - Part 2: The Shell</title>
+<meta content='Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The Controller Pattern Part 4: Modules Part 5...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='MVVM with Prism 101 - Part 2: The Shell' property='og:title'>
+<meta content='Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The Controller Pattern Part 4: Modules Part 5...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/10/12/mvvm-with-prism-101-ndash-part-2-the-shell/' property='og:url'>
+<meta content='2009-10-12' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='MVVM with Prism 101 - Part 2: The Shell' name='twitter:title'>
+<meta content='Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The Controller Pattern Part 4: Modules Part 5...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/10/12/mvvm-with-prism-101-ndash-part-2-the-shell/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>MVVM with Prism 101 - Part 2: The Shell</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-10-12'>
+12 October 2009
+</time>
+on <a href='/tag/silverlight/'>silverlight</a>, <a href='/tag/mvvm/'>mvvm</a>, <a href='/tag/bootstrapper/'>bootstrapper</a>, <a href='/tag/pris/'>pris</a>
+</section>
+</header>
+<section class='post-content'><p><a href="http://dvm-public-assets.s3.amazonaws.com/silverlight/Bootstrapper.zip" rel="nofollow">Source Code</a></p>
+
+<ul>
+<li><a href="/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/" rel="nofollow">Part 1: The Bootstrapper</a></li>
+<li><a href="/2009/10/12/mvvm-with-prism-101-ndash-part-2-the-shell/" rel="nofollow">Part 2: The Shell</a></li>
+<li><a href="/2009/10/14/mvvm-and-prism-101-ndash-part-3-regions/" rel="nofollow">Part 3: Regions</a>
+
+<ul>
+<li><a href="/2009/10/15/mvvm-with-prism-101-ndash-part-3b-view-injection-and/" rel="nofollow">Part 3b: View Injection and The Controller Pattern</a></li>
+</ul></li>
+<li><a href="/2009/10/23/mvvm-with-prism-101-ndash-part-4-modules/" rel="nofollow">Part 4: Modules</a></li>
+<li><a href="2009/10/28/mvvm-with-prism-101-ndash-part-4-modules/" rel="nofollow">Part 5: The View-Model</a>
+
+<ul>
+<li><a href="/2009/11/02/mvvm-with-prism-101-ndash-part-5b-servicelocator-vs-depdency/" rel="nofollow">Part 5b: ServiceLocator vs Dependency Injection</a></li>
+</ul></li>
+<li><a href="/2009/11/04/mvvm-with-prism-101-ndash-part-6-commands/" rel="nofollow">Part 6: Commands</a>
+
+<ul>
+<li><a href="/2010/03/08/mvvm-with-prism-101-ndash-part-6b-wrapping-iclientchannel/" rel="nofollow">Part 6b: Wrapping IClientChannel</a></li>
+</ul></li>
+</ul>
+
+<p>This is the second post in a series of articles about implementing the Model-View-View-Model (MVVM) architectural pattern for Silverlight/WPF. MVVM in itself is not a complex pattern, however having a framework can reduce the work required to accomplish more advanced scenarios. For example, communicating between modules in a loosely coupled way requires some sort of event framework. Prism provides this and I&rsquo;ll talk about it more in a future post. The framework I have been using is the Composite Application Library for Silverlight/WPF (aka Prism). The bulk of the series has to do with the intricacies of implementing MVVM within the Prism framework. If you are unfamiliar with Prism then make sure and read <a href="/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/" rel="nofollow">Part 1</a> before continuing.</p>
+
+<p>Something I forgot to mention in the first series, the source code provided includes several supporting projects. These all contain functionality which will be used as we go through the series - for example a WCF service we will use to demonstrate abstraction of service communication. Because this is a Silverlight application, the main projects are CodeCamp.Shell and CodeCamp.Web. CodeCamp.Web is the startup project for Visual Studio and CodeCamp.Shell is the main Silverlight application. The rest are class libraries - either Silverlight Class Library (client side) or Windows Class Library (server side). I will touch on each piece of the included projects at some point in the series so everything will be explained. Hopefully (at least I don&rsquo;t plan on it) there won&rsquo;t be any &ldquo;Pay no attention to the man behind the curtain&rdquo; business going on.</p>
+
+<p>I realize now that I am writing this post on the Shell that &ldquo;Shell&rdquo; is probably a poor name for the main Silverlight application project, CodeCamp.Shell - it&rsquo;s ambiguous. Just realize that in the context of this series the &ldquo;Shell project&rdquo; is the startup project for our Silverlight application. This is where the Bootstrapper is hosted as well as App.xaml and our Shell (the concept discussed in this article).</p>
+
+<h1>The Shell</h1>
+
+<p>Within the Prism Framework, the Shell contains the visual elements that define the overall layout and style of your application. This is not actually a requirement, but it is recommended. The Shell is analogous to an ASP.NET MasterPage. Both allow you to define content regions as placeholders for the views you define. Both allow you to host common functionality such as navigation. Both allow you to define visual styles and layout which will be applied to the views which are displayed within the content regions you define.</p>
+
+<p>In the context of Silverlight you will only have a single Shell. The application can define multiple versions of your shell (skins) but once your Shell has been set as the value of Application.Current.RootVisual you cannot change it. According to the documentation for Prism, WPF is more flexible in that you can define multiple shells when your application uses multiple windows, but because of <a href="/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/" rel="nofollow">the way the Bootstrapper works</a> (CreateShell method) it seems to me that logically you still have only one shell, any others are really just composite views.</p>
+
+<p>Because it does not have a specific interface or abstract class to implement (all that the Bootstrapper requires is that your CreateShell method returns is an instance which inherits from DependencyObject) Shell is really more conceptual that anything else. If you were developing a simple application, which only involved a single view, then your Shell could be that view. In which case you would be using Prism to simply setup your IoC container and possibly provide a logging service or other similar functionality. Let&rsquo;s take a look at our basic Shell:</p>
+
+<p><strong>Bootstrapper.cs</strong></p>
+<pre class="highlight plaintext"><code>public class Bootstrapper : UnityBootstrapper
+{
+    protected override DependencyObject CreateShell()
+    {
+        Shell shell = Container.Resolve&lt;Shell&gt;();
+
+        Application.Current.RootVisual = shell;
+
+        return shell;
+    }
+}
+</code></pre>
+<p><strong>Shell.xaml</strong></p>
+<pre class="highlight plaintext"><code>&lt;UserControl x:Class="CodeCamp.Shell.Shell"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="400" Height="300"&gt;
+    &lt;StackPanel x:Name="LayoutRoot" Background="White"&gt;
+        &lt;TextBlock&gt;I'm the shell.&lt;/TextBlock&gt;
+    &lt;/StackPanel&gt;
+&lt;/UserControl&gt;
+Shell.xaml.cs 
+</code></pre>
+<p><strong>(code behind)</strong></p>
+<pre class="highlight plaintext"><code>using System.Windows.Controls;
+
+namespace CodeCamp.Shell
+{
+    public partial class Shell : UserControl
+    {
+        public Shell()
+        {
+            InitializeComponent();
+        }
+    }
+}
+</code></pre>
+<p>You&rsquo;ll have all these files in a Silverlight Application Project which will load up and simply display &ldquo;I&rsquo;m the shell.&rdquo;. Boring really. If you want to see the solution and project (this is of course not a full implementation) to see how things are organized, then [download the source code)[] and have a look.</p>
+
+<h1>Conclusion</h1>
+
+<p>So there&rsquo;s your basic &ldquo;Hello World&rdquo; example. Like I said, there&rsquo;s really nothing different about it than any other view you&rsquo;ve designed before. The Shell is really just a placeholder for your visual styles and for hosting your dynamic content. It may not have even required an entire post on the topic, but I thought it was important to introduce it as the natural progression of putting together your application using Prism. Things will start to get more interesting next when we look at regions and modules.</p>
+
+<p><a href="http://dvm-public-assets.s3.amazonaws.com/silverlight/Bootstrapper.zip" rel="nofollow">Source Code</a></p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=MVVM with Prism 101 - Part 2: The Shell&amp;amp;url=http://www.developmentalmadness.com/2009/10/12/mvvm-with-prism-101-ndash-part-2-the-shell/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/10/12/mvvm-with-prism-101-ndash-part-2-the-shell/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/10/12/mvvm-with-prism-101-ndash-part-2-the-shell/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/'>
+<section class='post'>
+<h2>MVVM with Prism 101 – Part 1: The Bootstrapper</h2>
+<p>Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/10/14/mvvm-and-prism-101-ndash-part-3-regions/'>
+<section class='post'>
+<h2>MVVM with Prism 101 - Part 3: Regions</h2>
+<p>Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

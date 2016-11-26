@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: akka</title>
+  <subtitle>Posts tagged with akka</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/akka/feed.xml" rel="self"/>
+  <updated>2016-04-22T19:45:25+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>The Zen of Akka (Lambda Days 2016) Cliff Notes</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/04/22/the-zen-of-akka-lambda-days-2016-notes/"/>
+    <id>http://www.developmentalmadness.com/2016/04/22/the-zen-of-akka-lambda-days-2016-notes/</id>
+    <published>2016-04-22T19:45:25+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">
+
+Below are all the points, what time to find them in the video and what I found were the important talking points. I left most stuff actually on the slide out.
+
+1. One Actor Is No Actor
+
+(about 3:17)
+
+Semantically, a system with a single actor is not</summary>
+  </entry>
+</feed>

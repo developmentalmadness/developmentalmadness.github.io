@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: scala: Connecting to Postgres via Slick 3</title>
+<meta content='Got Slick working with Postgres this morning and I thought I&amp;rsquo;d just write it up before I forget. I&amp;rsquo;m assuming you already know how t...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='scala: Connecting to Postgres via Slick 3' property='og:title'>
+<meta content='Got Slick working with Postgres this morning and I thought I&amp;rsquo;d just write it up before I forget. I&amp;rsquo;m assuming you already know how t...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2016/02/23/scala-connecting-to-postgres-via-slick-3/' property='og:url'>
+<meta content='2016-02-23' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='scala: Connecting to Postgres via Slick 3' name='twitter:title'>
+<meta content='Got Slick working with Postgres this morning and I thought I&amp;rsquo;d just write it up before I forget. I&amp;rsquo;m assuming you already know how t...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2016/02/23/scala-connecting-to-postgres-via-slick-3/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>scala: Connecting to Postgres via Slick 3</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-02-23'>
+23 February 2016
+</time>
+on <a href='/tag/postgresql/'>postgresql</a>, <a href='/tag/docker/'>docker</a>, <a href='/tag/scala/'>scala</a>, <a href='/tag/typesafe-slick/'>typesafe-slick</a>
+</section>
+</header>
+<section class='post-content'><p>Got <a href="http://slick.typesafe.com/" rel="nofollow">Slick</a> working with <a href="http://www.postgresql.org/" rel="nofollow">Postgres</a> this morning and I thought I&rsquo;d just write it up before I forget. I&rsquo;m assuming you already know how to create a new <a href="http://www.scala-lang.org/" rel="nofollow">scala</a> project that uses <a href="http://www.scala-sbt.org/" rel="nofollow">sbt</a> for build and dependencies.</p>
+
+<h2>Environment Variables</h2>
+
+<p>For this post you&rsquo;ll need the following environment variables setup:</p>
+<pre class="highlight plaintext"><code>DB_PG_URL="jdbc:postgresql://192.168.99.100:5432"
+DB_PG_USER=postgres
+DB_PG_PWD=12345
+</code></pre>
+<p><a href="/2016/02/18/security-theres-a-password-in-my-repository/" rel="nofollow">I&rsquo;ve explained why here</a>. And here&rsquo;s more information about <a href="https://docs.docker.com/engine/reference/run/#env-environment-variables" rel="nofollow">Docker and environment variables</a>.</p>
+
+<p>The above IP address <code>192.168.99.100</code> will depend on your setup. If you&rsquo;re running an installation of postgres (localhost or remote) you&rsquo;ll use the IP or hostname you use to reach that instance. If you&rsquo;re following along, using <a href="https://www.docker.com/" rel="nofollow">Docker</a> you&rsquo;ll need the IP address returned from <code>docker-machine</code> (assuming either OSX or Windows):</p>
+<pre class="highlight plaintext"><code>$ docker-machine ls
+
+NAME      ACTIVE   DRIVER       STATE     URL                         SWARM
+default   *        virtualbox   Running   tcp://192.168.99.100:2376   
+</code></pre>
+<p>Whatever the IP returned for URL is what you&rsquo;ll use in the environment var <code>DB_PG_URL</code>.</p>
+
+<p>The remaining Docker commands assume you have a VM named <code>default</code>. If not you&rsquo;ll need to substitute <code>default</code> with the name of your VM - or create a VM named <code>default</code>.</p>
+
+<p>Also, to avoid the need to include separate instructions based on your VM host OS the remaining commands assume you are running a terminal session inside your Docker host, like this:</p>
+<pre class="highlight plaintext"><code>$ docker-machine ssh default
+</code></pre>
+<p>Once you run that command your terminal/console window context will be <em>inside</em> your Docker host.</p>
+
+<h2>Postgres setup</h2>
+
+<p>If you don&rsquo;t have postgres installed already, then go do that. Or if you have Docker installed, then you can just execute the following Docker <code>run</code> command and you&rsquo;re already done! Here&rsquo;s the official page for the <a href="https://hub.docker.com/_/postgres/" rel="nofollow">Docker postgres image</a>.</p>
+<pre class="highlight plaintext"><code>$ docker run --name pg-scratchpad -e POSTGRES_PASSWORD=$DB_PG_PWD -p 5432:5432 -v /var/lib/postgresql/data -d postgres
+</code></pre>
+<p>If you&rsquo;re still new to Docker the short explanation is that the command will start an installation of postgres in a new container (<code>run</code>) over port 5432 (<code>-p</code>) with a persistent volume (<code>-v</code>) running in the background (<code>-d</code>).</p>
+
+<p>That <code>-e POSTGRES_PASSWORD=$DB_PG_PWD</code> is a password I&rsquo;ve stored as an environment variable. </p>
+
+<h2>Creating some data</h2>
+
+<p>You&rsquo;ll need to connect to postgres somehow. If you&rsquo;re using a local install of postgres then you&rsquo;ll want to run <code>psql</code> from the command line. For those of us running Docker try this:</p>
+<pre class="highlight plaintext"><code>docker run -it --link pg-scratchpad:postgres --rm postgres sh -c 'exec psql -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
+</code></pre>
+<p>We&rsquo;re creating a second container here and linking it to our <code>pg-scratchpad</code> container where our database instance is running. <code>-it</code> sets up an interactive shell that is using the link between containers and running the <code>psql</code> command. This will give us a client where we can setup our database. The above command came from the documentation for the <a href="https://hub.docker.com/_/postgres/" rel="nofollow">Docker postgres image</a>.</p>
+
+<p>Like any ORM, Slick let&rsquo;s you define your model in code or config and it will create it for you. But for my purposes I wanted to work under the assumption I had an existing database. So we&rsquo;ll create a simple schema, put some data in it and use Slick to query the table.</p>
+
+<p>So run the following commands in your psql session (<code>#</code> is just the command prompt - don&rsquo;t type it, but do make sure to terminate each command with a semi-colon (<code>;</code>)):</p>
+<pre class="highlight plaintext"><code># CREATE TABLE records (
+  id INT NOT NULL,
+  value VARCHAR(64) NOT NULL
+);
+
+# INSERT INTO records (id, value) VALUES (1, 'booyah!');
+</code></pre>
+<p>If you run a query you should get some data back. As long as you do you&rsquo;re set:</p>
+<pre class="highlight plaintext"><code># SELECT * FROM records;
+</code></pre>
+<p>Your results should look like this:</p>
+
+<table><thead>
+<tr>
+<th>id</th>
+<th>value</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>booyah!</td>
+</tr>
+</tbody></table>
+<pre class="highlight plaintext"><code>(1 row)
+</code></pre>
+<h1>sbt setup</h1>
+
+<p>Your <code>build.sbt</code> file should include the following dependencies:</p>
+<pre class="highlight plaintext"><code>libraryDependencies ++= List(
+// ... your other dependencies
+  "com.typesafe.slick" %% "slick" % "3.0.0",
+  "org.postgresql" % "postgresql" % "9.4-1201-jdbc41",
+  "com.zaxxer" % "HikariCP" % "2.4.1"
+)
+</code></pre>
+<p><strong>NOTE:</strong> HikariCP is a &ldquo;non-optional&rdquo; dependency for Slick.</p>
+
+<p>I&rsquo;m not sure what <code>HikariCP</code> is for but I get a runtime error if it isn&rsquo;t there. As for <code>slick</code> and <code>postgresql</code>, the former is a Functional ORM which supports streaming and back-pressure and the latter is the postgresql client library and drivers Slick needs to connect to your database instance.</p>
+
+<h2>Configuration</h2>
+
+<p>Create an <code>application.conf</code> file under <code>src/main/resources</code> in your source tree. Here&rsquo;s how you&rsquo;ll configure it:</p>
+<pre class="highlight plaintext"><code>pg-postgres = {
+  url = ${DB_PG_URL}/postgres
+  user = ${DB_PG_USER}
+  password = ${DB_PG_PWD}
+  driver = org.postgresql.Driver
+}
+</code></pre>
+<h2>Case class mapping</h2>
+
+<p>Add a new scala class to your project and call it <code>Tables.scala</code>. The name is arbitrary although it does follow the convention used by the Slick Code Generator. </p>
+<pre class="highlight plaintext"><code>import slick.driver.PostgresDriver.api._
+
+case class record(id: Int, value: String)
+
+class Records(tag: Tag) extends Table[record](tag, "records") {
+  def id = column[Int]("id")
+  def value = column[String]("value")
+  def * = (id, value) &lt;&gt; (record.tupled, record.unapply)
+}
+</code></pre>
+<p>Here we&rsquo;ve mapped a case class and class structure to match our database table. Most of this is pretty self-explanatory except for the <code>def * = ...</code>. That function allows Slick to map back and forth between our case class <code>record</code> and the database.</p>
+
+<h2>Running a query</h2>
+
+<p>Now add a new scala class to your project and call it <code>MyApp.scala</code>. Enter the following <code>object</code> definition:</p>
+<pre class="highlight plaintext"><code>import slick.driver.PostgresDriver.api._
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+
+object MyApp extends App {
+  val query = TableQuery[Records]
+  val db = Database.forConfig("pg-postgres")
+  try{
+    Await.result(db.run(DBIO.seq(
+      query.result.map(println)
+    )), Duration.Inf)
+  } finally db.close
+}
+</code></pre>
+<p>Now run MyApp and you should see something like the following:</p>
+<pre class="highlight plaintext"><code>Vector(record(1,booyah!))
+</code></pre>
+<p>This doesn&rsquo;t cover querying or anything else of the sort, but now that you&rsquo;re started you&rsquo;ve finished the hard part ;).</p>
+
+<h2>Slick Code Generator</h2>
+
+<p>As an bonus, it could be valuable to see what gets generated by different table structures.  Add the following dependency to your <code>build.sbt</code>:</p>
+<pre class="highlight plaintext"><code>  "com.typesafe.slick" %% "slick-codegen" % "3.0.2" % "provided"
+</code></pre>
+<p>Now from the command line execute <code>sbt console</code> to drop into the scala REPL. Then enter the following:</p>
+
+<p>First create a variable for each of your environment variables:</p>
+<pre class="highlight plaintext"><code>scala&gt; val url = System.getenv("DB_PG_URL") + "/postgres"
+url: String = jdbc:postgresql://192.168.99.100:5432/postgres
+
+scala&gt; val user = System.getenv("DB_PG_USER")
+user: String = postgres
+
+scala&gt; val pwd = System.getenv("DB_PG_PWD")
+pwd: String = 1qaz2wsx
+</code></pre>
+<p>Then call the Slick Code Generator like this:</p>
+<pre class="highlight plaintext"><code>scala&gt; slick.codegen.SourceCodeGenerator.main(Array("slick.driver.PostgresDriver", "org.postgresql.Driver", url, "src/main/scala", "com.dvMENTALmadness", user, pwd))
+</code></pre>
+<p>The first two arguments are the slick and postgres drivers respectively. Next, pass in your <code>url</code> variable to point to your database instance. Then <code>src/main/scala</code> is the relative path from my sources root where I want my <code>Tables.scala</code> file created and <code>com.dvMENTALmadness</code> is my package name. Lastly pass in the <code>user</code> and <code>pwd</code> variables so the code generator can authenticate with postgres.</p>
+
+<p>Once the script runs you should find (assuming you&rsquo;re using the above paramters) a new file: <code>src/main/scala/com/dvMENTALmadness/Tables.scala</code> created and the content should look something like this:</p>
+<pre class="highlight plaintext"><code>package com.dvMENTALmadness
+// AUTO-GENERATED Slick data model
+/** Stand-alone Slick data model for immediate use */
+object Tables extends {
+  val profile = slick.driver.PostgresDriver
+} with Tables
+
+/** Slick data model trait for extension, choice of backend or usage in the cake pattern. (Make sure to initialize this late.) */
+trait Tables {
+  val profile: slick.driver.JdbcProfile
+  import profile.api._
+  import slick.model.ForeignKeyAction
+  // NOTE: GetResult mappers for plain SQL are only generated for tables where Slick knows how to map the types of all columns.
+  import slick.jdbc.{GetResult =&gt; GR}
+
+  /** DDL for all tables. Call .create to execute. */
+  lazy val schema = Record.schema
+  @deprecated("Use .schema instead of .ddl", "3.0")
+  def ddl = schema
+
+  /** Entity class storing rows of table Record
+   *  @param id Database column id SqlType(int4)
+   *  @param value Database column value SqlType(varchar), Length(64,true) */
+  case class RecordRow(id: Int, value: String)
+  /** GetResult implicit for fetching RecordRow objects using plain SQL queries */
+  implicit def GetResultRecordRow(implicit e0: GR[Int], e1: GR[String]): GR[RecordRow] = GR{
+    prs =&gt; import prs._
+    RecordRow.tupled((&lt;&lt;[Int], &lt;&lt;[String]))
+  }
+  /** Table description of table record. Objects of this class serve as prototypes for rows in queries. */
+  class Record(_tableTag: Tag) extends Table[RecordRow](_tableTag, "record") {
+    def * = (id, value) &lt;&gt; (RecordRow.tupled, RecordRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(id), Rep.Some(value)).shaped.&lt;&gt;({r=&gt;import r._; _1.map(_=&gt; RecordRow.tupled((_1.get, _2.get)))}, (_:Any) =&gt;  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(int4) */
+    val id: Rep[Int] = column[Int]("id")
+    /** Database column value SqlType(varchar), Length(64,true) */
+    val value: Rep[String] = column[String]("value", O.Length(64,varying=true))
+  }
+  /** Collection-like TableQuery object for table Record */
+  lazy val Record = new TableQuery(tag =&gt; new Record(tag))
+}
+</code></pre>
+<p>Play around with it, create multiple tables, add joins then re-run the generator and see what you get - it should be instructive. Your query will change slightly to look like this instead:</p>
+<pre class="highlight plaintext"><code>Tables.Record.result.map(println)
+</code></pre>
+<p>But your result should be the same. Enjoy!</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=scala: Connecting to Postgres via Slick 3&amp;amp;url=http://www.developmentalmadness.com/2016/02/23/scala-connecting-to-postgres-via-slick-3/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2016/02/23/scala-connecting-to-postgres-via-slick-3/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2016/02/23/scala-connecting-to-postgres-via-slick-3/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/02/18/security-theres-a-password-in-my-repository/'>
+<section class='post'>
+<h2>security: There's a password in my repository!</h2>
+<p>TLDR - Environment Variables Where possible you won&rsquo;t see me do this anymore: url = "jdbc:postgresql://127.0.0.1:5432/postgres?user=postgres&amp;password=12345" Or this: &lt;connectionStrings&gt;&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/02/27/working-with-docker/'>
+<section class='post'>
+<h2>Working with Docker</h2>
+<p>Every developer has a workflow: how their environment is configured and how they access tools and resources. Personally, I&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

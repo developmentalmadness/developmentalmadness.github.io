@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Docker: Configure Insecure Registry in Boot2Docker</title>
+<meta content='I gotta say there&amp;rsquo;s some confusing naming that goes on. Boot2Docker was originally a docker client that ran on OSX and Windows. That has b...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Docker: Configure Insecure Registry in Boot2Docker' property='og:title'>
+<meta content='I gotta say there&amp;rsquo;s some confusing naming that goes on. Boot2Docker was originally a docker client that ran on OSX and Windows. That has b...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2016/03/09/docker-configure-insecure-registry-in-boot2docker/' property='og:url'>
+<meta content='2016-03-09' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Docker: Configure Insecure Registry in Boot2Docker' name='twitter:title'>
+<meta content='I gotta say there&amp;rsquo;s some confusing naming that goes on. Boot2Docker was originally a docker client that ran on OSX and Windows. That has b...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2016/03/09/docker-configure-insecure-registry-in-boot2docker/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Docker: Configure Insecure Registry in Boot2Docker</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-03-09'>
+09 March 2016
+</time>
+on <a href='/tag/docker/'>docker</a>
+</section>
+</header>
+<section class='post-content'><p>I gotta say there&rsquo;s some confusing naming that goes on. <code>Boot2Docker</code> was originally a docker client that ran on OSX and Windows. That has been replaced by <code>docker-machine</code>. However, there is also a VirtualBox image (the default one) called <code>Boot2Docker</code>. In this post I&rsquo;m talking about the latter.</p>
+
+<p>I have a Docker Registry instance I just configured to run in AWS and is backed by S3 for storage. It&rsquo;s running as a farm of ECS containers behind an ELB. It is running in a private network so I have skipped setting up SSL. Which means I need to configure my docker daemon with the <code>--insecure-registry</code> option so I can pull images to my development machine. And as I mentioned above, I&rsquo;m currently using the default <code>Boot2Docker</code> image so the configuration is very specific.</p>
+
+<p>You should have a file in your Docker VM: <code>/var/lib/boot2docker/profile</code>. If you open it, it should look something like this:</p>
+<pre class="highlight plaintext"><code>$ cat /var/lib/boot2docker/profile
+
+EXTRA_ARGS='
+--label provider=virtualbox
+'
+CACERT=/var/lib/boot2docker/ca.pem
+DOCKER_HOST='-H tcp://0.0.0.0:2376'
+DOCKER_STORAGE=aufs
+DOCKER_TLS=auto
+SERVERKEY=/var/lib/boot2docker/server-key.pem
+SERVERCERT=/var/lib/boot2docker/server.pem
+</code></pre>
+<p>To tell Docker to allow you to access an insecure registry you need to add the option to <code>EXTRA_ARGS</code> like so <code>--insecure-registry=[url]</code> like this:</p>
+<pre class="highlight plaintext"><code>$ sudo vi /var/lib/boot2docker/profile
+
+EXTRA_ARGS='
+--label provider=virtualbox
+--insecure-registry=myregistry.mydomain.com
+'
+CACERT=/var/lib/boot2docker/ca.pem
+DOCKER_HOST='-H tcp://0.0.0.0:2376'
+DOCKER_STORAGE=aufs
+DOCKER_TLS=auto
+SERVERKEY=/var/lib/boot2docker/server-key.pem
+SERVERCERT=/var/lib/boot2docker/server.pem
+</code></pre>
+<p>Then just restart the docker daemon:</p>
+<pre class="highlight plaintext"><code>$ sudo /etc/init.d/docker restart
+</code></pre>
+<p>You should now be able to <code>push</code> and <code>pull</code> using your registry. </p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Docker: Configure Insecure Registry in Boot2Docker&amp;amp;url=http://www.developmentalmadness.com/2016/03/09/docker-configure-insecure-registry-in-boot2docker/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2016/03/09/docker-configure-insecure-registry-in-boot2docker/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2016/03/09/docker-configure-insecure-registry-in-boot2docker/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/03/05/nesting-docker-containers-stop/'>
+<section class='post'>
+<h2>Nesting Docker Containers? Stop!</h2>
+<p>In a recent blog post I pointed out Docker is about microservices, and you should compose your containers instead&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/03/09/docker-configure-insecure-registry-for-systemd/'>
+<section class='post'>
+<h2>Docker: Configure Insecure Registry for systemd</h2>
+<p>If you&rsquo;re running a flavor of Linux that uses systemd Docker recommends using it to configure and control your&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

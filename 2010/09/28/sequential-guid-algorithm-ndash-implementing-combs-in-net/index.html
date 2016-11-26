@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Sequential Guid Algorithm – Implementing Combs in .NET</title>
+<meta content='Today Ayende released his sequential guid answer, which is something I had been working on as well. I’ll be honest and say the current implement...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Sequential Guid Algorithm – Implementing Combs in .NET' property='og:title'>
+<meta content='Today Ayende released his sequential guid answer, which is something I had been working on as well. I’ll be honest and say the current implement...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2010/09/28/sequential-guid-algorithm-ndash-implementing-combs-in-net/' property='og:url'>
+<meta content='2010-09-28' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Sequential Guid Algorithm – Implementing Combs in .NET' name='twitter:title'>
+<meta content='Today Ayende released his sequential guid answer, which is something I had been working on as well. I’ll be honest and say the current implement...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2010/09/28/sequential-guid-algorithm-ndash-implementing-combs-in-net/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Sequential Guid Algorithm – Implementing Combs in .NET</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2010-09-28'>
+28 September 2010
+</time>
+on <a href='/tag/sql_server/'>sql_server</a>, <a href='/tag/guid/'>guid</a>, <a href='/tag/comb/'>comb</a>, <a href='/tag/uniqueidentifier/'>uniqueidentifier</a>, <a href='/tag/net/'>net</a>
+</section>
+</header>
+<section class='post-content'><p>Today <a href="http://ayende.com/Blog/archive/2010/09/28/createsequetialuuid-ndash-answer.aspx" rel="nofollow">Ayende</a> released his sequential guid answer, which is something I had been working on as well. I’ll be honest and say the current implementation takes from his recent posts (previous to today’s). If it weren’t for him, I would not have known about the Sql Server sorting idiosyncrasies – at least not until much later when we were experiencing serious index fragmentation.</p>
+
+<p>You can see my implementation below. Realize that this implementation was written only with Sql Server in mind, so I don’t use any other byte order than will work with Sql Server as his does. Also, I am not using any kind of incrementing counter as it is not worth the effort in my case. Ayende’s context is that of a single system – he isn’t looking for something that would be sequential globally. His guids will always be sequential, even under high load (more than 1,000/second). However, they are not guaranteed to be sequential across system boundries. Neither is mine, but since my implementation will is not intended to guarantee sequentialness (yeah I made word up) for guids generated for the same value of DateTime.UtcNow.Ticks there is no reason (at the moment) for me to add the overhead.</p>
+
+<p>I made the choice because my Comb type is meant to be used at the client and sent to the server for eventually consistent scenarios. And currently the load on our servers doesn’t justify the effort of trying to guarantee a sequence across systems. I thought about using something like the MAC address as suggested by Ayende, but that still doesn’t guarantee that guids generated on different system will be sequential, just grouped. So for the time I am willing to allow a small amount of fragmentation (20% by <a href="http://developmenttips.blogspot.com/2008/03/generate-sequential-guids-for-sql.html" rel="nofollow">my own tests</a>) in high-throughput scenarios because those will be rare for the system I am developing.  </p>
+
+<p>Also, because my Comb type is meant to be used by the client and passed to the service, I wanted to be able to verify that the value sent by the client was actually generated by Comb, I set the first “nibble” (half of the byte) of the 6th byte to 1100. This borrows from the method used by Microsoft, as mentioned in Jimmy Nilsson’s original article, of setting the first nibble of the 7th byte (the one I am copying to the 6th byte) to 0100. This could end in false positives if someone were to use some other method besides Guid.NewGuid() to gernate their guids, but since it won’t happen in the system this was developed for I don’t need the overhead of additional checks, yet.</p>
+
+<h2><font color="#ff0000"><strong>Update 6/15/2011</strong></font></h2>
+
+<p>While researching some details for providing a Java implementation of my Comb class, I read on Wikipedia that the bytes I am referring to in the previous paragraph are actually standard bytes used by all Guid/Uuid implementations to set the version. This indicates which version was used to generate the value. So on one hand, I am using these bits as they were intended. However, on the other hand there is the possibility of running into version number conflicts down the road if there is a version which clashes with mine which will result in false positives. At the moment the highest version number is 5, 0100 refers to version 4 and my version is declared as 12. So I‘m safe for at least 7 more versions :).</p>
+
+<p>I am curious however to hear from Ayende about why his is reversing his byte arrays. Let me know what you think of my version vs his. (I consider him to be beyond me in skill so I’m not asking for whose is better, I just would like some feedback in comparison).</p>
+<pre class="highlight plaintext"><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Developmentalmadness.Core.Types
+{
+    /// &lt;summary&gt;
+    /// A class for generating globally sequential Guids
+    /// &lt;/summary&gt;
+    public class Comb
+    {
+        /// &lt;summary&gt;
+        /// Creates a new sequential guid (aka comb) &lt;see cref="http://www.informit.com/articles/article.aspx?p=25862&amp;seqNum=7"/&gt;.
+        /// &lt;/summary&gt;
+        /// &lt;remarks&gt;A comb provides the benefits of a standard Guid w/o the database performance problems.&lt;/remarks&gt;
+        /// &lt;returns&gt;A new sequential guid (comb).&lt;/returns&gt;
+        public static Guid NewComb()
+        {
+            byte[] uid = Guid.NewGuid().ToByteArray();
+            byte[] binDate = BitConverter.GetBytes(DateTime.UtcNow.Ticks); // use UTC now to prevent conflicts w/ date time savings
+
+            // create comb in SQL Server sort order
+            byte[] comb = new byte[uid.Length];
+
+            // the first 7 bytes are random - if two combs
+            // are generated at the same point in time
+            // they are not guaranteed to be sequential.
+            // But for every DateTime.Tick there are
+            // 72,057,594,037,927,935 unique possibilities so
+            // there shouldn't be any collisions
+            comb[3] = uid[0];
+            comb[2] = uid[1];
+            comb[1] = uid[2];
+            comb[0] = uid[3];
+            comb[5] = uid[4];
+            comb[4] = uid[5];
+            comb[7] = uid[6];
+
+            // set the first 'nibble of the 7th byte to '1100' so 
+            // later we can validate it was generated by us
+            comb[6] = (byte)(0xc0 | (0xf &amp; uid[7]));
+
+            // the last 8 bytes are sequential,
+            // these will reduce index fragmentation
+            // to a degree as long as there are not a large
+            // number of Combs generated per millisecond
+            comb[9] = binDate[0];
+            comb[8] = binDate[1];
+            comb[15] = binDate[2];
+            comb[14] = binDate[3];
+            comb[13] = binDate[4];
+            comb[12] = binDate[5];
+            comb[11] = binDate[6];
+            comb[10] = binDate[7];
+
+            return new Guid(comb);
+        }
+
+        /// &lt;summary&gt;
+        /// Validates if comb was generated by this class
+        /// &lt;/summary&gt;
+        /// &lt;remarks&gt;
+        /// Guids generated by Guid.NewGuid() have a value of 
+        /// 0100 for the first 4 bits of the 7th byte. Ours will
+        /// have a value of 1100 for the 6th byte. We're checking that here.
+        /// 
+        /// We could do additional validation by verifying that
+        /// the value of a new Guid is greater than the
+        /// one being validated (or that the last 6 bytes
+        /// resolve to a valid DateTime), but this should
+        /// be enough for now.
+        /// &lt;/remarks&gt;
+        public static bool IsComb(Guid value)
+        {
+            // get the 7th byte
+            byte b = value.ToByteArray()[6];
+
+            // make sure the first 'nibble' == 1100
+            return (0xc0 &amp; b) == 0xc0;
+        }
+
+        /// &lt;summary&gt;
+        /// Validates Guid to determine the supplied
+        /// value was generated by Comb.NewComb. If
+        /// invalid an ArgumentException is thrown.
+        /// &lt;/summary&gt;
+        /// &lt;param name="value"&gt;&lt;/param&gt;
+        public static void ValidateComb(Guid value)
+        {
+            if (!Comb.IsComb(value))
+                throw new ArgumentException("The supplied Id value was not generated by Comb.NewComb.");
+        }
+    }
+}
+</code></pre></section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Sequential Guid Algorithm – Implementing Combs in .NET&amp;amp;url=http://www.developmentalmadness.com/2010/09/28/sequential-guid-algorithm-ndash-implementing-combs-in-net/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2010/09/28/sequential-guid-algorithm-ndash-implementing-combs-in-net/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2010/09/28/sequential-guid-algorithm-ndash-implementing-combs-in-net/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2010/04/29/sql-server-add-column-with-default-constraint-the-dumb-little/'>
+<section class='post'>
+<h2>SQL Server add column with DEFAULT CONSTRAINT: The Dumb Little Things</h2>
+<p>Sometimes you think you know and then when you go and open your big mouth and make a fool&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2010/10/10/fall-2010-codecamp-presentation-investigating-cqrs/'>
+<section class='post'>
+<h2>Fall 2010 CodeCamp Presentation: Investigating CQRS</h2>
+<p>As promised, here are the files from my Utah CodeCamp presentation. The source code represents the final solution including&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

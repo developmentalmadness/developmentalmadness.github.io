@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: unknown_error</title>
+  <subtitle>Posts tagged with unknown_error</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/unknown_error/feed.xml" rel="self"/>
+  <updated>2008-09-25T17:44:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>WCF: Unknown error (0xc000009a) Couldn't get process information from performance counter</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/09/25/wcf-unknown-error-0xc000009a-couldnt/"/>
+    <id>http://www.developmentalmadness.com/2008/09/25/wcf-unknown-error-0xc000009a-couldnt/</id>
+    <published>2008-09-25T17:44:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’ve been working with WCF in an intranet environment over the last couple weeks and have been getting some good experience which is forcing me to dig in more an more. My disclaimer is: I still only have a surface level understanding of how it works and</summary>
+  </entry>
+</feed>

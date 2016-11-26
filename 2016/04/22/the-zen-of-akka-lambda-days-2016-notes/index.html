@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: The Zen of Akka (Lambda Days 2016) Cliff Notes</title>
+<meta content=' Below are all the points, what time to find them in the video and what I found were the important talking points. I left most stuff actually on...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='The Zen of Akka (Lambda Days 2016) Cliff Notes' property='og:title'>
+<meta content=' Below are all the points, what time to find them in the video and what I found were the important talking points. I left most stuff actually on...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2016/04/22/the-zen-of-akka-lambda-days-2016-notes/' property='og:url'>
+<meta content='2016-04-22' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='The Zen of Akka (Lambda Days 2016) Cliff Notes' name='twitter:title'>
+<meta content=' Below are all the points, what time to find them in the video and what I found were the important talking points. I left most stuff actually on...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2016/04/22/the-zen-of-akka-lambda-days-2016-notes/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>The Zen of Akka (Lambda Days 2016) Cliff Notes</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-04-22'>
+22 April 2016
+</time>
+on <a href='/tag/akka/'>akka</a>, <a href='/tag/cliff-notes/'>cliff-notes</a>
+</section>
+</header>
+<section class='post-content'><iframe width="560" height="315" src="https://www.youtube.com/embed/tC-joPMPJLs" frameborder="0" allowfullscreen></iframe>
+
+<p>Below are all the points, what time to find them in the video and what I found were the important talking points. I left most stuff actually on the slide out.</p>
+
+<h1>1. One Actor Is No Actor</h1>
+
+<p>(about 3:17)</p>
+
+<p>Semantically, a system with a single actor is not a concurrent system.</p>
+
+<p>Use <code>ActorRef</code> over actor selection</p>
+
+<h1>2. Structure Your Actors</h1>
+
+<p>(about 6:13)</p>
+
+<p>Prefer <code>context.actorOf</code> over <code>system.actorOf</code>. This will create a parent/child relationship which allows for actor supervision. <code>system.actorOf</code> creates all new actors on the same &lsquo;level&rsquo; instead of within a hierarchy. </p>
+
+<h1>3. Name Your Actors</h1>
+
+<p>(about 7:22)</p>
+
+<p>Allows actor names to have meaning within the domain:</p>
+
+<ul>
+<li>Default naming: bad - no context when logging/debugging</li>
+<li><code>[name]-[counter]</code>: better - but still lacks important meaning. Example: <code>fetch-worker-1</code>, <code>fetch-worker-2</code></li>
+<li><code>[name]-[contextual-id]</code>: best - combines meaningful name with the execution context. Example for actor which fetches videos from web sites: <code>fetch-yt-[youtube-identifier]</code>, <code>fetch-vm-[vimeo-identifier]</code></li>
+</ul>
+
+<p><strong>Note:</strong> Don&rsquo;t use scala string interpolation for logging:</p>
+<pre class="highlight plaintext"><code>//BAD - the string is always built/evaluated
+log.debug(s"Something heavy $generateId from $physicalAddress")
+
+//GOOD - string built only when DEBUG level is ON
+log.debug("Something heavy {} from {}", generateId, physicalAddress)
+</code></pre>
+<h1>4. Matrix Of Mutability (Pain)</h1>
+
+<p>(about 11:49)</p>
+
+<p>(Lower number is better):</p>
+
+<ol>
+<li>Immutable Val - great, but you can&rsquo;t do anything with it</li>
+<li>Immutable Var - most of the time, you can mutate it but if it gets &ldquo;leaked&rdquo; (sent to another actor) it can&rsquo;t be modified (thread-safe).</li>
+<li>Mutable Val - shouldn&rsquo;t do this. Not thread-safe.</li>
+<li>Mutable Var - never do this</li>
+</ol>
+
+<h1>5. Blocking Needs Careful Management</h1>
+
+<p>(about 14:25)</p>
+
+<p>When you block - isolate it - use a non-defualt dispatcher on it&rsquo;s own thread pool. Aka &ldquo;Bulkhead Pattern&rdquo;</p>
+
+<p>When configured in your config file like this:</p>
+<pre class="highlight plaintext"><code>// application.conf
+
+my-blocking-dispatcher {
+  type = Dispatcher
+  executor = "thread-pool-executor"
+
+  thread-pool-executor {
+    //in akka previous to 2.4.2
+    core-pool-size-min = 16
+    core-pool-size-max = 16
+    max-pool-size-min = 16
+    max-pool-size-max = 16
+
+    // or in Akka 2.4.2+
+    fixed-pool-size = 16
+  }
+
+  throughput = 100
+}
+</code></pre>
+<p>Then you can do this:</p>
+<pre class="highlight plaintext"><code>implicit val blockingDispatcher = system.dispatchers.lookup("my-blocking-dispatcher")
+
+val routes: Route = post {
+  complete {
+    Future {
+      Thread.sleep(5000)
+      System.currentTimeMillis().toString
+    }
+  }
+}
+</code></pre>
+<p>This is good because you&rsquo;re blocking only on a dedicated dispatcher instead of the default dispatcher.</p>
+
+<h1>6. Never Await, for/FlatMap instead</h1>
+
+<p>(about 19:20)</p>
+
+<p>Use Monadic composition of futures (<code>for</code> block) or <code>akka.pattern.after</code> with <code>Future.firstCompletedOf</code> (best)</p>
+
+<h1>7. Avoid Java Serialization</h1>
+
+<p>(about 22:38)</p>
+
+<p>Java serialization is the default because it made for easy &ldquo;Hello World&rdquo; default case for those learning. Problem is people don&rsquo;t change the defaults going into production and decide &ldquo;Akka is slow&rdquo;.</p>
+
+<p>Good suggestions are ProtoBuf or Kryo. Both have pros/cons. Kryo is easier to setup, but poor schema evolution. ProtoBuf requires more setup but better evolution. Other suggestions are SBE, Thrift, and JSON.</p>
+
+<p>Even XML is smaller/faster than default Java serialization.</p>
+
+<h1>7.5. Trust no-one, benchmark everything</h1>
+
+<p>(about 29:54)</p>
+
+<p>[all info is on the slide]</p>
+
+<h1>8. Let it Crash! Supervision, Failures, &amp; Errors</h1>
+
+<p>(about 30:48)</p>
+
+<p>Error - is expected and handled. Report to end user</p>
+
+<p>Failure - an unexpected event. Report to supervisor</p>
+
+<p>Ask who can do something about a problem?</p>
+
+<h1>9. Backoff Supervision</h1>
+
+<p>(about 35:00)</p>
+
+<p>Exponential Backoff</p>
+
+<p>Persistent actor -&gt; Datbase</p>
+
+<p>If fail/restart is immediate you&rsquo;re basically DDOS your database/system</p>
+
+<p>Instead use Backoff Supervisor, something outside the hierarchy and is provided by Akka if you configure it. </p>
+
+<h1>10. Design using State Machines</h1>
+
+<p>(about 38:27)</p>
+
+<p><strong>Bad</strong>: Long list of <code>case</code> matches for 15 or more messages in an actor&rsquo;s receive looks like &ldquo;pyramid of doom&rdquo; found in async programming frameworks like javascript.</p>
+
+<p><strong>Good</strong>: You may end up using the FSM (Finite State Machine) DSL to help you achieve this goal.</p>
+
+<h1>11. Cluster Convergence and Joining</h1>
+
+<p>(about 40:25)</p>
+
+<p>Cluster Gossip Convergence: Everybody knows something, then we make a decision on it.</p>
+
+<p><code>allow-weakly-up-members</code>: allow &ldquo;up&rdquo; (join) state before all nodes can see it. Allows nodes to join even when there is a network partition.</p>
+
+<h1>12. Cluster Partitions and &ldquo;Down&rdquo;</h1>
+
+<p>(about 43:04)</p>
+
+<p>Opposite of last point.</p>
+
+<p>When a node gets marked as unreachable it gets marked as &ldquo;down&rdquo;. When it comes back everyone refuses to talk to it. If you don&rsquo;t want this behavior you can turn it off, but then make sure you don&rsquo;t use features that follow &ldquo;single writer principle&rdquo; (eg. Akka Persistance). Instead use CRDT based like Akka Distributed Data.</p>
+
+<h1>13. A fishing rod is a Tool. Akka is a Toolkit</h1>
+
+<p>(about 44:54)</p>
+
+<p>Use the least powerful abstraction that gets the job for you. Sometimes a <code>Future</code> is enough but not distributed. <code>Actors</code> are distributed, but require more work - so it&rsquo;s a tradeoff.</p>
+
+<h1>Q&amp;A</h1>
+
+<p>(about 47:20)</p>
+
+<p>Distributed Akka Streams? Try Intel GearPump:</p>
+
+<ul>
+<li>https://www.lightbend.com/resources/case-studies-and-stories/intels-gearpump-real-time-streaming-engine-using-akka</li>
+<li>https://software.intel.com/en-us/blogs/2015/08/14/all-about-gearpump-the-real-time-big-data-streaming-engine-behind-intel-s-latest</li>
+</ul>
+
+<p>Backpressure using Backoff Supervisor strategy? No</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=The Zen of Akka (Lambda Days 2016) Cliff Notes&amp;amp;url=http://www.developmentalmadness.com/2016/04/22/the-zen-of-akka-lambda-days-2016-notes/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2016/04/22/the-zen-of-akka-lambda-days-2016-notes/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2016/04/22/the-zen-of-akka-lambda-days-2016-notes/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/04/21/docker-troubleshooting-500-error-from-registry-2/'>
+<section class='post'>
+<h2>Docker: Troubleshooting 500 Error From Registry 2</h2>
+<p>Been fighting an HTTP 500 Internal Server Error from Docker Registry. We have several instances running on Amazon EC2&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/04/28/recovery-iphone-recovery-password-from-backup/'>
+<section class='post'>
+<h2>Recovery iPhone Recovery Password From Backup</h2>
+<p>My wife forgot her restrictions pin on her iPhone and wouldn&rsquo;t let me reset the phone because she didn&rsquo;t&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

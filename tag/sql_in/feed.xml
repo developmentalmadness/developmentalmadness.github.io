@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: sql_in</title>
+  <subtitle>Posts tagged with sql_in</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/sql_in/feed.xml" rel="self"/>
+  <updated>2007-02-27T20:26:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Use Table-Valued Functions as Arrays in SQL Server</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2007/02/27/use-table-valued-functions-as-arrays-in/"/>
+    <id>http://www.developmentalmadness.com/2007/02/27/use-table-valued-functions-as-arrays-in/</id>
+    <published>2007-02-27T20:26:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’ve started investigating the SQL CLR and decided as my first article to tie in a bit to my article on using SQL parameters in ad hoc queries. This time I’m touching on an advanced topic of sql parameters - how to pass an array as a parameter. This takes</summary>
+  </entry>
+</feed>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Building a Single Sign On Provider Using ASP.NET and WCF: Part 2</title>
+<meta content='Using Forms Authentication with WCF This is the second article in a four part series on building a single sign on () provider using the platform...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Building a Single Sign On Provider Using ASP.NET and WCF: Part 2' property='og:title'>
+<meta content='Using Forms Authentication with WCF This is the second article in a four part series on building a single sign on () provider using the platform...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/07/02/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_2/' property='og:url'>
+<meta content='2009-07-02' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Building a Single Sign On Provider Using ASP.NET and WCF: Part 2' name='twitter:title'>
+<meta content='Using Forms Authentication with WCF This is the second article in a four part series on building a single sign on () provider using the platform...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/07/02/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_2/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Building a Single Sign On Provider Using ASP.NET and WCF: Part 2</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-07-02'>
+02 July 2009
+</time>
+on <a href='/tag/net_framework_3_5/'>net_framework_3_5</a>, <a href='/tag/forms_authentication/'>forms_authentication</a>, <a href='/tag/wcf/'>wcf</a>
+</section>
+</header>
+<section class='post-content'><h2>Using Forms Authentication with WCF</h2>
+
+<p>This is the second article in a four part series on building a single sign on () provider using the platform. If you just want to know about forms authentication and and aren’t interested in implementing SSO read ahead. Otherwise, make sure to check out (, , and the <a href="http://cid-2c81058206cadea2.skydrive.live.com/self.aspx/.Public/CodeSamples/SSO.zip" rel="nofollow">source</a></p>
+
+<h2>Introduction</h2>
+
+<p>An important distinction to make here before I get started is that I am not using FormsAuthentication to secure a WCF service. I am using FormsAuthentication to manage user identity. FormsAuthentication comes with handy Encrypt/Decrypt methods which allow us to pass a token around between our service, the client and the web application using our service as a trusted identity/authentication provider. But the methods only operate on a FormsAuthenticationTicket instance.</p>
+
+<p>This is really not a problem in this scenario, it gives us just enough of what we need – we can encrypt the data objects we’re passing around and we can also use serialization to include any complex objects in the FormsAuthenticationTicket.UserData property.</p>
+
+<h2>Setup</h2>
+
+<p>As long as you are hosting WCF from ASP.NET you can take advantage of built-in ASP.NET features, including FormsAuthentication. There are many ways to secure an WCF service, but since we’re trying to build single sign on capabilities and we don’t want our users to be required to obtain additional credentials it makes sense to use FormsAuthentication for our service as well. MSDN contains <a href="http://msdn.microsoft.com/en-us/library/bb398990.aspx" rel="nofollow">documentation for setting up FormsAuthentication</a></p>
+
+<ol>
+<li>Configure ASP.NET FormsAuthentication in the web application where your WCF service is located:</li>
+</ol>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"><system.web></pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> ...</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> <authentication mode="Forms"></pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> <forms cookieless="UseCookies" path="/SSO" name="SSOService"/></pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> </authentication></pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> ...</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"></system.web></pre>
+
+<p>This step isn’t required, however it is recommended at least during development. Setting up your dev machine to make your browser think you are communicating with multiple different sites. You need to edit your local “hosts” file, then add host headers to your IIS configuration and then setup Visual Studio to startup each application with the correct url. Then if you have multiple members on your team it further complicates things. If you do it this way, your SSO Service and each application you’re debugging can have a separate cookie path and everything will behave as if you were communicating across domains.</p>
+
+<ol>
+<li>Add to the system.ServiceModel configuration section:</li>
+</ol>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"><system.serviceModel></pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> <serviceHostingEnvironment aspNetCompatibilityEnabled="true"/></pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> ...</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"></system.serviceModel></pre>
+
+<p>Step 2 gives you access to the ASP.NET intrinsic objects (Context, Server, Session, Request and Response) so you can read/write cookies.</p>
+
+<p><a href="http://msdn.microsoft.com/en-us/library/aa702682.aspx" rel="nofollow">AspNetCompatibility</a>
+3. Add the AspNetCompatibilityRequirements attribute to your service implementation class:</p>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;">[AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr; font-family: 'Courier New',courier,monospace; font-size: 8pt; color: black;">public class SSOService : ISSOService, ISSOPartnerService</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;">{</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr; font-family: 'Courier New',courier,monospace; font-size: 8pt; color: black;"> //... concrete interface implementation</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr; font-family: 'Courier New',courier,monospace; font-size: 8pt; color: black;">}</pre>
+
+<p>If you don’t complete step 3, WCF will complain when it sees reads your config settings from step 2 and it doesn’t see the AspNetCompatibilityRequirements attribute on your service implementation.</p>
+
+<h2>Using FormsAuthentication</h2>
+
+<p>If the client can supply valid credentials then we want to be able to determine the identity of the client for subsequent requests. So after validating the credentials we need to create a ticket and then send it back to the client:</p>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr; font-family: 'Courier New',courier,monospace; font-size: 8pt; color: black;">public SSOToken Login(string username, string password)</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr; font-family: 'Courier New',courier,monospace; font-size: 8pt; color: black;">{</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr; font-family: 'Courier New',courier,monospace; font-size: 8pt; color: black;"> // default response</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr; font-family: 'Courier New',courier,monospace; font-size: 8pt; color: black;"> SSOToken token = new SSOToken</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr; font-family: 'Courier New',courier,monospace; font-size: 8pt; color: black;"> {</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr; font-family: 'Courier New',courier,monospace; font-size: 8pt; color: black;"> Token = string.Empty,</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr; font-family: 'Courier New',courier,monospace; font-size: 8pt; color: black;"> Status = "DENIED"</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> };</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> // authenticate user</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> if (string.CompareOrdinal("foo", username) == 0</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> && string.CompareOrdinal("bar", password) == 0)</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; direction: ltr;"> {</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> // mock data to simulate passing around additional data</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; direction: ltr;"> Guid temp = Guid.NewGuid();</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; direction: ltr;"> // manage cookie lifetime</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> DateTime issueDate = DateTime.Now;</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> DateTime expireDate = issueDate.AddMonths(1);</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> // create the ticket and protect it</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, username, issueDate, expireDate, true, temp.ToString());</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;font-family:'Courier New',courier,monospace;font-size:8pt;color:black;"> string protectedTicket = FormsAuthentication.Encrypt(ticket);</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;"> // save the protected ticket with a cookie</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;"> HttpCookie authorizationCookie = new HttpCookie(FormsAuthentication.FormsCookieName, protectedTicket);</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;"> authorizationCookie.Expires = expireDate;</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;"> // protect the cookie from session hijacking</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;"> authorizationCookie.HttpOnly = true;</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;"> // write the cookie to the response stream</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;"> HttpContext.Current.Response.Cookies.Add(authorizationCookie);</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;"> // update the response to indicate success</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;"> token.Status = "SUCCESS";</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;"> token.Token = protectedTicket;</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;"> }</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;"> return token;</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;">}</pre>
+
+<p>Next, when our client needs to assert its identity to a web application using our SSO service we need to provide something which can’t be tampered with and the web application can use to verify with our service to ensure no tampering occurred.</p>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; direction: ltr;">public SSOToken RequestToken()</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;">{</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> // default response</pre>
+
+<pre face="'Courier New',courier,monospace" size="8pt" color="black" style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; direction: ltr;"> SSOToken token = new SSOToken</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> {</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> Token = string.Empty,</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> Status = "DENIED"</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> };</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> // verify we've already authenticated the client</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> if (HttpContext.Current.Request.IsAuthenticated)</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> {</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> // get the current identity</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> FormsIdentity identity = (FormsIdentity)HttpContext.Current.User.Identity;</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> // we'll send the client its own FormsAuthenticationTicket, but </pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> // we'll encrypt it so only we can read it when the partner app</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> // needs to validate who the client is through our service</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> token.Token = FormsAuthentication.Encrypt(identity.Ticket);</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> token.Status = "SUCCESS";</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> }</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: white; width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;"> return token;</pre>
+
+<pre style="border-style: none; margin: 0em; padding: 0px; overflow: visible; text-align: left; line-height: 12pt; background-color: rgb(244, 244, 244); width: 100%; font-family: 'Courier New',courier,monospace; direction: ltr; color: black; font-size: 8pt;">}</pre>
+
+<p>We’ll use the FormsAuthenticationTicket we created and give the client an encrypted copy. Neither the client nor the web application can read it. The intent is that we give it to the client, the client will forward it to the web application and then the web application will be required ask our service if we can read it and if it is valid. If everything succeeds, we’ll confirm to the web application that the user is indeed who it says it is and can accept our assertion of the client’s identity.</p>
+
+<h2>Security</h2>
+
+<p>I mentioned this in the last post, but I’ll say it again here. We don’t want to allow session hijacking here and so make sure you set your cookies to <a href="http://www.owasp.org/index.php/HTTPOnly" rel="nofollow">HttpOnly</a></p>
+
+<h2>Conclusion</h2>
+
+<p>Basically, as long as you configure your service correctly for AspNetCompatibility you can still use forms authentication. By using FormsAuthentication you get everything you need for identity management pre-built for you.</p>
+
+<p>If you’re following the SSO series, the next installment will focus on configuring WCF to support JSONP.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Building a Single Sign On Provider Using ASP.NET and WCF: Part 2&amp;amp;url=http://www.developmentalmadness.com/2009/07/02/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_2/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/07/02/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_2/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/07/02/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_2/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/'>
+<section class='post'>
+<h2>Building a Single Sign On Provider Using ASP.NET and WCF: Part 1</h2>
+<p>This is the first in a 4 part series on building a single sign on provider using the ASP.NET&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/07/06/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_3/'>
+<section class='post'>
+<h2>Building a Single Sign On Provider Using ASP.NET and WCF: Part 3</h2>
+<p>Using JSONP with WCF This is the third article in a four part series on building a single sign&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

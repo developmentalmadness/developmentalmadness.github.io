@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: orm</title>
+  <subtitle>Posts tagged with orm</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/orm/feed.xml" rel="self"/>
+  <updated>2009-06-23T20:48:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Data Access: Stored Procedures vs. ORM (ad hoc) Queries</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/06/23/data_access_stored_procedures_vs_orm_ad_hoc_queries/"/>
+    <id>http://www.developmentalmadness.com/2009/06/23/data_access_stored_procedures_vs_orm_ad_hoc_queries/</id>
+    <published>2009-06-23T20:48:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’ve had many spirited discussions over time with my colleagues on this issue. And I will most likely invite a flame war from the developer community for this post, but after reading this post
+
+As a disclaimer I don’t take issue with the decision to use</summary>
+  </entry>
+</feed>

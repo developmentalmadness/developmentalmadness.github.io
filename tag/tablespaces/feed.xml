@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: tablespaces</title>
+  <subtitle>Posts tagged with tablespaces</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/tablespaces/feed.xml" rel="self"/>
+  <updated>2009-01-29T17:38:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Lost in Translation – Episode 2: Tablespaces</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-2/"/>
+    <id>http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-2/</id>
+    <published>2009-01-29T17:38:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">In Episode 1 I addressed database instances but I’d like to correct a technicality. I compared SQL Server instances with Oracle Database instances. While this is pretty much correct, I’d like to add that technically this isn’t correct. At least not according</summary>
+  </entry>
+</feed>

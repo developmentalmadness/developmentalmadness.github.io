@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: xargs</title>
+  <subtitle>Posts tagged with xargs</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/xargs/feed.xml" rel="self"/>
+  <updated>2016-01-08T16:02:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Bash: Move an Entire Directory of Files</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/01/08/bash-move-an-entire-directory-of-files/"/>
+    <id>http://www.developmentalmadness.com/2016/01/08/bash-move-an-entire-directory-of-files/</id>
+    <published>2016-01-08T16:02:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I recently wanted to nest all the files in a folder one level deeper. Which meant I needed to move all the files except for the nested folder I created. This will move all files, excluding the directory new-folder: 
+ls|grep -v new-folder|xargs -I % mv</summary>
+  </entry>
+</feed>

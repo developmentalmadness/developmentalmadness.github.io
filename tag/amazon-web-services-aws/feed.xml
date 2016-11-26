@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: amazon-web-services-aws</title>
+  <subtitle>Posts tagged with amazon-web-services-aws</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/amazon-web-services-aws/feed.xml" rel="self"/>
+  <updated>2016-02-01T17:26:12+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>AWS: Mount and Format an EBS Data Volume on EC2 Initialize</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/02/01/aws-mount-and-format-an-ebs-data-volume-on-ec2-initialize/"/>
+    <id>http://www.developmentalmadness.com/2016/02/01/aws-mount-and-format-an-ebs-data-volume-on-ec2-initialize/</id>
+    <published>2016-02-01T17:26:12+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">The developer guide for AWS EC2 has a section titled Making an Amazon EBS Volume Available for Use. It describes how to make an EBS volume available after you’ve attached it to your EC2 instance and connected over SSH. But if you’re using Auto-Scaling</summary>
+  </entry>
+  <entry>
+    <title>AWS: Hosting a Static Website in S3</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/02/04/aws-hosting-a-static-website-in-s3/"/>
+    <id>http://www.developmentalmadness.com/2016/02/04/aws-hosting-a-static-website-in-s3/</id>
+    <published>2016-02-04T00:34:26+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">My team at work has decided to adopt the Thoughtworks Technology Radar as a means to communicate what our team is working on at a high level. One of our team members found a project on Github that uses an SVG library to create a Tech Radar graph client</summary>
+  </entry>
+  <entry>
+    <title>Linux: Scheduled Jobs With crontab</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/03/10/linux-crontab/"/>
+    <id>http://www.developmentalmadness.com/2016/03/10/linux-crontab/</id>
+    <published>2016-03-10T17:05:32+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Today I learned about crontab, which for those of us coming from the Windows world is the equivalent of the Windows Task Scheduler. If I had known how easy it was to use I would have started using it a long time ago.
+
+HowToGeek has a great detailed write</summary>
+  </entry>
+</feed>

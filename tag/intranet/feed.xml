@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: intranet</title>
+  <subtitle>Posts tagged with intranet</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/intranet/feed.xml" rel="self"/>
+  <updated>2008-09-25T17:44:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>WCF: Unknown error (0xc000009a) Couldn't get process information from performance counter</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/09/25/wcf-unknown-error-0xc000009a-couldnt/"/>
+    <id>http://www.developmentalmadness.com/2008/09/25/wcf-unknown-error-0xc000009a-couldnt/</id>
+    <published>2008-09-25T17:44:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’ve been working with WCF in an intranet environment over the last couple weeks and have been getting some good experience which is forcing me to dig in more an more. My disclaimer is: I still only have a surface level understanding of how it works and</summary>
+  </entry>
+  <entry>
+    <title>IIS 6.0 with Windows Authentication PITA</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/11/12/iis-60-with-windows-authentication-pita/"/>
+    <id>http://www.developmentalmadness.com/2008/11/12/iis-60-with-windows-authentication-pita/</id>
+    <published>2008-11-12T18:35:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">ulling. It all started when the test server was hosed (rebuilt) without asking me if it affect anything I was doing. Without going to much into the history, an application that should have been on production was on staging and being used as the production</summary>
+  </entry>
+</feed>

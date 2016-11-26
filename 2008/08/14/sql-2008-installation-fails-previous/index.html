@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: SQL 2008 Installation Fails: "Previous Release of Microsoft Visual Studio 2008"</title>
+<meta content='I have been trying since yesterday to install the RTM of SQL 2008. But once I have selected the components to install I get a failure during the...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='SQL 2008 Installation Fails: "Previous Release of Microsoft Visual Studio 2008"' property='og:title'>
+<meta content='I have been trying since yesterday to install the RTM of SQL 2008. But once I have selected the components to install I get a failure during the...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2008/08/14/sql-2008-installation-fails-previous/' property='og:url'>
+<meta content='2008-08-14' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='SQL 2008 Installation Fails: "Previous Release of Microsoft Visual Studio 2008"' name='twitter:title'>
+<meta content='I have been trying since yesterday to install the RTM of SQL 2008. But once I have selected the components to install I get a failure during the...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2008/08/14/sql-2008-installation-fails-previous/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>SQL 2008 Installation Fails: "Previous Release of Microsoft Visual Studio 2008"</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2008-08-14'>
+14 August 2008
+</time>
+on <a href='/tag/visual_studio_2008_sp_1/'>visual_studio_2008_sp_1</a>, <a href='/tag/sql_2008_rtm/'>sql_2008_rtm</a>
+</section>
+</header>
+<section class='post-content'><p>I have been trying since yesterday to install the RTM of SQL 2008. But once I have selected the components to install I get a failure during the check of installation rules. The rule failing is &ldquo;Previous releases of Microsoft Visual Studio 2008&rdquo;. I have downloaded and installed Visual Studio 2008 SP 1. In fact I&rsquo;ve run the install several times.</p>
+
+<p>Then I found this post describing why this error is happening. It turns out I had installed and uninstalled an RC version of 2008 several months ago. But I still had <strong>Visual Studio 2008 Shell (integrated mode)</strong> installed as well. So I uninstalled this. But after completing the uninstall I was still unable to install SQL 2008.</p>
+
+<p>So I went back to the SP 1 page and noticed there was a separate link for Express Editions of Visual Studio. I remembered I had VC++ 2008 Express installed! After visiting I found this little gem in the page :</p>
+
+<h3>IMPORTANT</h3>
+
+<p>If you have multiple Visual Studio products installed, you must upgrade all of them to SP1. <strong>If you have Visual Studio 2008 and one or more 2008 Express Editions, you cannot upgrade the Express Editions until you have upgraded Visual Studio.</strong></p>
+
+<p>That is the kicker. I had to install SP 1 for VS 2008 first, then ALSO install SP1 for VC++ 2008. This goes for all express editions: Web Developer Express, Visual Basic Express and Visual C# as well as VC++ Express.</p>
+
+<p>I am in the process of installing VC++ 2008 SP 1 (which appears to be a full install), if I run into any other problems I&rsquo;ll update this post. But otherwise, this should correct the issue. Hope it helps!</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=SQL 2008 Installation Fails: "Previous Release of Microsoft Visual Studio 2008"&amp;amp;url=http://www.developmentalmadness.com/2008/08/14/sql-2008-installation-fails-previous/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2008/08/14/sql-2008-installation-fails-previous/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2008/08/14/sql-2008-installation-fails-previous/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2008/07/28/linq-to-sql-reusing-datacontext/'>
+<section class='post'>
+<h2>LINQ to SQL: Reusing DataContext</h2>
+<p>I have been working on a project which uses a data access layer (DAL) to wrap some LINQ to&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2008/08/15/open-sql-2008-management-studio-from/'>
+<section class='post'>
+<h2>Open SQL 2008 Management Studio from Run... command</h2>
+<p>Since SQL 2005 was first released I have always opened it from the run command in the start menu&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

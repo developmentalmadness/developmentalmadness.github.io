@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: scriptcontrol</title>
+  <subtitle>Posts tagged with scriptcontrol</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/scriptcontrol/feed.xml" rel="self"/>
+  <updated>2008-04-23T18:59:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Using Ajax with ASP.NET MVC</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/"/>
+    <id>http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/</id>
+    <published>2008-04-23T18:59:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">One of the features I continue to wait for from the ASP.NET MVC team is a server control library to work with the MVC framework. So as I have been working on a project using ASP.NET MVC I have begun developing my own library of server controls.
+
+Recently</summary>
+  </entry>
+</feed>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Modifying XP Pro Permissions For Workgroup Computers</title>
+<meta content='Sql Server best practices recommend using a local, low-permissions account as the service account. But if your machine isn&amp;rsquo;t a member of a...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Modifying XP Pro Permissions For Workgroup Computers' property='og:title'>
+<meta content='Sql Server best practices recommend using a local, low-permissions account as the service account. But if your machine isn&amp;rsquo;t a member of a...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/01/09/modifying-xp-pro-permissions-for/' property='og:url'>
+<meta content='2009-01-09' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Modifying XP Pro Permissions For Workgroup Computers' name='twitter:title'>
+<meta content='Sql Server best practices recommend using a local, low-permissions account as the service account. But if your machine isn&amp;rsquo;t a member of a...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/01/09/modifying-xp-pro-permissions-for/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Modifying XP Pro Permissions For Workgroup Computers</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-01-09'>
+09 January 2009
+</time>
+on <a href='/tag/workgroup_permissions/'>workgroup_permissions</a>, <a href='/tag/xp_professional/'>xp_professional</a>, <a href='/tag/cacls/'>cacls</a>
+</section>
+</header>
+<section class='post-content'><p>Sql Server best practices recommend using a local, low-permissions account as the service account. But if your machine isn&rsquo;t a member of a domain then you don&rsquo;t get a security tab in the folder properties window. There&rsquo;s many reasons to want to control permissions when you&rsquo;re not on a domain, but how can you do it?</p>
+
+<p>I had to do this today and I realized this wasn&rsquo;t something that was obvious to everyone, so I thought I&rsquo;d make a quick post about it.</p>
+
+<h2><font color="#00ff00"><strong>UPDATE - 1/28/2009</strong></font></h2>
+
+<p>I have found there is a much better (read: safer) way to accomplish what is described below. I&rsquo;m going to leave the instructions as I originally wrote them because they are still useful for using cacls, but here&rsquo;s a much safer way to do it.</p>
+
+<p>Open Windows Explorer, then from the &ldquo;Tools&rdquo; menu select &ldquo;Folder Options&hellip;&rdquo;. Select the &ldquo;View&rdquo; tab and uncheck the option &ldquo;Use simple file sharing (Recommended)&rdquo;.</p>
+
+<p>Changing setting now gives you the &ldquo;Security&rdquo; tab the next time you open the property window for any folder. The &ldquo;Sharing&rdquo; tab also has more options for advanced users. The reason this option is &ldquo;recommended&rdquo; is because it is for advanced users. If you&rsquo;re like me and you know what you&rsquo;re doing I prefer this setting turned off. </p>
+
+<h2><font color="#00ff00"><strong>END UPDATE</strong></font></h2>
+
+<p>The command console has a command named &ldquo;cacls&rdquo; which allows you to manage NTFS permissions and this is built-in to XP and you can use it even if the UI doesn&rsquo;t give you a tool to manage these. Does this mean you can use this for XP Home as well? I don&rsquo;t know. I don&rsquo;t own Home Edition. I never have so I haven&rsquo;t been able to test this, but it would be easy for someone to confirm. If you do, please post a comment.</p>
+
+<p>Anyway here&rsquo;s an example of the command. I created a folder with the path C:\Data for my Sql server account named (what else?) &ldquo;sqlserver&rdquo;. I want to grant &ldquo;change&rdquo; (aka modify) permissions. You could use &ldquo;Full Control&rdquo;, but Sql Server doesn&rsquo;t require Full Control, so why grant unnecessary rights?</p>
+
+<p>WARNING: Incorrect use of cacls can cause you to loose access to the folder, even for administrators. Always use the /E switch as an argument unless you know what you&rsquo;re doing and intent to completely replace permissions on the folder.</p>
+
+<ol>
+<li>From the Windows &ldquo;Start&rdquo; menu, select &ldquo;Run&hellip;&rdquo;</li>
+<li>Type &ldquo;cmd&rdquo;, then hit &ldquo;Ok&rdquo;</li>
+<li><p>Type the following in your command window:</p>
+
+<p>cacls /E /T /G sqlserver:C C:\Data</p></li>
+</ol>
+
+<p>The /E switch (mentioned in the warning above) tells cacls to Edit the permissions. If you omit /E then the permissions will be completely replaced.</p>
+
+<p>/T will include the change for all subfolders.</p>
+
+<p>/G is the &ldquo;Grant&rdquo; switch. Following /G should be the account name, then a colon followed by the permissions to grant. In this case &ldquo;C&rdquo; represents &ldquo;Change&rdquo;. Then add the path of the file/folder which you&rsquo;re updating.</p>
+
+<p>If you want to see additional options/parameters for cacls, just type &ldquo;cacls /?&rdquo; and you&rsquo;ll get the help printed to the window.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Modifying XP Pro Permissions For Workgroup Computers&amp;amp;url=http://www.developmentalmadness.com/2009/01/09/modifying-xp-pro-permissions-for/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/01/09/modifying-xp-pro-permissions-for/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/01/09/modifying-xp-pro-permissions-for/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2008/12/24/in-place-list-editing-with-wpf/'>
+<section class='post'>
+<h2>In Place List Editing With WPF</h2>
+<p>I&rsquo;ve been working in WPF for the last month and learning some pretty cool stuff. I really like it.&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/01/20/entity-framework-poco-adapter/'>
+<section class='post'>
+<h2>Entity Framework POCO Adapter + System.Web.DynamicData == POCO Loco</h2>
+<p>This month I started with a new client. I&rsquo;m excited because we&rsquo;ll be rewriting a legacy app using Entity&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

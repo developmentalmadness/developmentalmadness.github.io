@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Docker: Open a Bash Shell in a Docker Container Without SSH</title>
+<meta content='You don&amp;rsquo;t need to install SSHd on your Docker containers.. However, the method you use has changed. Now Docker has the exec command to do ...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Docker: Open a Bash Shell in a Docker Container Without SSH' property='og:title'>
+<meta content='You don&amp;rsquo;t need to install SSHd on your Docker containers.. However, the method you use has changed. Now Docker has the exec command to do ...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2016/04/20/docker-open-a-bash-shell-in-a-docker-container-without-ssh/' property='og:url'>
+<meta content='2016-04-20' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Docker: Open a Bash Shell in a Docker Container Without SSH' name='twitter:title'>
+<meta content='You don&amp;rsquo;t need to install SSHd on your Docker containers.. However, the method you use has changed. Now Docker has the exec command to do ...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2016/04/20/docker-open-a-bash-shell-in-a-docker-container-without-ssh/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Docker: Open a Bash Shell in a Docker Container Without SSH</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-04-20'>
+20 April 2016
+</time>
+on <a href='/tag/docker/'>docker</a>
+</section>
+</header>
+<section class='post-content'><p><a href="http://blog.docker.com/2014/06/why-you-dont-need-to-run-sshd-in-docker/" rel="nofollow">You don&rsquo;t need to install SSHd on your Docker containers.</a>. However, the method you use has changed. Now Docker has the <code>exec</code> command to do this for you. </p>
+
+<p>If you have a container named <code>my-app-container</code> then you would run:</p>
+<pre class="highlight plaintext"><code>$ docker exec -it my-app-container bash
+</code></pre>
+<p>To open a bash shell in your container.</p>
+
+<p>As an added bonus, if you&rsquo;re in development and you want to get into your Docker VM then the easiest way is to run:</p>
+<pre class="highlight plaintext"><code>$ docker-machine ssh [docker_vm_name]
+</code></pre>
+<p>For most of us using the <code>default</code> VM it would look like this:</p>
+<pre class="highlight plaintext"><code>$ docker-machine ssh default
+</code></pre>
+<p>Once you&rsquo;ve opened <code>ssh</code> into your VM, then you can run the <code>docker exec</code> command at the top.</p>
+
+<h1>References:</h1>
+
+<ul>
+<li><a href="https://docs.docker.com/engine/reference/commandline/exec/" rel="nofollow">Docker exec command</a> </li>
+</ul>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Docker: Open a Bash Shell in a Docker Container Without SSH&amp;amp;url=http://www.developmentalmadness.com/2016/04/20/docker-open-a-bash-shell-in-a-docker-container-without-ssh/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2016/04/20/docker-open-a-bash-shell-in-a-docker-container-without-ssh/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2016/04/20/docker-open-a-bash-shell-in-a-docker-container-without-ssh/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/03/28/docker-copy-command-2/'>
+<section class='post'>
+<h2>Docker: Copy Arbitrary Files Between Docker Containers</h2>
+<p>Do you need to copy an arbitrary file from within a Docker container to your host file system? The&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/04/21/docker-troubleshooting-500-error-from-registry-2/'>
+<section class='post'>
+<h2>Docker: Troubleshooting 500 Error From Registry 2</h2>
+<p>Been fighting an HTTP 500 Internal Server Error from Docker Registry. We have several instances running on Amazon EC2&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

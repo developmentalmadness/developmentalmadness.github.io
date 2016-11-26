@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: TIP: Open SQL Files in a Visual Studio Project Into the Same Instance of SSMS</title>
+<meta content='Considering how integrated Microsoft tools usually are the result is frustrating when you tell to open SQL files using Sql Server Management Stu...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='TIP: Open SQL Files in a Visual Studio Project Into the Same Instance of SSMS' property='og:title'>
+<meta content='Considering how integrated Microsoft tools usually are the result is frustrating when you tell to open SQL files using Sql Server Management Stu...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/06/30/tip_open_sql_files_in_a_visual_studio_project_into_the_same_instance_of_ssms/' property='og:url'>
+<meta content='2009-06-30' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='TIP: Open SQL Files in a Visual Studio Project Into the Same Instance of SSMS' name='twitter:title'>
+<meta content='Considering how integrated Microsoft tools usually are the result is frustrating when you tell to open SQL files using Sql Server Management Stu...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/06/30/tip_open_sql_files_in_a_visual_studio_project_into_the_same_instance_of_ssms/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>TIP: Open SQL Files in a Visual Studio Project Into the Same Instance of SSMS</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-06-30'>
+30 June 2009
+</time>
+on <a href='/tag/ssms/'>ssms</a>, <a href='/tag/sql_server_management_studio/'>sql_server_management_studio</a>, <a href='/tag/sql/'>sql</a>, <a href='/tag/visual_studio/'>visual_studio</a>
+</section>
+</header>
+<section class='post-content'><p>Considering how integrated Microsoft tools usually are the result is frustrating when you tell to open SQL files using <a href="http://msdn.microsoft.com/en-us/library/ms174173.aspx" rel="nofollow">Sql Server Management Studio</a></p>
+
+<ol>
+<li>Open a solution which contains SQL files</li>
+<li>Right-click any SQL file and select “Open With…”</li>
+<li>Click “Add”</li>
+<li>Browse to &ldquo;C:\Program Files\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\Ssms.exe&rdquo; or if you’re running x64 Windows &ldquo;C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\Ssms.exe&rdquo;, then click “OK”</li>
+<li>Click “Set as Default” and then “OK”</li>
+</ol>
+
+<p>Now open multiple SQL files. Each time you’ll get a different instance of SSMS opened. What a pain!</p>
+
+<p><strong><u>NOTE</u></strong>: This entire article applies to SQL 2005, just replace SSMS with SQLWB.</p>
+
+<p>How do you resolve this? Repeat steps 1-3 above, but at step #4 enter the following values:</p>
+
+<ul>
+<li>Program Name: “explorer.exe”</li>
+<li>Friendly Name: “Windows Explorer”</li>
+</ul>
+
+<p>Repeat step #5 (set as default) above and then click OK. Now, open additional files. They should all open in the same instance of SSMS.</p>
+
+<p>It would seem that Visual Studio issues a command to SSMS.exe which includes the path of the file selected in the solution explorer. It is up to SSMS to check for a new instance, which it doesn’t. But when you pass the file name to explorer it gets opened up in the same instance.</p>
+
+<p><strong><font color="#ff0000">QUIRK WARNING!</font></strong></p>
+
+<p>If SSMS is not already open, the first file you attempt to open (not first time ever, but every time you open an SQL file from Visual Studio and SSMS isn’t open yet) SSMS will open, but your file will not. Click the file a 2nd time and it will open the file this time. Don’t ask me to explain it it just is (and I have no idea why).</p>
+
+<h2>Conclusion</h2>
+
+<p>The result when you tell Visual Studio that SSMS is the default editor makes sense, but I don’t get why it would be different when you tell explorer to open it. Maybe if I were a Windows developer instead of a web developer I would know the answer. But either way, now you know. Enjoy.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=TIP: Open SQL Files in a Visual Studio Project Into the Same Instance of SSMS&amp;amp;url=http://www.developmentalmadness.com/2009/06/30/tip_open_sql_files_in_a_visual_studio_project_into_the_same_instance_of_ssms/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/06/30/tip_open_sql_files_in_a_visual_studio_project_into_the_same_instance_of_ssms/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/06/30/tip_open_sql_files_in_a_visual_studio_project_into_the_same_instance_of_ssms/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/06/24/asp_net_mvc_an_application_platform/'>
+<section class='post'>
+<h2>ASP.NET MVC: An Application Platform</h2>
+<p>The MVC / WebForms Debate Yesterday I wrote about the stored procedure/dynamic sql debate - I must be feeling&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/'>
+<section class='post'>
+<h2>Building a Single Sign On Provider Using ASP.NET and WCF: Part 1</h2>
+<p>This is the first in a 4 part series on building a single sign on provider using the ASP.NET&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

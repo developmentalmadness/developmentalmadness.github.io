@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: mix10</title>
+  <subtitle>Posts tagged with mix10</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/mix10/feed.xml" rel="self"/>
+  <updated>2010-03-17T14:21:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>MVVM: Going it alone</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2010/03/17/mvvm-going-it-alone/"/>
+    <id>http://www.developmentalmadness.com/2010/03/17/mvvm-going-it-alone/</id>
+    <published>2010-03-17T14:21:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">If you want to implement MVVM for your next/current project, but you can’t seem to find a framework that works for you then give a look at Rob Eisenberg’s presentation from MIX10, Build Your Own MVVM Framework. Here’s the synopsis:
+
+
+You’ve heard a lot
+</summary>
+  </entry>
+</feed>

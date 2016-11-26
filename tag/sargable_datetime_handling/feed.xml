@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: sargable_datetime_handling</title>
+  <subtitle>Posts tagged with sargable_datetime_handling</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/sargable_datetime_handling/feed.xml" rel="self"/>
+  <updated>2008-03-12T19:12:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>SARGable DateTime Handling in SQL Server</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/03/12/date-handling-in-sql-server/"/>
+    <id>http://www.developmentalmadness.com/2008/03/12/date-handling-in-sql-server/</id>
+    <published>2008-03-12T19:12:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I can’t believe I never thought of doing things this way before. It’s so much better than concatenating strings and converting back and forth between varchar, int and datetime. I’d like to thank Marc for posting this jewel. Here’s the link to the original</summary>
+  </entry>
+</feed>

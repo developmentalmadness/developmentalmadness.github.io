@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Lost In Translation - Episode 1: Database Instances</title>
+<meta content='I have been using SQL Server for about 8 years now. When compared to my peers (read: coworkers) I would classify myself as a SQL Server guru. Wh...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Lost In Translation - Episode 1: Database Instances' property='og:title'>
+<meta content='I have been using SQL Server for about 8 years now. When compared to my peers (read: coworkers) I would classify myself as a SQL Server guru. Wh...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-1-database/' property='og:url'>
+<meta content='2009-01-29' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Lost In Translation - Episode 1: Database Instances' name='twitter:title'>
+<meta content='I have been using SQL Server for about 8 years now. When compared to my peers (read: coworkers) I would classify myself as a SQL Server guru. Wh...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-1-database/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Lost In Translation - Episode 1: Database Instances</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-01-29'>
+29 January 2009
+</time>
+on <a href='/tag/lost_in_translation/'>lost_in_translation</a>, <a href='/tag/oracle/'>oracle</a>, <a href='/tag/database_instance/'>database_instance</a>, <a href='/tag/sql_server/'>sql_server</a>
+</section>
+</header>
+<section class='post-content'><p>I have been using SQL Server for about 8 years now. When compared to my peers (read: coworkers) I would classify myself as a SQL Server guru. When compared to many I meet on sites like <a href="http://www.sqlservercentral.com" rel="nofollow">SQLServerCentral.com</a> where there seem to be those I would classify as SQL Server gods I feel small. When working for <a href="http://www.maxpreps.com" rel="nofollow">MaxPreps.com</a> I was forced to sink or swim and had to learn in depth details about things like replication, mirroring, partitioning and the intricacy of the proceedure cache, execution plans and the query optimizer. So I have had the opportunity to really learn a lot of things most developers don&rsquo;t even want to understand about database engine internals. </p>
+
+<p>Now for the first time I am working for a client who uses Oracle and I have to admit I feel a bit helpless. The terminology is all different and it messes with my mind. Where in the past I&rsquo;ve been confident, I feel lost. So as I take the opportunity to understand Oracle I hope to document the &ldquo;translation&rdquo; from SQL Server to Oracle. In large part this effort is for my own benefit, but I hope this will also benefit others who feel as overwhelmed as I do. </p>
+
+<p>In the spirit of a disclaimer, I understand that not everything will have a translation. But RDBMS is RDBMS and I believe (read: hope?) there will be much overlap between the two systems and this transition between the two will be like learning a new language. When I learned French in junior high and high school I learned that there are different ways of expressing things and not everything has a direct translation (ex. idiomatic expressions) and there are gotchas (ex. false friends) . But there is still a way of conveying the same ideas. My analogy may not work entirely in the world of RDBMS, but I will hold to it as my general hypothesis.  </p>
+
+<h1>Database Instances</h1>
+
+<p>The first translation I will attempt is that of Database Instance. This tripped me up and has been my first barrier to adoption. The reason for this is that is seems to be a bit of a &ldquo;false friend&rdquo;. In language, a false friend is a word in another language that sounds similar a word in your own language, but isn&rsquo;t. For example, in French the word &ldquo;blesser&rdquo; sounds like &ldquo;bless&rdquo; in English. However, it means &ldquo;to hurt&rdquo;. </p>
+
+<p>So to compare database systems, in SQL Server a database instance, is a file or grouping of files (aka. filegroup) which represent data which is locially stored together. But in Oracle a database instance is the collection of services which comprise the Oracle database system on the host machine. Which makes the Oracle database instance analogous to a SQL Server instance. Oracle doesn&rsquo;t have a default instance (at least not that I know of) like SQL Server, all instances are named. </p>
+
+<p>The mistake I made here was when I wanted to setup a database for a sample application. I opened up the Database Configuration Assistant (aka DBCA) to create a new database and installed a new instance. As I did this I found it strange that I was setting up duplicate accounts with different passwords for the &ldquo;sys&rdquo; account and other similar accounts. But what really tipped me off was when I finished the installation and my machine crawled to a painfully slow pace. When task manager finally opened up I noticed two instances of the &ldquo;oracle.exe&rdquo; process running alongside two instances of &ldquo;java.exe&rdquo;. </p>
+
+<p>When I opened up the services mmc snap in (Start - Run&hellip; - &ldquo;services.msc&rdquo; - Ok), I saw that there were a set of services running for each &ldquo;instance&rdquo; I had setup. Stopping the services of the second instance brought my laptop back to a normal level of performance. </p>
+
+<h1>Conclusion</h1>
+
+<p>So my next step will be to uninstall my second instance. As long as that goes smoothly, my next episode will address the translation for a SQL Server database. I think I know what that is, but until I&rsquo;m sure I&rsquo;ll refrain from stating it so I can avoid having to make too many edits in this post after I get corrections from those who actually know Oracle.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Lost In Translation - Episode 1: Database Instances&amp;amp;url=http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-1-database/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-1-database/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-1-database/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/01/27/aspnet-mvc-compile-your-views-for/'>
+<section class='post'>
+<h2>ASP.NET MVC: Compile Your Views for Release Build Only</h2>
+<p>First of all I have to say I&rsquo;m excited. Today Scott Guthrie announced the Release Candidate (RC) for ASP.NET&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/01/29/lost-in-translation-episode-2/'>
+<section class='post'>
+<h2>Lost in Translation – Episode 2: Tablespaces</h2>
+<p>In Episode 1 I addressed database instances but I&rsquo;d like to correct a technicality. I compared SQL Server instances&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

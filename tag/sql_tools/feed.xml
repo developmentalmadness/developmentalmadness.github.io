@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: sql_tools</title>
+  <subtitle>Posts tagged with sql_tools</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/sql_tools/feed.xml" rel="self"/>
+  <updated>2006-06-22T20:00:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>SQL Profiler - Replaying Traces</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2006/06/22/sql-profiler-replaying-traces/"/>
+    <id>http://www.developmentalmadness.com/2006/06/22/sql-profiler-replaying-traces/</id>
+    <published>2006-06-22T20:00:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">SQL Profiler has been aptly referred to as the “poor man’s load tester”.
+
+3 months ago I captured trace logs spanning 1 week. My intent was over the summer (our companies “off-season”) to use the trace logs to stress test the database to determine the</summary>
+  </entry>
+  <entry>
+    <title>Better Generate Scripts Tool for SQL 2005</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/02/13/better-generate-scripts-tool-for-sql/"/>
+    <id>http://www.developmentalmadness.com/2008/02/13/better-generate-scripts-tool-for-sql/</id>
+    <published>2008-02-13T20:20:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Frustrated by the inability to script SQL Server 2005 objects with BOTH a CREATE and DROP statement? Generally, I write all my scripts with both statements and then save them and include them in source control, so this hasn’t really been a problem for</summary>
+  </entry>
+  <entry>
+    <title>Search the source of SQL Server views and stored procedures</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/02/18/search-source-of-sql-server-views/"/>
+    <id>http://www.developmentalmadness.com/2008/02/18/search-source-of-sql-server-views/</id>
+    <published>2008-02-18T20:18:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Ever have to work on a database with a large number of views and you needed to search the content of the objects? Well, here’s a query which will allow you to search inside your view objects:
+DECLARE @search VARCHAR(1000)
+SET @search = '[text]'
+
+SELECT</summary>
+  </entry>
+</feed>

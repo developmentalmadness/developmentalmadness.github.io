@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Domain-Driven Design: Protect your persistence required methods</title>
+<meta content='I&amp;rsquo;ve been reading up on Domain-Driven Design (DDD) lately and I&amp;rsquo;ve checked out Jimmy Nilsson&amp;rsquo;s book Applying Domain-Driven Des...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Domain-Driven Design: Protect your persistence required methods' property='og:title'>
+<meta content='I&amp;rsquo;ve been reading up on Domain-Driven Design (DDD) lately and I&amp;rsquo;ve checked out Jimmy Nilsson&amp;rsquo;s book Applying Domain-Driven Des...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2010/04/16/domain-driven-design-protect-your-persistence-required-methods/' property='og:url'>
+<meta content='2010-04-16' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Domain-Driven Design: Protect your persistence required methods' name='twitter:title'>
+<meta content='I&amp;rsquo;ve been reading up on Domain-Driven Design (DDD) lately and I&amp;rsquo;ve checked out Jimmy Nilsson&amp;rsquo;s book Applying Domain-Driven Des...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2010/04/16/domain-driven-design-protect-your-persistence-required-methods/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Domain-Driven Design: Protect your persistence required methods</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2010-04-16'>
+16 April 2010
+</time>
+on <a href='/tag/ddd/'>ddd</a>, <a href='/tag/domain-driven-design/'>domain-driven-design</a>, <a href='/tag/explicit-interface-implementation/'>explicit-interface-implementation</a>
+</section>
+</header>
+<section class='post-content'><p>I&rsquo;ve been reading up on Domain-Driven Design (DDD) lately and I&rsquo;ve checked out Jimmy Nilsson&rsquo;s book <a href="http://my.safaribooksonline.com/0321268202" rel="nofollow">Applying Domain-Driven Design and Patterns: With Examples in C# and .NET</a>. I was reading Ch 5, &ldquo;Moving Further with Domain-Driven Design&rdquo; and Jimmy is talking about reconstituting your entity from persistence.</p>
+
+<p>Specifically, he&rsquo;s talking about the situation where your entity has read-only fields that must be provided by your persistence layer, but that you don&rsquo;t want to make public. For example, the entity&rsquo;s ID field. This is definitely a read-only field, but you have to set it at some point when querying the data from your data store.</p>
+
+<p>In recent projects I have provided a separate constructor and documented it (read: comments) as &ldquo;reserved for persistence only&rdquo;. Also, in some cases, instead of providing a set property method for the ID I have created a method which allows the Id to be set. Something like SetIdFromPersistence() to make it clear that Id is intended as a read-only field.</p>
+<pre class="highlight plaintext"><code>public class Customer {
+    ///&lt;summary&gt;
+    /// This is reserved for use by the repository
+    ///&lt;/summary&gt;
+    public Customer(int id, string name){
+
+    }
+
+    ///&lt;summary&gt;
+    /// This is open for public use to create a new customer
+    ///&lt;/summary&gt;
+    public Customer(string name){
+
+    }
+
+    public int Id { get; private set; }
+
+    ///&lt;summary&gt;
+    /// This is reserved for use by the repository,
+    /// Id is read-only and using this inappropriately 
+    /// could result in data corruption issues.
+    ///&lt;/summary&gt;
+    public void SetIdFromRepository(int id){
+        Id = id;
+    }
+}
+</code></pre>
+<p>This is because, my persistence layer and my model are in separate assemblies. I&rsquo;ve considered using reflection to allow me to make the setters and ctors I&rsquo;ve provided private. But I&rsquo;ve never really liked this. So I&rsquo;ve just tried to make it clear what the use cases are for these methods.</p>
+
+<p>But then something Jimmy said triggered and idea for me and I want to see what everyone else thinks.</p>
+
+<h1>Explicit Interface Implementation</h1>
+
+<p>I haven&rsquo;t run into many developers who&rsquo;ve heard of this, but you may have noticed this when using some of Visual Studio 2008&rsquo;s code editing tools (I don&rsquo;t know if this exists in previous versions of VS, I only discovered it in v. 2008). But if you&rsquo;re editing a class which implements an interface and you select the interface with your cursor you&rsquo;ll see that below the interface is an &ldquo;auto correct&rdquo; icon/sprite. If you click it or hit ALT+SHIFT+F10 you&rsquo;ll get a couple options:</p>
+
+<ul>
+<li>Implement interface ‘ISomeInterface&rsquo;</li>
+<li>Explicitly implement interface ‘ISomeInterface&rsquo;</li>
+</ul>
+
+<p>If you select the first option, you&rsquo;ll get public method/property stubs created in your class for you with the correct method signatures. If you click the second option you&rsquo;ll see something similar, but you may have to look closer to see the difference (go ahead, I&rsquo;ll wait)… Ok, you back? Did you notice the difference? Here&rsquo;s what you should have seen. Given the following interface:</p>
+<pre class="highlight plaintext"><code>public interface IMyInterface {
+    void MyMethod(int id);
+    int MyProperty { get; set; }
+}
+</code></pre>
+<p>The first option would generate the following implementation:</p>
+<pre class="highlight plaintext"><code>public MyClass : IMyInterface {
+    public void MyMethod(int id){
+        throw new NotImplementedException();
+    }
+
+    public int MyProperty{
+        get{ 
+            throw new NotImplementedException();
+        }
+        set{
+            throw new NotImplementedException();
+        }
+    }
+}
+</code></pre>
+<p>And the second option (explicit) would generate this implementation:</p>
+<pre class="highlight plaintext"><code>public MyClass : IMyInterface {
+    void IMyInterface.MyMethod(int id){
+        throw new NotImplementedException();
+    }
+
+    int IMyInterface.MyProperty{
+        get{ 
+            throw new NotImplementedException();
+        }
+        set{
+            throw new NotImplementedException();
+        }
+    }
+}
+</code></pre>
+<p>Notice the differences in the second implementation? Let me help:</p>
+
+<ul>
+<li>Not public members</li>
+<li>each member name is prefixed with IMyInterface</li>
+</ul>
+
+<p>These members are only visible when the class is explicitly used/cast as IMyInterface. Here&rsquo;s two examples:</p>
+<pre class="highlight plaintext"><code>public void SomeMethod(IMyInterface obj){
+    obj.MyMethod(2);
+}
+
+public void SomeMethod2(MyClass obj){
+    int x = ((IMyInterface)obj).MyProperty;
+}
+</code></pre>
+<p>So the explicit members will never show up in the public interface. I first ran into this years ago, when I was working with a FCL class which I knew implemented a specific interface, but when I tried calling a member of the interface I couldn&rsquo;t compile the application. An example of this is IConvertable on the Int32 type:</p>
+<pre class="highlight plaintext"><code>int i = 33;
+i.ToInt32();                    //compile error
+((IConvertable)i).ToInt32();    //compiles
+</code></pre>
+<p><strong>CREDIT</strong>: I couldn&rsquo;t remember any FCL examples of this, so I had to search and found the above example on Brad Abram&rsquo;s blog.</p>
+
+<p>The guidlines for this can also be found on the same post by Brad:</p>
+
+<ul>
+<li>Do use explicit members to hide implementation details</li>
+<li>Do use explicit members to approximate private interface implementations.</li>
+</ul>
+
+<p>For reference, here are some links on Explicit Interface Implementation:</p>
+
+<ul>
+<li><a href="http://msdn.microsoft.com/en-us/library/ms173157(VS.80).aspx" rel="nofollow">Explicit Interface Implementation (C# Programming Guide)</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/aa288461(VS.71).aspx" rel="nofollow">Explicit Interface Implementation Tutorial</a></li>
+</ul>
+
+<h1>Exposing Private Members</h1>
+
+<p>Now back to our discussion on preventing the methods needed by our persistence layer from being called by consumers of our entities.</p>
+
+<p>Explicit interfaces can be used to hide members that aren&rsquo;t intended to be called directly by consumers of the object, eg. &ldquo;Not intended for public use&rdquo;.</p>
+
+<p>Can you use this method to prevent consumers from calling your methods at all? No. The interface will be public so you can use it from your persistence layer and it will need to follow your entities around. Most likely it will be a public interface located in the same assembly as your model. However, marking the members as private doesn&rsquo;t keep consumers from calling them using reflection. This is the solution Jimmy uses to access the private members in his example. He might use something different later on, I get the impression he might use another technique once I read further into the book.</p>
+
+<p>But this technique will be more efficient and more clean than using reflection. Also, if you are running in a medium-trust environment where calling private members is blocked this technique will still work.</p>
+
+<p><strong>CAVEAT</strong>: When I read Brad Abram&rsquo;s post I noticed a comment below indicating that if you use this technique with a struct instead of a class you will encounter boxing/unboxing issues. This is an important consideration to keep in mind. Does boxing cost more than using reflection? I don&rsquo;t know, I&rsquo;ll leave that exercise to the user.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Domain-Driven Design: Protect your persistence required methods&amp;amp;url=http://www.developmentalmadness.com/2010/04/16/domain-driven-design-protect-your-persistence-required-methods/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2010/04/16/domain-driven-design-protect-your-persistence-required-methods/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2010/04/16/domain-driven-design-protect-your-persistence-required-methods/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2010/03/17/mvvm-going-it-alone/'>
+<section class='post'>
+<h2>MVVM: Going it alone</h2>
+<p>If you want to implement MVVM for your next/current project, but you can’t seem to find a framework that&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2010/04/29/sql-server-add-column-with-default-constraint-the-dumb-little/'>
+<section class='post'>
+<h2>SQL Server add column with DEFAULT CONSTRAINT: The Dumb Little Things</h2>
+<p>Sometimes you think you know and then when you go and open your big mouth and make a fool&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

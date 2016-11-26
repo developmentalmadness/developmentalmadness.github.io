@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Installing Windows 7 On My New G.Skill SSD</title>
+<meta content='I got a new Thursday and I’ve been repaving my laptop with Windows 7 x64 RC The first thing was that Windows install time was about 30 min. This...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Installing Windows 7 On My New G.Skill SSD' property='og:title'>
+<meta content='I got a new Thursday and I’ve been repaving my laptop with Windows 7 x64 RC The first thing was that Windows install time was about 30 min. This...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/05/25/installing_windows_7_on_my_new_g_skill_ssd/' property='og:url'>
+<meta content='2009-05-25' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Installing Windows 7 On My New G.Skill SSD' name='twitter:title'>
+<meta content='I got a new Thursday and I’ve been repaving my laptop with Windows 7 x64 RC The first thing was that Windows install time was about 30 min. This...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/05/25/installing_windows_7_on_my_new_g_skill_ssd/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Installing Windows 7 On My New G.Skill SSD</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-05-25'>
+25 May 2009
+</time>
+on <a href='/tag/windows_7/'>windows_7</a>, <a href='/tag/g_skill_ssd_drive/'>g_skill_ssd_drive</a>
+</section>
+</header>
+<section class='post-content'><p>I got a new Thursday and I’ve been repaving my laptop with <a href="http://www.microsoft.com/windows/windows-7/" rel="nofollow">Windows 7 x64 RC</a></p>
+
+<p>The first thing was that Windows install time was about 30 min. This was my first confirmation that I was gonna love my new drive.</p>
+
+<p>The first thing I installed was <a href="http://msdn.microsoft.com/en-us/teamsystem/default.aspx" rel="nofollow">Visual Studio Team System</a></p>
+
+<h4>Oracle 10gR2 Client</h4>
+
+<p>The first hiccup I ran into was installing Oracle client software. I ran the installer and after starting the installer I was immediately informed that the installer required Windows. 6.1. Fortunately I found <a href="http://social.technet.microsoft.com/Forums/en-US/w7itproappcompat/thread/f7d8b471-54fb-44be-b9d8-263db8c18b1e" rel="nofollow">this post</a></p>
+
+<p>setup.exe –ignoreSysPrereqs</p>
+
+<h4>MS LifeCam</h4>
+
+<p>I bought a new web cam about 2 weeks ago, so I was pretty sure I wouldn’t have a problem with this at all, but the 2.5 client install disk wouldn’t run. Instead I was prompted by Windows to get an update from Microsoft and it downloaded and installed the 3.0 client for me.</p>
+
+<p>I was really impressed by the experience because after the install failed I was pretty bummed. I had purchased the web cam for my upcoming trip to Cancun so we could video chat with our kids while we were away. I only have one laptop and I immediately thought I was going to have to stick with Vista.</p>
+
+<p>But Windows immediately detected the problem, checked the Microsoft site for an update and pointed me to the download link.</p>
+
+<h4>Dell nVidia Drivers</h4>
+
+<p>This was the only driver that had any problems out of the box. When I say problems I mean, it didn’t support the widescreen resolutions and I had to go to dell and download the Vista x64 drivers. But once I downloaded the drivers from Dell the installation was smooth and was done in about 30 seconds.</p>
+
+<h4>Toad 9.0.1.8 and Oracle 10gR2 Client</h4>
+
+<p>I had a little trouble here. I’m running the x64 version of Windows 7 and ran into the “can’t load oci.dll” error. There are two reasons for this problem. First, Toad is an x86 client and so it can’t load the x64 dlls. Second, Toad is looking for ORACLE_HOME under HKLM\Software\Wow6432Node\Oracle and the x64 client installs under HKLM\Software\Oracle. Turns out you need to load the of the Oracle client along with <a href="http://www.toadsoft.com/" rel="nofollow">Toad</a></p>
+
+<h2>Where the heck is it?</h2>
+
+<p>There were a couple things that alluded me from the start. Where are the folder options? And, how do I map a network drive? The fact that these were missing really annoyed me, since they have been right in the same place for so long – in Windows Explorer, right where they belong. I haven’t looked yet, but I’m hoping there’s an option to put them back.</p>
+
+<h4>Folder Options</h4>
+
+<p>Control Panel &gt; All Control Panel Items</p>
+
+<p>I couldn’t find how to navigate to this window and I don’t know yet what category this is under, but the nice thing is if you just type in “Control Panel\All Control Panel Items” into your Windows Explorer address bar you’ll get there.</p>
+
+<h4>Map Network Drive…</h4>
+
+<p>To map a network drive I found the command under the “My Computer” context menu:</p>
+
+<p>Start Menu –&gt; Right-click “My Computer” –&gt; Map Network Drive…</p>
+
+<h2>First Blush</h2>
+
+<h4>Windows 7</h4>
+
+<p>My overall first impressions of Windows 7 are good. Other than the video drivers, my experience hasn’t been any different than normal complications you’d experience when running a 64-bit Windows client. I tried running XP x64 when it was released and ended by giving up, so I’ve been pleasantly surprised. I’ll continue to update as I run into other problems in order to help those who run into the same problems.</p>
+
+<h4>G.Skill SSD</h4>
+
+<p>This is just awesome! Everything screams: boot/reboot, opening applications (including Visual Studio), installing applications, Windows Explorer, file deletions, extracting large ISO files (Visual Studio, Office 2007) and the list goes on and on. I can multitask I/O-intensive operations without batting an eye. Before I had to try and keep heavy I/O lifting to one item at a time. Now I can run multiple operations at the same time. I couldn’t be more pleased.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Installing Windows 7 On My New G.Skill SSD&amp;amp;url=http://www.developmentalmadness.com/2009/05/25/installing_windows_7_on_my_new_g_skill_ssd/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/05/25/installing_windows_7_on_my_new_g_skill_ssd/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/05/25/installing_windows_7_on_my_new_g_skill_ssd/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/05/25/windows_critics_get_a_life/'>
+<section class='post'>
+<h2>Windows Critics: Get a life</h2>
+<p>I was working on a Windows 7 Two criticisms that I have heard leveled at Windows 7 are: It’s&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/05/26/asp_net_system_bad_image_format_exception/'>
+<section class='post'>
+<h2>ASP.NET: System.BadImageFormatException</h2>
+<p>If you are running on Vista x64 System.BadImageFormatException By default IIS 7 won’t load x86 (32 bit) assemblies, make&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Adventures in Mirroring</title>
+<meta content='SQL Server 2005 has introduced an exciting new feature - data mirroring. And the timing couldn&amp;rsquo;t be better. This summer as we upgrade our ...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Adventures in Mirroring' property='og:title'>
+<meta content='SQL Server 2005 has introduced an exciting new feature - data mirroring. And the timing couldn&amp;rsquo;t be better. This summer as we upgrade our ...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2006/07/05/adventures-in-mirroring/' property='og:url'>
+<meta content='2006-07-05' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Adventures in Mirroring' name='twitter:title'>
+<meta content='SQL Server 2005 has introduced an exciting new feature - data mirroring. And the timing couldn&amp;rsquo;t be better. This summer as we upgrade our ...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2006/07/05/adventures-in-mirroring/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Adventures in Mirroring</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2006-07-05'>
+05 July 2006
+</time>
+on <a href='/tag/database_mirroring/'>database_mirroring</a>, <a href='/tag/sql_server/'>sql_server</a>
+</section>
+</header>
+<section class='post-content'><p>SQL Server 2005 has introduced an exciting new feature - data mirroring. And the timing couldn&rsquo;t be better. This summer as we upgrade our infrastructure we&rsquo;re working to increase our uptime and start doing some things right. Since we don&rsquo;t have a DBA, I get the responsibility of improving the database availability and performance. Well mirroring is just what the doctor ordered. But as usual (is it just me?) I&rsquo;ve hit a snag trying to get it set up and running, and got an error that either no one else is getting or no one else has posted. So as usual I am posting the specifics of my problem, and the solution in the hope of saving someone from the same problems I had.</p>
+
+<p>As a note for anyone who is searching for specific instructions on setting up mirroring; this post touches mostly on a specific series of problems. However, I do touch lightly on the steps required to configure your servers. With that in mind, read on.</p>
+
+<p>Because I work from home and there weren&rsquo;t enough development machines at the office I could work on remotely I used Virtual Sever to setup a domain on my home network to duplicate the configuration we would be using in production. I created 2 virtual servers - one was configured as a domain controller on a new domain with SQL 2005 installed, the second had only SQL Server 2005. My plan was for the latter to be the principal, the domain controller to be the mirror and my development machine to be the witness. (I understand that putting SQL server on the domain controller is a bad idea, but I&rsquo;ve only got so much ram to be used for each virtual machine and they&rsquo;ve all got to be running concurrently). I created a domain account for each SQL Server service and each instance was running under the same account as the other instances. For example, MSSQLSERVER was running under the same account on both new machines.</p>
+
+<p>Then I made a backup of the database and restored it to the mirror with NORECOVERY. As a note, I got the following error later on, but as most are likely to get this error at this stage in their configuration I figured I&rsquo;d go ahead and mention it. When I issued the SET PARTNER command from the principal server I got the following error from SSMS:</p>
+
+<blockquote>
+<p><strong>The remote copy of database &ldquo;Advancement&rdquo; has not been rolled forward to a point in time that is encompassed in the local copy of the database log.</strong></p>
+</blockquote>
+
+<p>I found on a post (sorry, I forgot to save the URL) that this is a confirmed bug and while it&rsquo;s annoying the fix is simple. Just follow the directions in the error message. This is one of those times that you don&rsquo;t need to go searching for the solution, the error message is actually helpful. So just issue a BACKUP LOG at the principal followed by a RESTORE LOG&hellip;.NORECOVERY at the mirror and run the SET PARTNER command again at the principal and you&rsquo;ll be fine.</p>
+
+<p>However, my first time through I got hit with a different problem. When I ran SET PARTNER on the mirror, everything was dandy, but when I connected to the principal and ran the same command I got the following:</p>
+
+<p>SQL Server Management Studio:</p>
+
+<blockquote>
+<p><strong>The ALTER DATABASE command could not be sent to the remote server instance &lsquo;TCP://HOSTNAME.FULLYQUALIFIEDDOMAIN:5022&rsquo;. The database mirroring configuration was not changed. Verify that the server is connected, and try again.</strong></p>
+</blockquote>
+
+<p>Event Log (principal):</p>
+
+<blockquote>
+<p><strong>Database mirroring connection error 4 &#39;An error occurred while receiving data: &#39;10054(An existing connection was forcibly closed by the remote host.)&rsquo;.&rsquo; for &#39;TCP://HOSTNAME.FULLYQUALIFIEDDOMAIN:5022&rsquo;</strong></p>
+</blockquote>
+
+<p>I forgot to mention that I used unattended setup on both these machines, so their SQL Server configurations were identical.</p>
+
+<p>After hours of frustration I decided to install an additional instance of SQL server and run mirroring on the same server. This worked, so I was satisfied that there was a problem with the server I had planned on using as my mirror. So I attempted to configure it as the witness. This time when I ran the SET WITNESS command on the principal I got the same error from SSMS but a different, but similar message in the error log:</p>
+
+<p>Event Log (principal):</p>
+
+<blockquote>
+<p><strong>Database mirroring connection error 4 &#39;An error occurred while receiving data: &#39;64(The specified network name is no longer available.)&rsquo;.&rsquo; for &#39;TCP:HOSTNAME.FULLYQUALIFIEDDOMAIN:5022&rsquo;.</strong></p>
+</blockquote>
+
+<p>According to most of the posts I found trying to investigate the problem this is a permissions error, but as I mentioned both servers were running under the same domain account. Nevertheless, I gave the domain account sysadmin priviledges on both servers and this did not correct the issue. I was able to telnet to the port 5022 (TELNET HOSTNAME 5022). I ran &ldquo;netstat -a&rdquo; on the target server and verified that the server was listening on port 5022. I checked the event log and verified that SQL Server was listening on port 5022. I downloaded TDIMon from sysinternals and tried to see if there were any TCP errors and nothing stood out to me. (Let me note here that I am not a networking professional and so when I say I didn&rsquo;t see any errors I mean that TDIMon indicated &ldquo;SUCCESS&rdquo; in the results column).</p>
+
+<p>After a day of fighting this I couldn&rsquo;t find any other suggestions anywhere and I was about to post a question to a SQL Server newsgroup. But on a final hunch it occured to me that there was one thing configured differently on the target server (I&rsquo;m ignoring the obvious that it was configured as a domain controller). I had setup each machine on my network with a primary and secondary DNS. The primary was the domain controller and the secondary was my router. However I had not done this on the domain controller. I had configured it with only a primary DNS, pointing to the router. I had assumed (naively) that it knew about itself. So I when in and configured the network adapter with itself as the secondary DNS. Then I went back to SSMS and ran the SET WITNESS command on the principal. Success!!!</p>
+
+<p>Because of the network configuration with SQL Server installed on a domain controller this is not likely to be an issue for most. However, I think I have established that, unlike most have stated on other posts, these errors can actually indicate a network error. And in the event that the mirror or the witness cannot see the principal you are likely to see one of these errors. So make sure and verify your network layer in addition to ruling out a permissions error.</p>
+
+<p>Good luck!</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Adventures in Mirroring&amp;amp;url=http://www.developmentalmadness.com/2006/07/05/adventures-in-mirroring/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2006/07/05/adventures-in-mirroring/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2006/07/05/adventures-in-mirroring/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2006/06/30/sql-server-2005-unattended-install/'>
+<section class='post'>
+<h2>SQL Server 2005 Unattended Install</h2>
+<p>As always I try and post about my experiences which cause my biggest headaches. So today&rsquo;s topic is about&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2006/07/22/systemdiagnosticsperformancecounter/'>
+<section class='post'>
+<h2>System.Diagnostics.PerformanceCounter Privileges Required to Monitor Remote Machines</h2>
+<p>I&rsquo;ve been pretty busy and haven&rsquo;t had time to post in a while, but this week I ran into&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

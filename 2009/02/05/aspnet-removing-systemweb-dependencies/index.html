@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: ASP.NET: Removing System.Web Dependencies</title>
+<meta content='As a general rule I prefer to avoid referencing System.Web in my library classes. But if it can&amp;rsquo;t be avoided it&amp;rsquo;s still a good idea ...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='ASP.NET: Removing System.Web Dependencies' property='og:title'>
+<meta content='As a general rule I prefer to avoid referencing System.Web in my library classes. But if it can&amp;rsquo;t be avoided it&amp;rsquo;s still a good idea ...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/02/05/aspnet-removing-systemweb-dependencies/' property='og:url'>
+<meta content='2009-02-05' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='ASP.NET: Removing System.Web Dependencies' name='twitter:title'>
+<meta content='As a general rule I prefer to avoid referencing System.Web in my library classes. But if it can&amp;rsquo;t be avoided it&amp;rsquo;s still a good idea ...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/02/05/aspnet-removing-systemweb-dependencies/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>ASP.NET: Removing System.Web Dependencies</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-02-05'>
+05 February 2009
+</time>
+on <a href='/tag/net_framework_3_5/'>net_framework_3_5</a>, <a href='/tag/asp_net/'>asp_net</a>
+</section>
+</header>
+<section class='post-content'><p>As a general rule I prefer to avoid referencing System.Web in my library classes. But if it can&rsquo;t be avoided it&rsquo;s still a good idea to avoid the use of HttpContext.Current. It must be nice to live in a perfect world you say? Yes, there are times that even this cannot be avoided. Or can it?</p>
+
+<p>Yes, it is possible by wrapping HttpContext.Current with a helper library which exposes only the methods required by your library. But there are times when even this is an arduous task at best. So what&rsquo;s a guy to do?</p>
+
+<h1>System.Web.Abstractions</h1>
+
+<p>Well, it just got easier. If you haven&rsquo;t been following the development of the <a href="http://www.asp.net/mvc" rel="nofollow">ASP.NET MVC</a> project you probably haven&rsquo;t heard about the System.Web.Abstractions assembly.</p>
+
+<p>ASP.NET MVC has been built from the ground up with testability in mind, and they have created abstract classes for all the ASP.NET intrinsic objects: HttpContext, HttpRequest, HttpResponse, etc. These classes are named <a href="http://msdn.microsoft.com/en-us/library/system.web.httpcontextbase.aspx" rel="nofollow">HttpContextBase</a>, <a href="http://msdn.microsoft.com/en-us/library/system.web.httprequestbase.aspx" rel="nofollow">HttpRequestBase</a>, <a href="http://msdn.microsoft.com/en-us/library/system.web.httpresponsebase.aspx" rel="nofollow">HttpResponseBase</a> respectively.</p>
+
+<p>What would be nice is if the ASP.NET intrinsic objects actually inherited from these abstract classes. I think that this will happen eventually. In fact System.Web.Abstractions is no longer just an MVC library, it shipped with <a href="http://msdn.microsoft.com/en-us/vstudio/cc533448.aspx" rel="nofollow">.NET 3.5 SP 1</a> and the <a href="http://www.asp.net/dynamicdata/" rel="nofollow">Dynamic Data libraries for ASP.NET</a> are using it as well. I think the only reason this hasn&rsquo;t happened yet is timing. I wouldn&rsquo;t be surprised to find this change make it into the .NET 4.0 Framework.</p>
+
+<p>Until that time how do we get the benefit of these wonderful abstractions so our code can be more testable and reduce unnecessary dependencies on System.Web?</p>
+
+<h1>HttpContextWrapper et al</h1>
+
+<p>Also part of System.Web.Abstractions are a set of wrapper classes, which are concrete implementations of the new System.Web abstract base classes. They&rsquo;re named (gasp) HttpContextWrapper, HttpRequestWrapper, HttpResponseWrapper, etc.</p>
+
+<p>Each of these wrapper classes exposes a constructor which accepts an argument which corresponds to the intrinsic object it wraps. So you can create a new instance like so:</p>
+<pre class="highlight plaintext"><code>HttpContextWrapper context = new HttpContextWrapper(HttpContext.Current);
+</code></pre>
+<p>It&rsquo;s just that easy. So how do we take advantage of these classes to achieve our goals?</p>
+
+<p>Depending on your needs there are a few different ways you could implement this. If your classes are being used as instance variables by client applications then it could be very easy to add an argument to your constructor:</p>
+<pre class="highlight plaintext"><code>public class MyClass
+{    
+    private HttpContextBase m_context;
+    public MyClass(HttpContextBase context)
+    {
+        m_context = context;
+    }
+}
+</code></pre>
+<p>You could then use it like this from your web application:</p>
+<pre class="highlight plaintext"><code>MyClass foo = new MyClass(new HttpContextWrapper(HttpContext.Current));
+</code></pre>
+<p>Or you could use the factory pattern</p>
+<pre class="highlight plaintext"><code>public class HttpContextFactory
+{
+    private static HttpContextBase m_context;
+    public static HttpContextBase Current
+    {
+        get
+        {
+            if(m_context != null)
+                return m_context;
+
+            if(HttpContext.Current == null)
+                throw new InvalidOperationException("HttpContext is not available");
+
+            return new HttpContextWrapper(HttpContext.Current);
+        }
+    }
+
+    public static void SetCurrentContext(HttpContextBase context)
+    {
+        m_context = context;
+    }
+}
+</code></pre>
+<p>This implementation removes the burden on the client app to pass the context to your objects. The only time you&rsquo;ll need to use the SetCurrentContext method is in your unit tests, the rest of the time you can just forget HttpContextFactory is even there.</p>
+
+<h1>Conclusion</h1>
+
+<p>Other variations on this could use dependency injection or inversion of control, but no matter how you implement it you no longer are dependent on your library being run in an IIS process.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=ASP.NET: Removing System.Web Dependencies&amp;amp;url=http://www.developmentalmadness.com/2009/02/05/aspnet-removing-systemweb-dependencies/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/02/05/aspnet-removing-systemweb-dependencies/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/02/05/aspnet-removing-systemweb-dependencies/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/02/02/lost-in-translation-episode-3-users-and/'>
+<section class='post'>
+<h2>Lost In Translation – Episode 3: Users and Schemas</h2>
+<p>In my last post I mentioned I would be addressing tables next, but as I read through the documentation&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/02/06/mono-project-i-had-no-idea/'>
+<section class='post'>
+<h2>Mono Project: I had no idea</h2>
+<p>I usually prefer to blog about my own ideas and the learning process with new technologies. But when I&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: gadgets</title>
+  <subtitle>Posts tagged with gadgets</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/gadgets/feed.xml" rel="self"/>
+  <updated>2007-01-22T20:28:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Using a Vista Sidebar Gadget to Consume an Image Feed</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2007/01/22/using-vista-sidebar-gadget-to-consume/"/>
+    <id>http://www.developmentalmadness.com/2007/01/22/using-vista-sidebar-gadget-to-consume/</id>
+    <published>2007-01-22T20:28:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">CodeProject.com has several Windows Vista coding competitions running at the moment so I thought I’d throw my hat in and give the Gadgets competition a try. Mostly because they promised a Zune to the top 5 January articles and I didn’t want to wait 3</summary>
+  </entry>
+</feed>

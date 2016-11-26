@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: eclipse</title>
+  <subtitle>Posts tagged with eclipse</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/eclipse/feed.xml" rel="self"/>
+  <updated>2016-01-28T18:56:49+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Eclipse CHE Cloud IDE: Setup and First Thoughts</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/01/28/eclipse-che-cloud-ide-first-thoughts/"/>
+    <id>http://www.developmentalmadness.com/2016/01/28/eclipse-che-cloud-ide-first-thoughts/</id>
+    <published>2016-01-28T18:56:49+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Just saw an announcement for Eclipse CHE beta last night. Currently I’m more of an IntelliJ fan and I was even excited to hear about the development of an IntelliJ-based IDE for .NET (Project Rider). 
+
+Setting Up CHE
+
+For those just interested in getting</summary>
+  </entry>
+</feed>

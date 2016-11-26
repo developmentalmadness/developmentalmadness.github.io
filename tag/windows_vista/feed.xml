@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: windows_vista</title>
+  <subtitle>Posts tagged with windows_vista</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/windows_vista/feed.xml" rel="self"/>
+  <updated>2007-01-22T20:28:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Using a Vista Sidebar Gadget to Consume an Image Feed</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2007/01/22/using-vista-sidebar-gadget-to-consume/"/>
+    <id>http://www.developmentalmadness.com/2007/01/22/using-vista-sidebar-gadget-to-consume/</id>
+    <published>2007-01-22T20:28:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">CodeProject.com has several Windows Vista coding competitions running at the moment so I thought I’d throw my hat in and give the Gadgets competition a try. Mostly because they promised a Zune to the top 5 January articles and I didn’t want to wait 3</summary>
+  </entry>
+  <entry>
+    <title>Windows Critics: Get a life</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/25/windows_critics_get_a_life/"/>
+    <id>http://www.developmentalmadness.com/2009/05/25/windows_critics_get_a_life/</id>
+    <published>2009-05-25T13:23:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I was working on a Windows 7
+
+Two criticisms that I have heard leveled at Windows 7 are:
+
+
+It’s too soon (3 years) to roll out a new OS.
+It’s just a Vista
+
+
+
+I’d like to take a minute or two to answer those from my own perspective. First to the criticism</summary>
+  </entry>
+  <entry>
+    <title>ASP.NET: System.BadImageFormatException</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/26/asp_net_system_bad_image_format_exception/"/>
+    <id>http://www.developmentalmadness.com/2009/05/26/asp_net_system_bad_image_format_exception/</id>
+    <published>2009-05-26T15:39:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">If you are running on Vista x64
+
+System.BadImageFormatException
+
+By default IIS 7 won’t load x86 (32 bit) assemblies, make sure you set your application pool’s “Enable 32-Bit Applications” setting to “True”.
+
+Internet Information Services (IIS) Manager</summary>
+  </entry>
+</feed>

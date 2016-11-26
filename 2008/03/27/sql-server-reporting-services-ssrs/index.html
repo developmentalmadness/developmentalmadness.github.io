@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: SQL Server Reporting Services (SSRS): Databinding with CustomReportItem implementation</title>
+<meta content='For my current project, I&amp;rsquo;ve been attempting something that would seem simple to do, but can&amp;rsquo;t be done in Sql Server Reporting Servi...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='SQL Server Reporting Services (SSRS): Databinding with CustomReportItem implementation' property='og:title'>
+<meta content='For my current project, I&amp;rsquo;ve been attempting something that would seem simple to do, but can&amp;rsquo;t be done in Sql Server Reporting Servi...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2008/03/27/sql-server-reporting-services-ssrs/' property='og:url'>
+<meta content='2008-03-27' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='SQL Server Reporting Services (SSRS): Databinding with CustomReportItem implementation' name='twitter:title'>
+<meta content='For my current project, I&amp;rsquo;ve been attempting something that would seem simple to do, but can&amp;rsquo;t be done in Sql Server Reporting Servi...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2008/03/27/sql-server-reporting-services-ssrs/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>SQL Server Reporting Services (SSRS): Databinding with CustomReportItem implementation</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2008-03-27'>
+27 March 2008
+</time>
+on <a href='/tag/customreportitem/'>customreportitem</a>, <a href='/tag/ssrs/'>ssrs</a>, <a href='/tag/sql_server_reporting_services/'>sql_server_reporting_services</a>, <a href='/tag/cri/'>cri</a>
+</section>
+</header>
+<section class='post-content'><p>For my current project, I&rsquo;ve been attempting something that would seem simple to do, but can&rsquo;t be done in Sql Server Reporting Services (SSRS). I am trying to draw 2 simple rectangles on the grid of a scatter (XY) chart. The reason for doing this is to visually indicate good and bad regions of data. But when the report is rendered (at least using the Html viewer) the rectanges I draw above the chart have moved. This is because items cannot overlap in the web viewer.</p>
+
+<p>I have come to find that I can create a CustomReportItem based on any image I can draw or retrieve (Gdi+ or any other method of creating an image like the file system or a remote url). So I started looking at the alternative charting options I had available to me through my client&rsquo;s software licenses.</p>
+
+<p>My options were charting solutions by ComponentArts and Infragistics (UltraChart). As it stands the ComponentArts documentation was dismal and I am still waiting to hear back about a message I posted on their forum over a week ago. With Infragistics I found the documentation much better. When I needed help I got an immediate response.</p>
+
+<p>So I am using Infragistics for my charting needs. The solution involves creating a custom report item which allows the user to define a set of properties which I then use to design the chart. I am actually using the Web version of UltraChart, which is not supported, but works well. I could have used the WinForms version, but it doesn&rsquo;t seem to make any difference and I didn&rsquo;t have it installed at the time I began my discovery.</p>
+
+<p>The next problem I encountered was creating the CustomReportItem. Again, like the ComponentArts library, the documentation was pitiful. But here are the links I did find to nonetheless. This was difficult to track down :</p>
+
+<p>Rdl definitions: http://download.microsoft.com/download/c/2/0/c2091a26-d7bf-4464-8535-dbc31fb45d3c/rdlNov05.pdf . When you are working on your designer class, this will make sure the xml output is correct (hint: pay attention to all the 1-N, 0-1, 1 designations to know what&rsquo;s required and what&rsquo;s optional).</p>
+
+<p>Custom Report Item docs: http://msdn2.microsoft.com/en-us/library/ms345224.aspx . For whatever reason I didn&rsquo;t find this when I first started searching. It never came up in google. I found it later when I was looking for information on a specific class.</p>
+
+<p>MSDN Magazine: http://msdn2.microsoft.com/en-us/magazine/cc188686.aspx . A pretty good learning example, but didn&rsquo;t have everything I need. Also, there was no direct link to the source code. You have to download the source for the entire issue and extract it locally. The source can be found here: http://download.microsoft.com/download/f/2/7/f279e71e-efb0-4155-873d-5554a0608523/MSDNMag2006_10.exe</p>
+
+<p>A data bound example of drawing polygons by Chris Hays: http://blogs.msdn.com/chrishays/archive/2005/10/04/CustomReportItemSample.aspx . The code was difficult to follow and there weren&rsquo;t many comments. This didn&rsquo;t help me until the end when I understood more of what was going on. Also, you have to register with the group before you can download the code.</p>
+
+<p>The last problem I had to solve was how to bind a dataset to my custom report item. The only thing that really helped me here was the Rdl documentation. The problem was that the code which was relevant to performing this operation was uncommented and wasn&rsquo;t explained anywhere in the documentation or samples. So here&rsquo;s my own databinding snippets with comments and explaination.</p>
+
+<p>A) In the CustomReportItemDesigner class (your custom class which inherits from it as a base), override the InitializeNewComponent() method like this:</p>
+<pre class="highlight plaintext"><code>public override void InitializeNewComponent()
+{
+ base.InitializeNewComponent();
+
+ CustomData = new CustomData();
+
+ //at least one grouping is required for both rows and columns
+
+ //initialize row grouping
+ CustomData.DataRowGroupings = new DataRowGroupings();
+ CustomData.DataRowGroupings.DataGroupings = new List&lt;DataGrouping&gt;(1);
+ CustomData.DataRowGroupings.DataGroupings.Add(new DataGrouping());
+ CustomData.DataRowGroupings.DataGroupings[0].Grouping = new Grouping();
+ CustomData.DataRowGroupings.DataGroupings[0].Grouping.Name = Name + "_Row";
+ CustomData.DataRowGroupings.DataGroupings[0].Grouping.GroupExpressions = new GroupExpressions();
+ CustomData.DataRowGroupings.DataGroupings[0].Grouping.GroupExpressions.Add(new Expression());
+
+ // initialize a Static column grouping
+ CustomData.DataColumnGroupings = new DataColumnGroupings();
+ CustomData.DataColumnGroupings.DataGroupings = new List&lt;DataGrouping&gt;(1);
+ CustomData.DataColumnGroupings.DataGroupings.Add(new DataGrouping());
+ CustomData.DataColumnGroupings.DataGroupings[0].Static = true;
+
+ //initialize data row with empty values for designer
+ CustomData.DataRows = new List&lt;DataRow&gt;(1);
+ CustomData.DataRows.Add(new DataRow());
+ CustomData.DataRows[0].Add(new DataCell());
+
+ //define the fields you will store (these will be populated with expressions by custom designer properties you define)
+ CustomData.DataRows[0][0].Add(new DataValue("X", String.Empty));
+ CustomData.DataRows[0][0].Add(new DataValue("Y", String.Empty));
+}
+</code></pre>
+<p>B) Define a custom designer property to set the expression for your data row group.</p>
+<pre class="highlight plaintext"><code>    [Browsable(true), Category("Data")]
+    public string LabelValue
+    {
+        get
+        {
+            if (CustomData.DataRowGroupings.DataGroupings.Count &gt; 0)
+            {
+                return GetGroupLabel(CustomData.DataRowGroupings.DataGroupings[0].Grouping);
+            }
+            else
+                return "Point Label";
+        }
+        set
+        {
+            CustomData.DataRowGroupings.DataGroupings[0].Grouping.GroupExpressions[0].String = value;
+        }
+    }
+
+    private string GetGroupLabel(Grouping group)
+    {
+        if (group.GroupExpressions != null &amp;&amp; group.GroupExpressions.Count &gt; 0)
+            return group.GroupExpressions[0].String;
+
+        return null;
+    }
+</code></pre>
+<p>C) Define custom designer properties to set the expressions for the DataValuesCollection (only showing one property here to keep things shorter)</p>
+<pre class="highlight plaintext"><code>public string XValue
+{
+ get
+ {
+  if (CustomData.DataRows.Count &gt; 0 &amp;&amp; CustomData.DataRows[0].Count &gt; 0)
+   return GetDataValue(CustomData.DataRows[0][0], "X");
+  else
+   return "X Coordinate";
+ }
+ set
+ {
+  SetDataValue(CustomData.DataRows[0][0], "X", value);
+ }
+}
+
+
+private string GetDataValue(DataCell cell, string name)
+{
+ foreach (DataValue value in cell)
+  if (value.Name == name)
+   return value.Value;
+ return null;
+}
+
+private void SetDataValue(DataCell cell, string name, string expression)
+{
+ foreach (DataValue value in cell)
+  if (value.Name == name)
+  {
+   value.Value = expression;
+   return;
+  }
+ DataValue datavalue = new DataValue(name, expression);
+ cell.Add(datavalue);
+}
+</code></pre>
+<p>D) Make sure your designer provides a property to set the data set name (CustomData.DataSetName).</p>
+
+<p>E) Your CustomReportItem class can then read the data like this:</p>
+<pre class="highlight plaintext"><code>private void ReadCustomData()
+{
+ DataMemberCollection members = m_CRI.CustomData.DataRowGroupings[0];
+ DataCellCollection rows = m_CRI.CustomData.DataCells;
+
+ //get the position of each field in the data value collection
+ int xpos = -1, ypos = -1;
+
+ for (int field = 0; field &lt; rows[0, 0].DataValues.Count; field++)
+ {
+  switch (rows[0, 0].DataValues[field].Name)
+  {
+   case "X":
+    xpos = field;
+    break;
+   case "Y":
+    ypos = field;
+    break;
+  }
+ }
+
+ //populate the series for the chart data
+ for (int row = 0; row &lt; rows.RowCount; row++)
+ {
+  DataValueCollection values = rows[row, 0].DataValues;
+
+  String label = members[row].GroupValues[0].ToString();
+
+  double x = Convert.ToDouble(values[xpos].Value);
+  double y = Convert.ToDouble(values[ypos].Value);
+ }
+}
+</code></pre>
+<p>I haven&rsquo;t posted the full code here but I plan on doing so in the future. I also plan on dressing this post up and making a codeproject article out of it.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=SQL Server Reporting Services (SSRS): Databinding with CustomReportItem implementation&amp;amp;url=http://www.developmentalmadness.com/2008/03/27/sql-server-reporting-services-ssrs/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2008/03/27/sql-server-reporting-services-ssrs/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2008/03/27/sql-server-reporting-services-ssrs/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2008/03/19/aspnet-mvc-error-handling/'>
+<section class='post'>
+<h2>ASP.NET MVC Error Handling</h2>
+<p>When working with the latest MVC release (Preview 2) I was having trouble working with the Application_Error event in&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2008/04/01/fast-rowcount-for-sql-2005/'>
+<section class='post'>
+<h2>Fast RowCount for SQL 2005</h2>
+<p>This is nothing new or revolutionary, but is important nonetheless for those maintaining large-scale SQL Server databases. For years&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

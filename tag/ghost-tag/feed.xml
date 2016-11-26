@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: ghost-tag</title>
+  <subtitle>Posts tagged with ghost-tag</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/ghost-tag/feed.xml" rel="self"/>
+  <updated>2016-01-18T19:32:23+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>301 Permanent Redirect for Ghost</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/01/18/301-permanent-redirect-for-ghost/"/>
+    <id>http://www.developmentalmadness.com/2016/01/18/301-permanent-redirect-for-ghost/</id>
+    <published>2016-01-18T19:32:23+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">The Ghost blogging platform (currently v0.7.4) doesn’t currently provide a way to support moving resource urls. If you’re moving from a blogging platform with a different url scheme there’s no native support. Instead the recommended practice is to use</summary>
+  </entry>
+</feed>

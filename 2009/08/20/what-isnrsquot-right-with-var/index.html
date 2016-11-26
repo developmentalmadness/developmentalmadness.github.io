@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: What isn't RIGHT with var</title>
+<meta content='Let me start by saying I have no qualms against using var to declare variables. I use it myself when it suits me. I find the best situations to ...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content="What isn't RIGHT with var" property='og:title'>
+<meta content='Let me start by saying I have no qualms against using var to declare variables. I use it myself when it suits me. I find the best situations to ...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/08/20/what-isnrsquot-right-with-var/' property='og:url'>
+<meta content='2009-08-20' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content="What isn't RIGHT with var" name='twitter:title'>
+<meta content='Let me start by saying I have no qualms against using var to declare variables. I use it myself when it suits me. I find the best situations to ...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/08/20/what-isnrsquot-right-with-var/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>What isn't RIGHT with var</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-08-20'>
+20 August 2009
+</time>
+on <a href='/tag/anonymous_types/'>anonymous_types</a>, <a href='/tag/var/'>var</a>, <a href='/tag/linq/'>linq</a>, <a href='/tag/intellisense/'>intellisense</a>
+</section>
+</header>
+<section class='post-content'><p>Let me start by saying I have no qualms against using var to declare variables. I use it myself when it suits me. I find the best situations to take advantage of it are:</p>
+
+<ul>
+<li>When using anonymous types </li>
+<li>When declaring variables which are instances of an interface </li>
+</ul>
+
+<p>The first case is really not optional. You can&rsquo;t declare an anonymous type without var. The second, should be used carefully because it can impede readability if used incorrectly. Since you cannot initialize an interface the right side of your declaration might not be clear that your intention is to declare a variable which is an interface implementation. Here&rsquo;s a comparison of good and bad use in this case:</p>
+
+<h2>Bad Example</h2>
+<pre class="highlight plaintext"><code>public interface IMyInterface { }
+public class ConcreteImplementation : IMyInterface {}
+public class MyClass 
+{
+    public ConcreteImplementation ReturnsAnInterfaceImplementation(){}
+}
+
+public class MyApplication()
+{
+    public static void Main()
+    {
+        var myVar = someInstance.ReturnsAnInterfaceImplementation();
+        DoSomething(myVar);
+    }
+
+    public static void DoSomthing(IMyInterface arg) { }
+}
+</code></pre>
+<p>This example is a bit contrived but not entirely invalid. <code>ReturnsAnInterfaceImplementation</code> should declare its return type as IMyInterface, but there are many methods which return an object which implements an interface but does not declare the return type as that interface. However, it can happen that the consumer of that method intends to use only the interface. In this case the use of var decreases readability.</p>
+
+<h2>Good Example</h2>
+<pre class="highlight plaintext"><code>public interface IMyInterface { }
+
+public class MyClass()
+{
+    public void DoSomething(IMyInterface arg) { }
+}
+
+public class MyTestFixture()
+{    
+    public void MyTest()
+    {
+        var myVar = new Mock&lt;IMyInterface&gt;();
+        MyClass target = new MyClass();
+        target.DoSomething(myVar.Object);
+        myVar.Verify();
+    }
+}
+</code></pre>
+<p>While writing thing, I tried to think of an example where the instance declared using var was an interface and var did not impede readability. Yes, there are plenty of cases where var doesn&rsquo;t hurt readability at all, but with interfaces the only cases is when dealing with runtime generated classes (Please correct me if you think of one). </p>
+
+<p>The most common case of this is RhinoMocks or Moq or some other mocking framework. So that was what I decided to use as an example. I can think of one other example of this which is <code>System.ServiceModel.ChannelFactory&lt;T&gt;</code>.</p>
+
+<h2>It&rsquo;s a matter of preference</h2>
+
+<p>I have found that the use of var, outside of anonymous type declaration, is largely preference. There is nothing wrong with using it. Except in the example above it rarely hurts readability and there is no peformance pentaly involved. However, you will find those who are vehemently against it and those who are passionate about defending its use. The debate is almost religious, so I generally avoid it.</p>
+
+<h2>Busting the myth</h2>
+
+<p>So why did I write this post? Why if I avoid the debate did I decide to jump into the line of fire? For one reason only - to debunk a false argument. I will reiterate here I have nothing against using var. If I join your project and you&rsquo;re using it as a convention I won&rsquo;t complain. If I&rsquo;m part of the startup phase of a project and we&rsquo;re discussing conventions and the majority of the team decides to use it I&rsquo;ll concede.</p>
+
+<p>That said, don&rsquo;t try using the argument around me that &ldquo;it is a shortcut&quot; or &quot;it saves time&quot;. Unless you develop using notepad (or some variant thereof) it does not save time. Intellisense has beat it everytime I&rsquo;ve made the comparison. There have been draws/ties, I&rsquo;ll admit. But never has var saved me a single keystroke. </p>
+
+<p>The reason I bring this up is because of a discussion on the CodeProject Lounge Forum. The discussion started yesterday and I jumped in a bit today. It was argued that for long type names which are largely ambiguous except for the last few characters that var wins out. The example given was DataGridViewRow where there are too many classes named <code>DataGrid</code>. and even still <code>DataGridView</code></p>
+
+<p>A colleague of mine (who I&rsquo;m sure will provide his two cents in the comments below) and I actually tested this a few months back. Here is a comparison using the example from today&rsquo;s debate:</p>
+
+<p>Using var:</p>
+<pre class="highlight plaintext"><code>var row = new DataGridViewRow();
+                      ^--
+</code></pre>
+<p>Without var:</p>
+<pre class="highlight plaintext"><code>DataGridViewRow row = new DataGridViewRow();
+            ^--           ^--------------
+</code></pre>
+<p>In the above examples, <code>^</code> represents the point where Intellisense gives you the right class and <code>-</code> represents the characters it types for you. </p>
+
+<p>In the first example, you have to type 27 characters before you get the right class from Intellisense. And it types 2 characters for you. You end up having to type <code>();</code> as well which brings the grand total to 30 for the entire line.</p>
+
+<p>The second example, you type the first 13 keystrokes (including [TAB] to accept the selection), save 2 with Intellisense, then type 10 more bringing you up to 23. Add the last 3 when you type <code>();</code> and you&rsquo;re at 26. So var cost me 4 keystrokes. If I had used [SPACEBAR] instead of [TAB] on the left side I could have saved and additional keystroke with Intellisense.</p>
+
+<h2>A request</h2>
+
+<p>As a favor to those out there learning, I&rsquo;d like to make a request. Please don&rsquo;t use var when writing code snippets in blog posts and forum posts. Unless the right side of the declaration explicitly and without ambiguity declares exactly what the type of the variable will be, please don&rsquo;t use it. It hurts readability and hurts those trying to learn what you&rsquo;re trying to convey.</p>
+
+<h2>Conclusion</h2>
+
+<p>So while I&rsquo;ll never say there is anything <em>wrong</em> with using var, it isn&rsquo;t <em>right</em> to say it saves time. When compared against Intellisense it will lose every time. I&rsquo;ll issue a challenge and I would LOVE to be proven wrong because I find out I was wrong I get to learn. Show me some examples of where using var beats Intellisense. Number of characters doesn&rsquo;t count because I&rsquo;ve only ever met a single developer who coded using notepad.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href="https://twitter.com/intent/tweet?text=What isn't RIGHT with var&amp;amp;url=http://www.developmentalmadness.com/2009/08/20/what-isnrsquot-right-with-var/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/08/20/what-isnrsquot-right-with-var/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/08/20/what-isnrsquot-right-with-var/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/08/19/migrating-from-blogger-com-setting-up-subtext/'>
+<section class='post'>
+<h2>Migrating from Blogger.com: Setting up Subtext</h2>
+<p>I&rsquo;m really liking Subtext, so far I&rsquo;m not regretting my choice to use it as my blog engine. It&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/08/25/why-you-shouldnrsquot-use-ad-blockers/'>
+<section class='post'>
+<h2>Support the free web</h2>
+<p>Last night I was talking with my wife about my day. Without sounding too gushy, I really appreciate that&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

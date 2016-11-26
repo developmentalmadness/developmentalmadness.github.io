@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: sql_performance</title>
+  <subtitle>Posts tagged with sql_performance</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/sql_performance/feed.xml" rel="self"/>
+  <updated>2006-06-22T20:00:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>SQL Profiler - Replaying Traces</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2006/06/22/sql-profiler-replaying-traces/"/>
+    <id>http://www.developmentalmadness.com/2006/06/22/sql-profiler-replaying-traces/</id>
+    <published>2006-06-22T20:00:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">SQL Profiler has been aptly referred to as the “poor man’s load tester”.
+
+3 months ago I captured trace logs spanning 1 week. My intent was over the summer (our companies “off-season”) to use the trace logs to stress test the database to determine the</summary>
+  </entry>
+  <entry>
+    <title>Database Load Balancing Service for SQL Server</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2006/07/25/database-load-balancing-service-for/"/>
+    <id>http://www.developmentalmadness.com/2006/07/25/database-load-balancing-service-for/</id>
+    <published>2006-07-25T19:35:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I have been working on a “load balancing” application for OLAP applications and one or two of my previous posts touch on some things I’ve learned in the process. But now that I’ve got a working beta version I’ve decided to write my first “formal” article</summary>
+  </entry>
+  <entry>
+    <title>Use SQL Parameters to Overcome Ad Hoc Performance Issues</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2007/01/12/use-sql-parameters-to-overcome-ad-hoc/"/>
+    <id>http://www.developmentalmadness.com/2007/01/12/use-sql-parameters-to-overcome-ad-hoc/</id>
+    <published>2007-01-12T20:30:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">As I look around the net at different articles and tutorials I’m surprised at how many use Dynamic SQL for samples. Even after the many warnings about SQL injection attacks. But there are other issues besides security. One of which is performance - dynamic</summary>
+  </entry>
+  <entry>
+    <title>Use Table-Valued Functions as Arrays in SQL Server</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2007/02/27/use-table-valued-functions-as-arrays-in/"/>
+    <id>http://www.developmentalmadness.com/2007/02/27/use-table-valued-functions-as-arrays-in/</id>
+    <published>2007-02-27T20:26:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’ve started investigating the SQL CLR and decided as my first article to tie in a bit to my article on using SQL parameters in ad hoc queries. This time I’m touching on an advanced topic of sql parameters - how to pass an array as a parameter. This takes</summary>
+  </entry>
+  <entry>
+    <title>Database Loadbalancer Revisited</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2007/03/07/database-loadbalancer-revisited/"/>
+    <id>http://www.developmentalmadness.com/2007/03/07/database-loadbalancer-revisited/</id>
+    <published>2007-03-07T20:22:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">The load balancer I wrote last year never made it into full production. While it was still in Q&amp;amp;A we hit our deadline and we stopped new development as we hit our “busy season”. At MaxPreps, once the fall season starts and football is in full swing our</summary>
+  </entry>
+  <entry>
+    <title>Fast RowCount for SQL 2005</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/01/fast-rowcount-for-sql-2005/"/>
+    <id>http://www.developmentalmadness.com/2008/04/01/fast-rowcount-for-sql-2005/</id>
+    <published>2008-04-01T19:02:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">This is nothing new or revolutionary, but is important nonetheless for those maintaining large-scale SQL Server databases. For years I’ve used the sysindexes system table to find out how many rows are in a large table. The reason for this is to prevent</summary>
+  </entry>
+</feed>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: SQL Server 2005 Unattended Install</title>
+<meta content='As always I try and post about my experiences which cause my biggest headaches. So today&amp;rsquo;s topic is about setting up an unattended install...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='SQL Server 2005 Unattended Install' property='og:title'>
+<meta content='As always I try and post about my experiences which cause my biggest headaches. So today&amp;rsquo;s topic is about setting up an unattended install...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2006/06/30/sql-server-2005-unattended-install/' property='og:url'>
+<meta content='2006-06-30' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='SQL Server 2005 Unattended Install' name='twitter:title'>
+<meta content='As always I try and post about my experiences which cause my biggest headaches. So today&amp;rsquo;s topic is about setting up an unattended install...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2006/06/30/sql-server-2005-unattended-install/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>SQL Server 2005 Unattended Install</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2006-06-30'>
+30 June 2006
+</time>
+on <a href='/tag/sql_server/'>sql_server</a>, <a href='/tag/dba/'>dba</a>
+</section>
+</header>
+<section class='post-content'><p>As always I try and post about my experiences which cause my biggest headaches. So today&rsquo;s topic is about setting up an unattended install for SQL Server 2005. I have spent the entire day trying to create an unattended install to a Virtual Server installation.</p>
+
+<blockquote>
+<p><strong>Error: Invalid INI file. Make sure the file exists, have access and has the correct entries.</strong></p>
+</blockquote>
+
+<p>This one still does not make sense to me. First, I had the INI file in the same directory (Desktop) as my setup .bat file. And I had the command window open to the same directory as well. So I figured it required a fully qualified path. So I figured it was the spaces in the path &ldquo;C:\Documents and Settings\Mark\Desktop\setupSql05.ini&rdquo; and I put quotes around it. Still no go. So finally, I just dumped the file in the root and updated my .bat file as follows:</p>
+<pre class="highlight plaintext"><code>D:\Servers\Setup.exe /settings "C:\setupSQL05.ini" /qb
+</code></pre>
+<p>And that did the trick!</p>
+
+<blockquote>
+<p><strong>Error: SQL Server Setup could not validate the service accounts</strong></p>
+</blockquote>
+
+<p>I&rsquo;m sure there are a number of reasons why you might see this error. But in my case it was stupidity brought on by fatigue. I created 3 domain accounts: {domain}\SqlServer, {domain}\SqlAgent, and {domain}\SqlBrowserAgent. I set the password to never expire, except on SqlBrowserAgent. It turns out I forgot to change this when I created the account. The nice thing was that I was able to determine the account by checking the setup log file &ldquo;C:\Program Files\Microsoft SQL Server\90\Setup Bootstrap\LOG\SqlSetupXXXX.cab{hostname}_SQL.log&rdquo;. I opened it in notepad, did a find for my domain name ( &ldquo;{domain}\&rdquo; ) and found the error in the log. Once I opened up the settings for the account in question it was obvious.</p>
+
+<p>Sometimes it just doesn&rsquo;t pay to get out of bed!</p>
+
+<blockquote>
+<p><strong>Error: The feature(s) specified are not valid for any SQL Server products</strong></p>
+</blockquote>
+
+<p>Again, the log file came in for a save here. Silly me, I used the documentation to create my INI file! According to BooksOnline for the ADDLOCAL parameter, Notification<em>Services has a 3 child features: NS</em>Engine,NS<em>Client,NS</em>Rules. So because I wanted to install Notification Services I passed all three to the argument. However, when I got the above error and verified that I had spelled everything correctly (including case) and had no spaces I was stumped. So I checked the error log ({hostname}<em>SQL</em>Core(Local).log) and found this:</p>
+
+<blockquote>
+<p><strong>Failed to find feature:NS_Rules : 70002</strong></p>
+</blockquote>
+
+<p>So I opened the template.ini file that comes with the installation disk and found that in truth, NS<em>Rules does not exist. Greatful for install logs I removed the feature from the list and ran install again. Only for the same error to strike again! This time the culprit was SQL</em>Profiler90, also in the BOL docs I might add.</p>
+
+<blockquote>
+<p><strong>Failed to find feature:SQL_Profiler90 : 70002</strong></p>
+</blockquote>
+
+<p>So make sure you don&rsquo;t fall for the same trap as I did!</p>
+
+<h1>Success at last!</h1>
+
+<p>Here is my successfull settings INI file (don&rsquo;t forget to add the [PIDKEY] option):</p>
+<pre class="highlight plaintext"><code>[Options]
+
+
+
+USERNAME=Admin
+
+COMPANYNAME="MaxPreps, Inc."
+
+
+
+ADDLOCAL=SQL_Engine,SQL_Data_Files,SQL_Replication,SQL_FullText,Notification_Services,NS_Engine,NS_Client,Client_Components,Connectivity,SQL_Tools90,SQLXML
+
+
+INSTANCENAME=MSSQLSERVER
+
+
+
+SQLBROWSERACCOUNT="{domain}\SqlBrowserAgent"
+
+SQLBROWSERPASSWORD=***********
+
+
+
+SQLACCOUNT="{domain}\SqlServer"
+
+SQLPASSWORD=***********
+
+
+
+AGTACCOUNT="{domain}\SqlAgent"
+
+AGTPASSWORD=***********
+
+
+
+SQLBROWSERAUTOSTART=1
+
+SQLAUTOSTART=1
+
+AGTAUTOSTART=1
+
+
+
+SQLCOLLATION=SQL_Latin1_General_CP1_CI_AS
+
+
+
+ERRORREPORTING=0
+</code></pre>
+<p>I hope this helps anyone out there who&rsquo;s struggling. And can I just say, thank goodness for Virtual Server!</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=SQL Server 2005 Unattended Install&amp;amp;url=http://www.developmentalmadness.com/2006/06/30/sql-server-2005-unattended-install/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2006/06/30/sql-server-2005-unattended-install/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2006/06/30/sql-server-2005-unattended-install/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2006/06/24/bug-aspnet-20-httpapplication-cannot/'>
+<section class='post'>
+<h2>BUG: ASP.NET 2.0 HttpApplication cannot find IHttpHandlerFactory when HttpContext.RewritePath(string) includes PathInfo</h2>
+<p>This week we&rsquo;ve been testing our migration configuration for our upgrade from the .Net 1.1 Framework to 2.0. Last&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2006/07/05/adventures-in-mirroring/'>
+<section class='post'>
+<h2>Adventures in Mirroring</h2>
+<p>SQL Server 2005 has introduced an exciting new feature - data mirroring. And the timing couldn&rsquo;t be better. This&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

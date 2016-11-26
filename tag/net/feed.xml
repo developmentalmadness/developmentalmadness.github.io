@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: net</title>
+  <subtitle>Posts tagged with net</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/net/feed.xml" rel="self"/>
+  <updated>2010-09-28T15:33:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Sequential Guid Algorithm – Implementing Combs in .NET</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2010/09/28/sequential-guid-algorithm-ndash-implementing-combs-in-net/"/>
+    <id>http://www.developmentalmadness.com/2010/09/28/sequential-guid-algorithm-ndash-implementing-combs-in-net/</id>
+    <published>2010-09-28T15:33:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Today Ayende released his sequential guid answer, which is something I had been working on as well. I’ll be honest and say the current implementation takes from his recent posts (previous to today’s). If it weren’t for him, I would not have known about</summary>
+  </entry>
+  <entry>
+    <title>Sequential Guid Algorithm – Improving the algorithm</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2010/10/13/sequential-guid-algorithm-ndash-improving-the-algorithm/"/>
+    <id>http://www.developmentalmadness.com/2010/10/13/sequential-guid-algorithm-ndash-improving-the-algorithm/</id>
+    <published>2010-10-13T15:46:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">My last post addressed generating Guid values which were sequential across system boundaries. The problem with other algorithms is two-fold. First, they are only sequential for a single system. Second, they are based off the MAC address of the system</summary>
+  </entry>
+  <entry>
+    <title>Eclipse CHE Cloud IDE: Setup and First Thoughts</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/01/28/eclipse-che-cloud-ide-first-thoughts/"/>
+    <id>http://www.developmentalmadness.com/2016/01/28/eclipse-che-cloud-ide-first-thoughts/</id>
+    <published>2016-01-28T18:56:49+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Just saw an announcement for Eclipse CHE beta last night. Currently I’m more of an IntelliJ fan and I was even excited to hear about the development of an IntelliJ-based IDE for .NET (Project Rider). 
+
+Setting Up CHE
+
+For those just interested in getting</summary>
+  </entry>
+</feed>

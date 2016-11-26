@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Migrating from Blogger.com: Setting up Subtext</title>
+<meta content='I&amp;rsquo;m really liking Subtext, so far I&amp;rsquo;m not regretting my choice to use it as my blog engine. It has been pretty simple to setup and t...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Migrating from Blogger.com: Setting up Subtext' property='og:title'>
+<meta content='I&amp;rsquo;m really liking Subtext, so far I&amp;rsquo;m not regretting my choice to use it as my blog engine. It has been pretty simple to setup and t...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/08/19/migrating-from-blogger-com-setting-up-subtext/' property='og:url'>
+<meta content='2009-08-19' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Migrating from Blogger.com: Setting up Subtext' name='twitter:title'>
+<meta content='I&amp;rsquo;m really liking Subtext, so far I&amp;rsquo;m not regretting my choice to use it as my blog engine. It has been pretty simple to setup and t...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/08/19/migrating-from-blogger-com-setting-up-subtext/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Migrating from Blogger.com: Setting up Subtext</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-08-19'>
+19 August 2009
+</time>
+on <a href='/tag/subtext/'>subtext</a>
+</section>
+</header>
+<section class='post-content'><p>I&rsquo;m really liking Subtext, so far I&rsquo;m not regretting my choice to use it as my blog engine. It has been pretty simple to setup and there has been plenty of support from the community in the form of blog posts describing everything I&rsquo;ve needed.</p>
+
+<p>The most enjoyable part of it all was when Subtext didn&rsquo;t support what I needed it was very easy to add what I needed. </p>
+
+<h2>Setting up Subtext</h2>
+
+<p>You can download the deployment files or get the source code here. To deploy, you&rsquo;ll need to get the database connection string setup correctly for your hosting provider. This includes setting up a SQL login with db<em>owner permissions (you can revoke db</em>owner after the site is setup). Once you do, update the connection string in your web.config and then upload the files. Once the files have all been uploaded, just connect to the site and a wizard will walk you through setting up your blog and it will create the database for you.</p>
+
+<h2>Using GoDaddy for hosting?</h2>
+
+<p>The following post was invaluable for troubleshooting problems on GoDaddy. GoDaddy runs your site under Medium Trust and this post helped me solve everyone of the problems I ran into getting things setup and running.</p>
+
+<h2>Exporting to BlogML</h2>
+
+<p>Subtext allows you to import all your old blog posts, provided you can export them to the BlogML format. Unfortunately, Blogger doesn&rsquo;t really support an export of any kind to speak of. There are a few utilities out there written for you to download, install and make the conversion. But the easiest way I found was to use Blogger2BlogML. Just type in the URL of your blog and it will convert your content to BlogML and provide you with a file to download. It&rsquo;s fast, easy and there&rsquo;s nothing to install.</p>
+
+<p>There&rsquo;s one catch here, I was disappointed to find out that Subtext doesn&rsquo;t use the posturl attribute in the BlogML schema. Instead Subtext generates its own slug for each post you import like this:</p>
+<pre class="highlight plaintext"><code>newEntry.EntryName = Entries.AutoGenerateFriendlyUrl(post.PostName, newEntry.Id);
+</code></pre>
+<p>But if you don&rsquo;t mind patching things yourself you can make the following change to the SubtextBlogMlProvider.cs file:</p>
+<pre class="highlight plaintext"><code>if (!string.IsNullOrEmpty(post.PostUrl))
+{
+    Uri uri = new Uri(post.PostUrl);
+    String fileName = uri.Segments[uri.Segments.Length - 1];
+    newEntry.EntryName = Path.GetFileNameWithoutExtension(fileName);
+}
+else if (!string.IsNullOrEmpty(post.PostName))
+    newEntry.EntryName = Entries.AutoGenerateFriendlyUrl(post.PostName, newEntry.Id);
+</code></pre>
+<p>You can also vote here for this patch to be included in Subtext.</p>
+
+<p>Some other issues that came up when I imported:</p>
+
+<ul>
+<li><p>DateUpdated and DateSyndicated are set to the current date: I can see cases where this would be the desired behavior, but it would seem to me that most often you would use the import feature when you are setting up a new blog. In this case I wanted to keep my archive dates. </p></li>
+<li><p>There were some HTML encoding issues because Blogger2BlogML doesn&rsquo;t wrap the content of each post in a <code>&lt;!CDATA[ ]]&gt;</code> section. </p></li>
+</ul>
+
+<p>However, these were both easily fixed by running the following SQL script:</p>
+<pre class="highlight plaintext"><code>UPDATE subtext_Content SET DateUpdated = DateAdded, 
+DateSyndicated = DateAdded
+
+UPDATE subtext_FeedBack SET Body = REPLACE(REPLACE(REPLACE(REPLACE(CONVERT(NVARCHAR(4000), Body), '&amp;lt;br /&amp;gt;', '&lt;br /&gt;'), '&amp;lt;BR/&amp;gt;', '&lt;br /&gt;'), '&amp;amp;', '&amp;'), '&amp;#39;', '''')
+</code></pre>
+<p>As a disclaimer, if your posts are longer than 4000 characters you&rsquo;ll get your text truncated, so you&rsquo;ll want to use a different technique. But this worked fine for me.</p>
+
+<h2>Redirecting from Blogger</h2>
+
+<p>Absolutely, the best way to do this is if you are using a custom domain name on blogger. This means you don&rsquo;t have to do a redirect at all â€“ you just point your DNS to your new hosting provider and you&rsquo;re pretty much done. The caveat here is that blogger uses a different URL format than Subtext.</p>
+
+<ul>
+<li>Blogger: http://yoursubdomain.blogspot.com/{year}/{month}/{slug}.html </li>
+<li>Subtext: http://www.yourcustomdomain.com/archive/{year}/{month}/{day}/{slug}.aspx </li>
+</ul>
+
+<p>To redirect from blogger I had to revert my template to the Blogger classic template:</p>
+
+<p>Then I added the following script to the <code>&lt;head&gt;</code> element:</p>
+<pre class="highlight plaintext"><code>var bloggerUrl = document.location.href;
+var customUrl = bloggerUrl.replace(/www.developmentalmadness.com/, "www.developmentalmadness.com");
+document.location.href = customUrl;
+</code></pre>
+<p>I could have written a more involved script, but javascript is not my strength here. And Subtext already had support for what I needed to do. To support SEO friendly URLs Subtext uses a set of HttpHandler elements that accept a RegEx pattern and route the matched URL to the configured HttpHandler or ascx control. For example, to support the above Subtext URL format there is an entry in web.config that looks like this:</p>
+<pre class="highlight plaintext"><code>&lt;HttpHandler pattern="(?:/archive/\d{4}/\d{2}/\d{2}/[-_,+\.\w]+\.aspx)$" controls="viewpost.ascx,Comments.ascx,PostComment.ascx"/&gt;
+</code></pre>
+<p>So I just added the following and instantly was able to support the Blogger format:</p>
+<pre class="highlight plaintext"><code>&lt;HttpHandler pattern="(?:/\d{4}/\d{2}/[-_,+\.\w]+\.html)$" controls="viewpost.ascx,Comments.ascx,PostComment.ascx"/&gt;
+</code></pre>
+<h2>Avoid it if you can</h2>
+
+<p>I should have mentioned this above, but an important thing to note at this point is that this method is not SEO friendly. First of all, the redirect script above does a 302 direct using javascript so search engines will not follow the redirect. Second of all, using javascript to automatically redirect from Blogger to another site is likely to get your blog deleted from Blogger. Which means all the links pointing to your Blogger blog from external sites will then be broken. If you can, try and contact the webmasters of those sites pointing to your Blogger URL and ask them to fix the links.</p>
+
+<p>Frankly, I should have started using a custom URL for my blogger account years ago but I can just chalk it up to lessons learned. </p>
+
+<p>A better alternative would have been to use a custom domain on Blogger before I invested so much effort in SEO and getting my blog noticed. But it really wasn&rsquo;t until I started really using my blog and getting more traffic that I realized that Blogger just didn&rsquo;t meet my needs. And I had been just too lazy (and cheap?) to purchase and setup a custom domain on blogger. In fact, if you are on blogger and haven&rsquo;t done it, do it now. I&rsquo;ll wait - it doesn&rsquo;t take long. Just buy a new domain (you can get one from Blogger) and then set it up on Blogger (it&rsquo;s very painless). Then in the future when you decide to get your blog noticed or migrate to a different blog engine you&rsquo;ll thank me.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Migrating from Blogger.com: Setting up Subtext&amp;amp;url=http://www.developmentalmadness.com/2009/08/19/migrating-from-blogger-com-setting-up-subtext/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/08/19/migrating-from-blogger-com-setting-up-subtext/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/08/19/migrating-from-blogger-com-setting-up-subtext/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/07/30/migrating-away-from-bloggercom/'>
+<section class='post'>
+<h2>Migrating away from Blogger.com</h2>
+<p>I&rsquo;ve been underground since the beginning of the month and haven&rsquo;t been working on any new posts. I have&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/08/20/what-isnrsquot-right-with-var/'>
+<section class='post'>
+<h2>What isn't RIGHT with var</h2>
+<p>Let me start by saying I have no qualms against using var to declare variables. I use it myself&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

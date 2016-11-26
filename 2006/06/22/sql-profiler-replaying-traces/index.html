@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: SQL Profiler - Replaying Traces</title>
+<meta content='SQL Profiler has been aptly referred to as the &amp;ldquo;poor man&amp;rsquo;s load tester&amp;rdquo;. 3 months ago I captured trace logs spanning 1 week. M...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='SQL Profiler - Replaying Traces' property='og:title'>
+<meta content='SQL Profiler has been aptly referred to as the &amp;ldquo;poor man&amp;rsquo;s load tester&amp;rdquo;. 3 months ago I captured trace logs spanning 1 week. M...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2006/06/22/sql-profiler-replaying-traces/' property='og:url'>
+<meta content='2006-06-22' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='SQL Profiler - Replaying Traces' name='twitter:title'>
+<meta content='SQL Profiler has been aptly referred to as the &amp;ldquo;poor man&amp;rsquo;s load tester&amp;rdquo;. 3 months ago I captured trace logs spanning 1 week. M...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2006/06/22/sql-profiler-replaying-traces/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>SQL Profiler - Replaying Traces</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2006-06-22'>
+22 June 2006
+</time>
+on <a href='/tag/sql_tools/'>sql_tools</a>, <a href='/tag/sql_server/'>sql_server</a>, <a href='/tag/sql_performance/'>sql_performance</a>, <a href='/tag/dba/'>dba</a>
+</section>
+</header>
+<section class='post-content'><p>SQL Profiler has been aptly referred to as the &ldquo;poor man&rsquo;s load tester&rdquo;.</p>
+
+<p>3 months ago I captured trace logs spanning 1 week. My intent was over the summer (our companies &ldquo;off-season&rdquo;) to use the trace logs to stress test the database to determine the results of server and database configuration changes. Now I&rsquo;m spending most of my morning trying to replay the trace logs I created using the system stored procedures 3 months ago.</p>
+
+<p>Well, here&rsquo;s what I&rsquo;ve discovered:</p>
+
+<ul>
+<li>The database ID in the trace log has to match the database id of the database on the server where you are replaying the trace.</li>
+<li>The login name has to match the login name you are using to connect to the server where you are replaying the trace.</li>
+<li>The login you are using must have their default database set to the database you are replaying the trace against.</li>
+<li>The login you are using to replay the trace must have permissions to replay the commands you&rsquo;ve captured in your trace.</li>
+<li>The trace captured by the SQL 2000 stored procedures (by default) will not replay with SQL Profiler 2005.</li>
+</ul>
+
+<p>I&rsquo;m sure someone will tell me that I haven&rsquo;t captured all the correct events. And that may be so. But I&rsquo;m still pretty new (relatively) to DBA responsibilities. I&rsquo;m planning on using our SQL Server upgrade this summer as a chance to learn to do DBA stuff the right way and maybe get certified while I&rsquo;m at it.</p>
+
+<p>Wish me luck.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=SQL Profiler - Replaying Traces&amp;amp;url=http://www.developmentalmadness.com/2006/06/22/sql-profiler-replaying-traces/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2006/06/22/sql-profiler-replaying-traces/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2006/06/22/sql-profiler-replaying-traces/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2006/06/19/hello-world/'>
+<section class='post'>
+<h2>Hello World!</h2>
+<p>As all good developers, my first words are the well-known greeting which states, &ldquo;Hey it works!&rdquo;. I have no&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2006/06/24/bug-aspnet-20-httpapplication-cannot/'>
+<section class='post'>
+<h2>BUG: ASP.NET 2.0 HttpApplication cannot find IHttpHandlerFactory when HttpContext.RewritePath(string) includes PathInfo</h2>
+<p>This week we&rsquo;ve been testing our migration configuration for our upgrade from the .Net 1.1 Framework to 2.0. Last&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: linq_to_sql</title>
+  <subtitle>Posts tagged with linq_to_sql</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/linq_to_sql/feed.xml" rel="self"/>
+  <updated>2008-07-28T17:57:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>LINQ to SQL: Reusing DataContext</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/07/28/linq-to-sql-reusing-datacontext/"/>
+    <id>http://www.developmentalmadness.com/2008/07/28/linq-to-sql-reusing-datacontext/</id>
+    <published>2008-07-28T17:57:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I have been working on a project which uses a data access layer (DAL) to wrap some LINQ to SQL calls to the database. While I’ve played with LINQ to SQL a bit, this was my first time working on a production application. So as I wrote some of the business</summary>
+  </entry>
+</feed>

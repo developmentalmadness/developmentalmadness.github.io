@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: windows_7</title>
+  <subtitle>Posts tagged with windows_7</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/windows_7/feed.xml" rel="self"/>
+  <updated>2009-05-25T13:57:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Installing Windows 7 On My New G.Skill SSD</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/25/installing_windows_7_on_my_new_g_skill_ssd/"/>
+    <id>http://www.developmentalmadness.com/2009/05/25/installing_windows_7_on_my_new_g_skill_ssd/</id>
+    <published>2009-05-25T13:57:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I got a new Thursday and I’ve been repaving my laptop with Windows 7 x64 RC
+
+The first thing was that Windows install time was about 30 min. This was my first confirmation that I was gonna love my new drive.
+
+The first thing I installed was Visual Studio</summary>
+  </entry>
+  <entry>
+    <title>Windows Critics: Get a life</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/25/windows_critics_get_a_life/"/>
+    <id>http://www.developmentalmadness.com/2009/05/25/windows_critics_get_a_life/</id>
+    <published>2009-05-25T13:23:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I was working on a Windows 7
+
+Two criticisms that I have heard leveled at Windows 7 are:
+
+
+It’s too soon (3 years) to roll out a new OS.
+It’s just a Vista
+
+
+
+I’d like to take a minute or two to answer those from my own perspective. First to the criticism</summary>
+  </entry>
+  <entry>
+    <title>ASP.NET: System.BadImageFormatException</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/26/asp_net_system_bad_image_format_exception/"/>
+    <id>http://www.developmentalmadness.com/2009/05/26/asp_net_system_bad_image_format_exception/</id>
+    <published>2009-05-26T15:39:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">If you are running on Vista x64
+
+System.BadImageFormatException
+
+By default IIS 7 won’t load x86 (32 bit) assemblies, make sure you set your application pool’s “Enable 32-Bit Applications” setting to “True”.
+
+Internet Information Services (IIS) Manager</summary>
+  </entry>
+</feed>

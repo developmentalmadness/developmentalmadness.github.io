@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: MVVM with Prism 101 - Part 3b: View Injection and the Controller Pattern</title>
+<meta content=' Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The Controller Pattern Part 4: Modules Part 5: The View-...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='MVVM with Prism 101 - Part 3b: View Injection and the Controller Pattern' property='og:title'>
+<meta content=' Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The Controller Pattern Part 4: Modules Part 5: The View-...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/10/15/mvvm-with-prism-101-ndash-part-3b-view-injection-and/' property='og:url'>
+<meta content='2009-10-15' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='MVVM with Prism 101 - Part 3b: View Injection and the Controller Pattern' name='twitter:title'>
+<meta content=' Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The Controller Pattern Part 4: Modules Part 5: The View-...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/10/15/mvvm-with-prism-101-ndash-part-3b-view-injection-and/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>MVVM with Prism 101 - Part 3b: View Injection and the Controller Pattern</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-10-15'>
+15 October 2009
+</time>
+on <a href='/tag/silverlight/'>silverlight</a>, <a href='/tag/prism/'>prism</a>, <a href='/tag/mvvm/'>mvvm</a>, <a href='/tag/regions/'>regions</a>, <a href='/tag/mvvm-with-prism-101/'>mvvm-with-prism-101</a>, <a href='/tag/controller/'>controller</a>
+</section>
+</header>
+<section class='post-content'><ul>
+<li><a href="/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/" rel="nofollow">Part 1: The Bootstrapper</a></li>
+<li><a href="/2009/10/12/mvvm-with-prism-101-ndash-part-2-the-shell/" rel="nofollow">Part 2: The Shell</a></li>
+<li><a href="/2009/10/14/mvvm-and-prism-101-ndash-part-3-regions/" rel="nofollow">Part 3: Regions</a>
+
+<ul>
+<li><a href="/2009/10/15/mvvm-with-prism-101-ndash-part-3b-view-injection-and/" rel="nofollow">Part 3b: View Injection and The Controller Pattern</a></li>
+</ul></li>
+<li><a href="/2009/10/23/mvvm-with-prism-101-ndash-part-4-modules/" rel="nofollow">Part 4: Modules</a></li>
+<li><a href="2009/10/28/mvvm-with-prism-101-ndash-part-4-modules/" rel="nofollow">Part 5: The View-Model</a>
+
+<ul>
+<li><a href="/2009/11/02/mvvm-with-prism-101-ndash-part-5b-servicelocator-vs-depdency/" rel="nofollow">Part 5b: ServiceLocator vs Dependency Injection</a></li>
+</ul></li>
+<li><a href="/2009/11/04/mvvm-with-prism-101-ndash-part-6-commands/" rel="nofollow">Part 6: Commands</a>
+
+<ul>
+<li><a href="/2010/03/08/mvvm-with-prism-101-ndash-part-6b-wrapping-iclientchannel/" rel="nofollow">Part 6b: Wrapping IClientChannel</a></li>
+</ul></li>
+</ul>
+
+<p>In my <a href="/2009/10/14/mvvm-and-prism-101-ndash-part-3-regions/" rel="nofollow">last post</a> I addressed regions in the Composite Application Library for WPF/Silverlight (Prism). I looked at what they were and how they were used. But by the end of the post I felt that the concept of View Injection needed further attention. I&rsquo;ve almost exclusively used View Discovery up to this point in my development. But when I&rsquo;ve run into a need to use View Injection I&rsquo;m uncomfortable with what seems to be a tightly coupled relationship.</p>
+
+<p>View Injection is used to provide programmatic control over how and where a view is created and activated. Which means that often we use View Injection in response to some sort of event, most likely user-driven. I haven&rsquo;t gotten this far in the discussion of the MVVM pattern, but I hope you&rsquo;ll bear with me for a brief moment. When developing an application using the MVVM pattern your goal is to use Commands to communicate between the View and the View-Model. When you do this, and need to create another MVVM triad (&ldquo;triad&rdquo; - because of the 3 objects Model, View and View-Model) then your View-Model is coupled not only to the creation and activation of the triad, but to the region where it will be displayed. Here&rsquo;s an example of the code required for the View Injection method:</p>
+<pre class="highlight plaintext"><code>string viewName = employeeId.ToString(CultureInfo.InvariantCulture);
+IRegion detailsRegion = regionManager.Regions["DetailsRegion"];
+object view = detailsRegion.GetView(viewName);
+
+if(view == null)
+{
+    view = Container.Resolve&lt;IEmployeeView&gt;();
+    detailsRegion.Add(view, viewName);
+}
+
+detailsRegion.Activate(view);
+</code></pre>
+<p>The problem with this is that our View-Model now knows too much about the other view (type, region name, and model). Additionally, if logic is required to remove the view from the region then that also becomes the responsibility of our View-Model. This then violates the principal of single responsibility.</p>
+
+<h1>Controller Pattern</h1>
+
+<p>I&rsquo;ve kinda stepped in <em>it</em> at this point. I didn&rsquo;t really have a name for the pattern at use other than the name used by the Prism team in their QuickStart. When I went around to look for a good definition of Controller which matched with how it was used I didn&rsquo;t find one. Turns out I was just blindly following the examples in the Prism Guidance. After searching around a bit, it turns out no one has actually formalized this pattern in the context of Silverlight/WPF. That&rsquo;s not to say I or the Prism team are inventing anything new here. Just that I don&rsquo;t have a formalized pattern to discuss here, nor to I have documentation or collective community behind me.</p>
+
+<p>What I do have though, are a couple of good blog posts by Ward Bell discussing a pattern for which he is still looking for a good name. For now, he&rsquo;s calling it ScreenFactory. I&rsquo;m not one to get into big discussions on what to name things. In fact for me, if it takes me more than a couple minutes to come up with a proper name for a class or pattern, I punt. I&rsquo;ll either name it AClassThatDoesSomethingIWantItToDo (thanks to intellisense this unwieldy name is not a big deal) or more often than not I&rsquo;ll come up with something that is good enough and then add comments and remarks to explain my intent clearly.</p>
+
+<p>Here are the posts by <a href="http://neverindoubtnet.blogspot.com" rel="nofollow">Ward Bell</a>, I recommend reading them as it&rsquo;s a good to help understand what the goal here is. In my view the Controller pattern in the Prism QuickStarts is very close if not exactly the same thing as Bell&rsquo;s ScreenFactory:</p>
+
+<ul>
+<li>http://neverindoubtnet.blogspot.com/2009/05/birth-and-death-of-m-v-vm-triads.html</li>
+<li>http://neverindoubtnet.blogspot.com/2009/06/screen-factory.html (specifically, the sidebar at the end &ldquo;Coordinated Collaborating Views&rdquo;)</li>
+</ul>
+
+<p>The basic idea here is that part of the goal of the View-Model is to create a class which is completely independent of the UI. No references at all in the View-Model to any UI classes. For me, I try to stick pretty close to the rule and when there are exceptions (FileDialog for example) I first look to the view&rsquo;s code behind.</p>
+
+<p>That said, while we aren&rsquo;t actually referencing any UI classes, View Injection deals with the concept of opening/closing and activating/deactivating views. The less your View-Model knows about any view, including the one it represents the better because you have the greater chance of reuse without complication when you abide by this principle.</p>
+
+<h1>The Point</h1>
+
+<p>So the controller here is responsible for the life-cycle of the related views. It creates a view (if it doesn&rsquo;t already exist) and activates it. In the example here there is no addressing of closing and cleanup of the view. However, that also would be the responsibility of the controller.</p>
+
+<p>Forgive me for jumping so far ahead, but I don&rsquo;t want to gloss over anything important. As I was writing my last post I felt uncomfortable with presenting the concept of View Injection without properly looking at how to use it. For me it&rsquo;s like demonstrating an SQL snippet that is open to an injection attack. I&rsquo;m far from perfect in many areas, but when I can I try to show how to do things properly instead of promulgating bad practices.</p>
+
+<p>Back to View Injection&hellip;</p>
+
+<h1>View Injection</h1>
+
+<p>Instead of coming up with a contrived example of using View Injection I thought I&rsquo;d use the Prism team&rsquo;s contrived example (<a href="http://compositewpf.codeplex.com/Thread/View.aspx?ThreadId=50763" rel="nofollow">their words</a>, not mine ;) ). Actually, I don&rsquo;t think it&rsquo;s so bad. I think it&rsquo;s a pretty good example of decoupling the responsibility over a related from a View-Model. I&rsquo;m referring to the View Injection QuickStart in the Prism Guidance samples. If you&rsquo;d like to follow along, you can <a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=fa07e1ce-ca3f-4b9b-a21b-e3fa10d013dd&amp;DisplayLang=en" rel="nofollow">download it from MSDN</a>. Just download the .exe package and run the installer. Make note of where it installs the Guidance and run the batch file to start up the View Injection QuickStart.</p>
+
+<p>If you are following along, then once you&rsquo;ve opened the QuickStart, open the UIComposition.Modules.Employee.XXX project and under Views\EmployeesView\EmployeesPresenter.cs and Controllers\EmployeesController.cs. For the rest of you here&rsquo;s the source code:</p>
+<pre class="highlight plaintext"><code>public interface IEmployeesController
+{
+    void OnEmployeeSelected(BusinessEntities.Employee employee);
+}
+
+public class EmployeesPresenter
+{
+    private IEmployeesListPresenter listPresenter;
+    private IEmployeesController employeeController;
+
+    public EmployeesPresenter(
+        IEmployeesView view,
+        IEmployeesListPresenter listPresenter,
+        IEmployeesController employeeController)
+    {
+        this.View = view;
+        this.listPresenter = listPresenter;
+        this.listPresenter.EmployeeSelected += new EventHandler&lt;DataEventArgs&lt;BusinessEntities.Employee&gt;&gt;(this.OnEmployeeSelected);
+        this.employeeController = employeeController;
+
+        View.SetHeader(listPresenter.View);
+    }
+
+    public IEmployeesView View { get; set; }
+
+    private void OnEmployeeSelected(object sender, DataEventArgs&lt;BusinessEntities.Employee&gt; e)
+    {
+        employeeController.OnEmployeeSelected(e.Value);
+    }
+}
+
+public class EmployeesController : IEmployeesController
+{
+    private IUnityContainer container;
+    private IRegionManager regionManager;
+
+    public EmployeesController(IUnityContainer container, IRegionManager regionManager)
+    {
+        this.container = container;
+        this.regionManager = regionManager;
+    }
+
+    public virtual void OnEmployeeSelected(BusinessEntities.Employee employee)
+    {
+        IRegion detailsRegion = regionManager.Regions[RegionNames.DetailsRegion];
+        object existingView = detailsRegion.GetView(employee.EmployeeId.ToString(CultureInfo.InvariantCulture));
+
+        if (existingView == null)
+        {
+            IProjectsListPresenter projectsListPresenter = this.container.Resolve&lt;IProjectsListPresenter&gt;();
+            projectsListPresenter.SetProjects(employee.EmployeeId);
+
+            IEmployeesDetailsPresenter detailsPresenter = this.container.Resolve&lt;IEmployeesDetailsPresenter&gt;();
+            detailsPresenter.SetSelectedEmployee(employee);
+
+            IRegionManager detailsRegionManager = detailsRegion.Add(detailsPresenter.View, employee.EmployeeId.ToString(CultureInfo.InvariantCulture), true);
+            IRegion region = detailsRegionManager.Regions[RegionNames.TabRegion];
+            region.Add(projectsListPresenter.View, "CurrentProjectsView");
+            detailsRegion.Activate(detailsPresenter.View);
+        }
+        else
+        {
+            detailsRegion.Activate(existingView);
+        }
+    }
+}
+</code></pre>
+<p>What we&rsquo;re seeing here is our View-Model (EmployeesPresenter) receives an instance of a Controller (IEmployeesController) and IEmployeesListPresenter.</p>
+
+<p>I know what you&rsquo;re thinking, &ldquo;didn&rsquo;t you just say the less the View-Model knows about other View-Models the better?&rdquo;. Yes I did, but I didn&rsquo;t write this code and I would do it differently but this post is already further down the road than I&rsquo;d like for what we&rsquo;ve covered so far in this series. I will just say that a better (although slightly more complicated) solution would be to use Aggregate Events since EmployeesPresenter doesn&rsquo;t need to know anything about IEmployeesListPresenter - it just needs to know when the selected employee has changed. For now, my assumption is that the Prism team didn&rsquo;t want to muddy the waters here but wanted to keep things familiar and thus easier to understand.</p>
+
+<p>The important piece here is that we&rsquo;re subscribing to an event that exposes the selected employee for us. Then just forwarding it to our controller - we just fire and forget because what the controller does with it at this point is up to the controller and we get nice clean separation.</p>
+
+<p>What the controller <em>does</em> do here should look familiar. Below are some screenshots of the application running in Silverlight and WPF. You&rsquo;ll notice that there is a &ldquo;Select Employee&rdquo; list at the top of the page and the employee details are shown below in a Tab control. The Tab control comprises multiple views: employee details and project lists. So when the Controller&rsquo;s OnEmployeeSelected method is called in response to the EmployeeSelected event the controller first looks to see if the view has already been created. If not, it builds the MVVM triads required (Details and ProjectsList), injects each view into the appropriate region and activates the view.</p>
+
+<p><img src="http://dvm-public-assets.s3.amazonaws.com/images/2009/10_15/mvvm-with-prism-101-part3b-imageA.png" alt="Mvvm with prism 101 part3b imagea" /> 
+<img src="http://dvm-public-assets.s3.amazonaws.com/images/2009/10_15/mvvm-with-prism-101-part3b-imageB.png" alt="Mvvm with prism 101 part3b imageb" /></p>
+
+<p>Honestly, for the longest time I simply accepted the coupling of views in this situation as &ldquo;technical debt&rdquo; and I didn&rsquo;t really understand what the Prism team was doing with these Controller classes and interfaces in the QuickStarts. And it seems like I&rsquo;m not alone. As I was researching for the series I found a dearth of information on the topic. In fact when I googled  the topic today my post from yesterday was in the top 10 results. So I hope that this clears things up for those with questions about how to properly use View Injection as well as those like me who looked at the controllers and said, &ldquo;what?&rdquo;.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=MVVM with Prism 101 - Part 3b: View Injection and the Controller Pattern&amp;amp;url=http://www.developmentalmadness.com/2009/10/15/mvvm-with-prism-101-ndash-part-3b-view-injection-and/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/10/15/mvvm-with-prism-101-ndash-part-3b-view-injection-and/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/10/15/mvvm-with-prism-101-ndash-part-3b-view-injection-and/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/10/14/mvvm-and-prism-101-ndash-part-3-regions/'>
+<section class='post'>
+<h2>MVVM with Prism 101 - Part 3: Regions</h2>
+<p>Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/10/23/mvvm-with-prism-101-ndash-part-4-modules/'>
+<section class='post'>
+<h2>MVVM with Prism 101 – Part 4: Modules</h2>
+<p>Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

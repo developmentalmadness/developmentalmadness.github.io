@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Docker: Run Azure Command-Line Client Container</title>
+<meta content='I&amp;rsquo;ve been using AWS, but I&amp;rsquo;m starting to look into Apache Spark for an up-coming project and Amazon EMR doesn&amp;rsquo;t qualify under ...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Docker: Run Azure Command-Line Client Container' property='og:title'>
+<meta content='I&amp;rsquo;ve been using AWS, but I&amp;rsquo;m starting to look into Apache Spark for an up-coming project and Amazon EMR doesn&amp;rsquo;t qualify under ...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2016/05/17/docker-run-azure-command-line-client-container/' property='og:url'>
+<meta content='2016-05-17' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Docker: Run Azure Command-Line Client Container' name='twitter:title'>
+<meta content='I&amp;rsquo;ve been using AWS, but I&amp;rsquo;m starting to look into Apache Spark for an up-coming project and Amazon EMR doesn&amp;rsquo;t qualify under ...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2016/05/17/docker-run-azure-command-line-client-container/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Docker: Run Azure Command-Line Client Container</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-05-17'>
+17 May 2016
+</time>
+on <a href='/tag/docker/'>docker</a>, <a href='/tag/azure/'>azure</a>
+</section>
+</header>
+<section class='post-content'><p>I&rsquo;ve been using AWS, but I&rsquo;m starting to look into Apache Spark for an up-coming project and Amazon EMR doesn&rsquo;t qualify under the AWS Free Tier so I decided to head on over to the world of Microsoft Azure to use my MSDN credits to do some experimentation without it costing my anything.</p>
+
+<p>Microsoft has created a <a href="https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/#use-a-docker-container" rel="nofollow">Docker image for their Azure command-line client</a>. Here&rsquo;s my setup:</p>
+<pre class="highlight plaintext"><code>$ docker create --name azure-profile -v /root/.azure microsoft/azure-cli
+</code></pre>
+<p>The Azure cli stores configuration and access tokens in <code>~/</code>. Unless you want to authenticate each time to you fire up a new session I recommend creating a data volume container for your profile data. Then you can use it to make sure your profile data is persistent like this:</p>
+<pre class="highlight plaintext"><code>$ docker run -it --rm --volumes-from azure-profile microsoft/azure-cli
+</code></pre>
+<p>This will create an interactive tty session <code>-it</code> in a new container which will be deleted <code>--rm</code> as soon as you exit. But as long as you use <code>--volumes-from</code> your profile data will be persistent. </p>
+
+<p>First let&rsquo;s look at the contents of the <code>~/.azure</code> directory before we log in:</p>
+<pre class="highlight plaintext"><code>$ ls ~/.azure
+
+config.json  telemetry.json
+</code></pre>
+<p>Next before we go through the login steps, let&rsquo;s make sure we&rsquo;ve correctly setup our volume. Open a second terminal session (make sure to run <code>eval &quot;$(docker-machine env [name])&quot;</code>). Now run <code>inspect</code> to make sure we have the volume right:</p>
+<pre class="highlight plaintext"><code>$ docker inspect --format='{{json .Mounts}}' [container_id]
+
+[{"Name":"668d3cf8050abe1a87c29f4c1bd2023ecc9c27bec6bbd26d17e0fd24729e8c35","Source":"/var/lib/docker/volumes/668d3cf8050abe1a87c29f4c1bd2023ecc9c27bec6bbd26d17e0fd24729e8c35/_data","Destination":"/root/.azure","Driver":"local","Mode":"","RW":true,"Propagation":""}]
+</code></pre>
+<p>You should see something like the above output. The important part is the <code>Destination</code> should be <code>/root/.azure</code>. If it is you did it right. Otherwise, go back and look for typos.</p>
+
+<p>Back in our interactive container session: We need to login. You may want to <a href="https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-connect/" rel="nofollow">review authentication options</a>. As for me I have MFA enabled on my Microsoft account so I use the interactive login once I&rsquo;m inside my interactive container session:</p>
+<pre class="highlight plaintext"><code>$ azure login
+</code></pre>
+<p>Follow the directions and you&rsquo;ll be logged in.</p>
+
+<p>Let&rsquo;s inspect our profile directory again:</p>
+<pre class="highlight plaintext"><code>$ ls ~/.azure
+
+accessTokens.json  azureProfile.json  config.json  telemetry.json
+</code></pre>
+<p>Now if your volumes are correct you can exit your container session (which will remove your container because of the <code>--rm</code> option we specified):</p>
+<pre class="highlight plaintext"><code>$ exit
+</code></pre>
+<p>Now fire up a new session again:</p>
+<pre class="highlight plaintext"><code>$ docker run -it --rm --volumes-from azure-profile microsoft/azure-cli
+</code></pre>
+<p>Look inside your <code>~/.azure</code> directory and it should still have all 4 <code>.json</code> files. Now you&rsquo;re all set. Good luck!</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Docker: Run Azure Command-Line Client Container&amp;amp;url=http://www.developmentalmadness.com/2016/05/17/docker-run-azure-command-line-client-container/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2016/05/17/docker-run-azure-command-line-client-container/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2016/05/17/docker-run-azure-command-line-client-container/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/05/03/play2-debugging-with-intellij-community-edition/'>
+<section class='post'>
+<h2>Play2: Debugging With IntelliJ Community Edition</h2>
+<p>Configure build.sbt Comment out or remove fork in run := true Configure IntelliJ Create a remote debug configuration: Run&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/06/13/docker-running-npm-install/'>
+<section class='post'>
+<h2>Docker: running npm install</h2>
+<p>Just spent most of the day trying to get npm install to work within a shared volume (-v). I&rsquo;ve&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

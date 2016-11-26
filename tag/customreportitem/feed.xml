@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: customreportitem</title>
+  <subtitle>Posts tagged with customreportitem</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/customreportitem/feed.xml" rel="self"/>
+  <updated>2008-03-27T19:04:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>SQL Server Reporting Services (SSRS): Databinding with CustomReportItem implementation</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/03/27/sql-server-reporting-services-ssrs/"/>
+    <id>http://www.developmentalmadness.com/2008/03/27/sql-server-reporting-services-ssrs/</id>
+    <published>2008-03-27T19:04:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">For my current project, I’ve been attempting something that would seem simple to do, but can’t be done in Sql Server Reporting Services (SSRS). I am trying to draw 2 simple rectangles on the grid of a scatter (XY) chart. The reason for doing this is to</summary>
+  </entry>
+  <entry>
+    <title>Debugging Custom Report Item controls for Sql Server Reporting Services</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/25/debugging-custom-report-item-controls/"/>
+    <id>http://www.developmentalmadness.com/2008/04/25/debugging-custom-report-item-controls/</id>
+    <published>2008-04-25T18:46:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">When you are developing a control which inherits from CustomReportItem for Sql Server Reporting Services (SSRS) you will certainly want to debug your code. The documentation is shoddy and at best incomplete, and the examples are poorly explained. So being</summary>
+  </entry>
+  <entry>
+    <title>PRB: 'That assembly does not allow partially trusted callers.' When installing a CRI on a dedicated SSRS server</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/05/05/prb-that-assembly-does-not-allow/"/>
+    <id>http://www.developmentalmadness.com/2008/05/05/prb-that-assembly-does-not-allow/</id>
+    <published>2008-05-05T18:42:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I have been fighting a “permissions” issue with Sql Server Reporting Services (SSRS) for the last few days. When I run my Custom Report Item (CRI) on my local instance of SSRS it works fine. But when I try to install the CRI on a dedicated server running</summary>
+  </entry>
+</feed>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: ddd</title>
+  <subtitle>Posts tagged with ddd</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/ddd/feed.xml" rel="self"/>
+  <updated>2010-04-16T14:29:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Domain-Driven Design: Protect your persistence required methods</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2010/04/16/domain-driven-design-protect-your-persistence-required-methods/"/>
+    <id>http://www.developmentalmadness.com/2010/04/16/domain-driven-design-protect-your-persistence-required-methods/</id>
+    <published>2010-04-16T14:29:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’ve been reading up on Domain-Driven Design (DDD) lately and I’ve checked out Jimmy Nilsson’s book Applying Domain-Driven Design and Patterns: With Examples in C# and .NET. I was reading Ch 5, “Moving Further with Domain-Driven Design” and Jimmy is talking</summary>
+  </entry>
+</feed>

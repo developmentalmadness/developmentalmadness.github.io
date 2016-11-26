@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Abstracting System.Web.UI.ScriptManager away from the Web Forms model</title>
+<meta content='As I continue to work with the ASP.NET MVC framework I continue to be inspired to dig deeper into things, to find out how they work and how I ca...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Abstracting System.Web.UI.ScriptManager away from the Web Forms model' property='og:title'>
+<meta content='As I continue to work with the ASP.NET MVC framework I continue to be inspired to dig deeper into things, to find out how they work and how I ca...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2008/04/25/abstracting-systemwebuiscriptmanager/' property='og:url'>
+<meta content='2008-04-25' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Abstracting System.Web.UI.ScriptManager away from the Web Forms model' name='twitter:title'>
+<meta content='As I continue to work with the ASP.NET MVC framework I continue to be inspired to dig deeper into things, to find out how they work and how I ca...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2008/04/25/abstracting-systemwebuiscriptmanager/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Abstracting System.Web.UI.ScriptManager away from the Web Forms model</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2008-04-25'>
+25 April 2008
+</time>
+on <a href='/tag/design_patterns/'>design_patterns</a>, <a href='/tag/scriptmanager/'>scriptmanager</a>, <a href='/tag/system_web_extensions/'>system_web_extensions</a>
+</section>
+</header>
+<section class='post-content'><p>As I continue to work with the ASP.NET MVC framework I continue to be inspired to dig deeper into things, to find out how they work and how I can make them work with this awesome new framework.</p>
+
+<p>The case in point here is using ASP.NET Ajax controls with MVC. Currently this doesn&rsquo;t work because it is closely tied to the web forms model. More specifically, ASP.NET Ajax requires an html form element with the runat attribute set to “server”. Without it, client enabled controls written to use the ScriptManager server control won&rsquo;t work.</p>
+
+<p>Here&rsquo;s the error message if you include ScriptManager without <form runat="server"></p>
+
+<blockquote>
+<p><strong>Control &lsquo;ScriptManager1&rsquo; of type &#39;ScriptManager&rsquo; must be placed inside a form tag with runat=server.</strong></p>
+</blockquote>
+
+<p>The result is then that two versions of the control must be written. One using ScriptManager, and another which has its own plumbing written to register client scripts and script blocks with the target page.</p>
+
+<p>What I like about using ScriptManager (which uses ClientScriptManager under the hood) is the ability to easily register scripts with the target page. The reason I find this important is because it means I can embed all my resources with my control and the consumer of my control doesn&rsquo;t have to worry at all about making sure the correct version of the scripts and all their dependencies are included both on the page and in the project files. While this certainly doesn&rsquo;t require the use of web forms, it makes it compatible with both frameworks.</p>
+
+<h1>The ScriptManager abstraction</h1>
+
+<p>The first abstraction is the ScriptManager. We want our server controls to work with or without the ScriptManager, so we need to provide a layer which allows us to author controls which work with a script manager, but it doesn&rsquo;t have to always be ScriptManager. Here&rsquo;s a diagram of how this can be done.</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2008/04_25/ScriptManager.png" alt="Scriptmanager" /></p>
+
+<p>What we have is an abstract base class aptly named, ScriptManagerBase. It implements two interfaces IPostBackDataHandler and IScriptManager. The first is part of the .NET Framework, while the second was just a way to easily generate method stubs, but could be used to further abstract away details in the future.</p>
+
+<p>The second class, ScriptManagerWrapper, is exactly what the name implies. It is a wrapper class for System.Web.UI.ScriptManager which inherits from ScriptManagerBase. We never interact directly with ScriptManagerWrapper, but when a control which is aware of ScriptMangerBase calls its static GetCurrent method and the page contains an instanct of System.Web.UI.ScriptManager it is returned to the caller after wrapping it within ScriptManagerWrapper, like this:</p>
+
+<p><strong>Server Control</strong></p>
+<pre class="highlight plaintext"><code>protected override void OnPreRender(EventArgs e)
+{
+  if (!this.DesignMode)
+  {
+    //Get the script manager here
+    _manager = ScriptManagerBase.GetCurrent(Page);
+
+    if (_manager == null)
+      throw new System.Web.HttpException("A ScriptManagerBase control must exist on this page");
+
+    _manager.RegisterScriptControl(this);
+    _manager.RegisterScriptDescriptors(this);
+  }
+
+  base.OnPreRender(e);
+}
+</code></pre>
+<p><strong>ScriptManagerBase.GetCurrent method</strong></p>
+<pre class="highlight plaintext"><code>public static ScriptManagerBase GetCurrent(Page page)
+{
+  if (page == null)
+  {
+    throw new ArgumentNullException("page");
+  }
+
+  ScriptManagerBase scriptManager = (page.Items[typeof(ScriptManagerBase)] as ScriptManagerBase);
+  if (scriptManager == null)
+  {
+    ScriptManager sm = page.Items[typeof(ScriptManager)] as ScriptManager;
+    if(sm != null)
+      scriptManager = new ScriptManagerWrapper(sm);
+  }
+
+  return scriptManager;
+}
+</code></pre>
+<p>This follows the model employed by the .NET Framework, the ScriptManager adds itself to the Items collection of System.Web.UI.Page during the OnInit event (not shown). Then when a control calls the static GetCurrent event the instance which is used for the page is returned. In our case, we first look for an instance of ScriptManagerBase in the Items collection. If it doesn&rsquo;t exist, then there might be an instance of System.Web.UI.ScriptManager. If there is, then we wrap it and return that instance. This way the control doesn&rsquo;t care which class is being used, it will function exactly the same.</p>
+
+<h1>ScriptManager implementation</h1>
+
+<p>ScriptManagerWrapper, as you might assume simply delegates calls to its methods directly to System.Web.UI.ScriptManager. No surprises there. But for ScriptManagerBase I had to decide how I would implement its behaviors. Because of time and budget constraints (I really don&rsquo;t have much of either) I really didn&rsquo;t want to have to provide a full implementation of all its behaviors.</p>
+
+<p>While digging through ScriptManager&rsquo;s implementation using Reflector, I noticed that ScriptManager was actually using ClientScriptManager for much of its functionality. So I decided to figure out where the dependency on web forms really was. Was it with ScriptManager or ClientScriptManager.</p>
+
+<p>The answer is actually both. For script manager, you&rsquo;ll get an error without web forms. For ClientScriptManager, you can compile and you can even run your page and you won&rsquo;t get any complaints. But if you try and use any functionality that depends on ClientScriptManager and nothing happens, why? If you view the source of the page you&rsquo;ll see none of your scripts registered with ClientScriptManager are in the page&rsquo;s source.</p>
+
+<p>The reason for this is that when you have an HtmlForm control (form with runat=”server”), the control&rsquo;s RenderChildren method calls the internal page.BeginFormRender() method. This method calls the internal ClientScriptManger.RenderClientScriptBlocks method. So if your form element is just a standard html form element (no server-side registration) then these methods don&rsquo;t get called and your script is omitted from the page&rsquo;s output.</p>
+
+<h2>Bad, Bad, Bad – But it works!</h2>
+
+<p>Here&rsquo;s where things get a little sketchy. What I am about to do is not a good idea if you are planning on developing a commercial script library or need to deploy your library to a hosted environment. Because it won&rsquo;t work in a hosted environment, so if you want to, you can&rsquo;t. And if the client&rsquo;s of your commercial library want to (and they will) they can&rsquo;t. So why do it? Two reasons: first, my solution is not currently a commercial solution and second, because of #1 I can afford a short cut that gets me what I want in the short term and I can change it later when I need to.</p>
+
+<p>So what is it I&rsquo;m going to do that so bad? Well, here&rsquo;s my solution for using ClientScriptManager without an HtmlForm server control:</p>
+
+<p><strong>ScriptManagerBase</strong></p>
+<pre class="highlight plaintext"><code>private void OnPageInitComplete(object sender, EventArgs e)
+{
+  if (base.DesignMode)
+   return;
+
+  if (Page.Form == null)
+  {
+    //need formless script manager
+    _clientScript = new FormlessClientScriptManager(Page);
+  }
+  else
+  {
+    //load standard script manager (ClientScriptManager)
+    _clientScript = new ClientScriptManagerWrapper(Page);
+  }
+}
+</code></pre>
+<p><strong>FormlessScriptManager</strong></p>
+<pre class="highlight plaintext"><code>internal class FormlessClientScriptManager : ClientScriptManagerWrapper
+{
+  public FormlessClientScriptManager(Page page) : base(page)
+  {
+    // because there's no &lt;form runat="server"&gt;we have to manually render
+    // all registered scripts in the header
+    page.Header.SetRenderMethodDelegate(RenderHtmlHead);
+  }
+
+  private void RenderHtmlHead(HtmlTextWriter output, Control container)
+  {
+    //manually render the begin tag
+    output.RenderBeginTag(HtmlTextWriterTag.Head);
+
+    //manually render children
+    foreach (Control control in container.Controls)
+    {
+      control.RenderControl(output);
+    }
+
+    //render script stuff
+    ClientScriptManager script = container.Page.ClientScript;
+    Type scriptType = script.GetType();
+    Type[] argTypes = new Type[] { typeof(HtmlTextWriter) };
+
+    // we could write our own register and render methods, which would work better in hosted environments
+    // but for now this will save some time until that is needed
+    MethodInfo renderBlocks = scriptType.GetMethod("RenderClientScriptBlocks",
+      BindingFlags.NonPublic BindingFlags.Instance, null, argTypes, null);
+    MethodInfo renderStartUp = scriptType.GetMethod("RenderClientStartupScripts",
+      BindingFlags.NonPublic BindingFlags.Instance, null, argTypes, null);
+    MethodInfo renderArrays = scriptType.GetMethod("RenderArrayDeclares",
+      BindingFlags.NonPublic BindingFlags.Instance, null, argTypes, null);
+
+    Object[] args = new Object[]{output};
+
+    renderBlocks.Invoke(script, args);
+    renderArrays.Invoke(script, args);
+    renderStartUp.Invoke(script, args);
+
+    //render CssIncludes
+    ListDictionary cssIncludes = base.GetClientCssIncludes();
+    foreach (String url in cssIncludes.Values)
+    {
+      output.AddAttribute(HtmlTextWriterAttribute.Rel, "stylesheet");
+      output.AddAttribute(HtmlTextWriterAttribute.Type, "text/css");
+      output.AddAttribute(HtmlTextWriterAttribute.Href, url);
+      output.RenderBeginTag(HtmlTextWriterTag.Link);
+      output.RenderEndTag();
+    }
+
+    //close the head element
+    output.RenderEndTag();
+  }
+}
+</code></pre>
+<p>So what&rsquo;s the problem here? There&rsquo;s two problems: first, look at the constructor. The call to SetRenderMethodDelegate() is calling a method that “supports the .NET Framework infrastructure and is not intended to be used directly from your code”. This isn&rsquo;t really the problem I was referring to, but certainly raises red flags about the compatibility of your solution with future releases of the framework.</p>
+
+<p>The second problem is that I&rsquo;m using reflection here to call the private methods RenderClientScriptBlocks, RenderClientStartupScripts and RenderArrayDeclares. This won&rsquo;t fly in a hosted environment which is properly enforcing security (ie. if they have enforced ReflectionPermission). So don&rsquo;t do it if your code may need to run in an hosted environment.</p>
+
+<p>However, if you have complete control over your environment then you can certainly sign your own controls and grant FullTrust to that signature while still maintaining a secure environment for your code.</p>
+
+<p>Besides, to quote Scott Hanselman “If you&rsquo;re going to ‘sin&rsquo; do it with style – do it with reflection”.</p>
+
+<p>Returning to ScriptManager, the ScriptMangerBase implementation also uses ClientScriptManger which is abstracted like ScriptManager so we can eventually do this in a “non evil” way without affecting the rest of our solution. The only caveat is that we need to call the abstracted ClientScriptManagerBase which is a property of our ScriptManagerBase. If we use Page.ClientScriptManager from our controls, they will break once we replace our cheat with a full implementation. Not to mention that referencing ClientScriptManager directly breaks the whole abstraction chain, you can do it but you will loose the benefits of all your hard work.</p>
+
+<h1>Conclusion</h1>
+
+<p>There are other ways to do this, but I found this very valuable because it maintains compatibility with both ASP.NET models (web forms and MVC) and because there was surprisingly very little work involved in getting this done. Not to mention it was a great exercise in OOP – by using abstraction when we develop we can create cross-platform solutions and reduce the amount of work required to get it done.</p>
+
+<h1>Source Code</h1>
+
+<p>To get the source code visit http://www.codeplex.com/ajaxmvc where I have hosted the source for this solution as well as a “proof of concept” that I have started (not done, I&rsquo;m just getting started at this point) an implementation of a server control library for ExtJs. The source code also includes two demo apps, one MVC and one Web Forms. The demos simply show a very simple server control which uses the abstractions we&rsquo;ve discussed here that works in both environments without any changes or workarounds.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Abstracting System.Web.UI.ScriptManager away from the Web Forms model&amp;amp;url=http://www.developmentalmadness.com/2008/04/25/abstracting-systemwebuiscriptmanager/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2008/04/25/abstracting-systemwebuiscriptmanager/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2008/04/25/abstracting-systemwebuiscriptmanager/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2008/04/25/debugging-custom-report-item-controls/'>
+<section class='post'>
+<h2>Debugging Custom Report Item controls for Sql Server Reporting Services</h2>
+<p>When you are developing a control which inherits from CustomReportItem for Sql Server Reporting Services (SSRS) you will certainly&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2008/05/05/prb-that-assembly-does-not-allow/'>
+<section class='post'>
+<h2>PRB: 'That assembly does not allow partially trusted callers.' When installing a CRI on a dedicated SSRS server</h2>
+<p>I have been fighting a &ldquo;permissions&rdquo; issue with Sql Server Reporting Services (SSRS) for the last few days. When&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: ad-blocker</title>
+  <subtitle>Posts tagged with ad-blocker</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/ad-blocker/feed.xml" rel="self"/>
+  <updated>2009-08-25T23:48:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Support the free web</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/08/25/why-you-shouldnrsquot-use-ad-blockers/"/>
+    <id>http://www.developmentalmadness.com/2009/08/25/why-you-shouldnrsquot-use-ad-blockers/</id>
+    <published>2009-08-25T23:48:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Last night I was talking with my wife about my day. Without sounding too gushy, I really appreciate that she is interested in listening to me talk about technical details (as long as she doesn’t have one of our 3 little shadows following her around).</summary>
+  </entry>
+</feed>

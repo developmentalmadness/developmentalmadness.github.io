@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: virtualbox</title>
+  <subtitle>Posts tagged with virtualbox</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/virtualbox/feed.xml" rel="self"/>
+  <updated>2016-03-05T17:54:29+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Docker: Permanently Mount a VirtualBox Shared Folder</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/"/>
+    <id>http://www.developmentalmadness.com/2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/</id>
+    <published>2016-03-05T17:54:29+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">While this technique works for both Windows and OSX, most Windows developers I know don’t keep their source code in the Users folder on the system drive. Historically there have been too many problems:
+
+
+The path used to start with C:\Documents and Settings
+
+</summary>
+  </entry>
+</feed>

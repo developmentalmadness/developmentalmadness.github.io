@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: silverlight</title>
+  <subtitle>Posts tagged with silverlight</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/silverlight/feed.xml" rel="self"/>
+  <updated>2009-03-10T23:49:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Silverlight and Prism: Decoupling the WCF Client Proxy</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/03/10/silverlight_and_prism_decoupling_the_wcf_client_proxy/"/>
+    <id>http://www.developmentalmadness.com/2009/03/10/silverlight_and_prism_decoupling_the_wcf_client_proxy/</id>
+    <published>2009-03-10T23:49:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’m in the process of creating the . Hopefully, for once, I’ll see it through to the end and also post the source and an insightful blog entry to help everybody who’s struggling to do the same
+
+Anyhow, I’ve taken the recent release of Prism v2, which</summary>
+  </entry>
+  <entry>
+    <title>Visual Studio Testing: Code Coverage Property Window Crashes</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/21/visual_studio_testing_code_coverage_property_window_crashes/"/>
+    <id>http://www.developmentalmadness.com/2009/05/21/visual_studio_testing_code_coverage_property_window_crashes/</id>
+    <published>2009-05-21T20:19:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Problem: If you are using Visual Studio
+
+Workaround: If your solution contains a project (not Silverlight Class Library, these are ok for some reason) or a WSSF
+</summary>
+  </entry>
+  <entry>
+    <title>Prism for Silverlight 2: Taking ‘Hello World’ to a Whole New Level</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/06/08/prism_for_silverlight_2_taking_hello_world_to_a_whole_new_level/"/>
+    <id>http://www.developmentalmadness.com/2009/06/08/prism_for_silverlight_2_taking_hello_world_to_a_whole_new_level/</id>
+    <published>2009-06-08T18:09:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">The World’s Most Over-engineered “Hello World” Demo
+
+Download Source
+
+I wanted to build a demo/guidance application for Silverlight
+
+
+WCF
+Design-time data binding
+Independent, decoupled modules
+Commanding support
+
+
+I chose to use the (aka Prism 2) since</summary>
+  </entry>
+  <entry>
+    <title>Silverlight/WPF: Customizing the DatePicker Control</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/08/27/silverlightwpf-customizing-the-datepicker-control/"/>
+    <id>http://www.developmentalmadness.com/2009/08/27/silverlightwpf-customizing-the-datepicker-control/</id>
+    <published>2009-08-27T18:34:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Source Code
+
+I’m working on a Silverlight scheduling application and wanted to make the DatePicker control from the Silverlight Toolkit look like the program icon on my iPod Touch. The calendar looks icon like a day calendar and dynamically displays the</summary>
+  </entry>
+  <entry>
+    <title>Xaml: Binding to the current DataContext</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/08/27/xaml-binding-to-the-current-datacontext/"/>
+    <id>http://www.developmentalmadness.com/2009/08/27/xaml-binding-to-the-current-datacontext/</id>
+    <published>2009-08-27T00:13:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Sometimes instead of binding to a property of the current DataContext you want to bind to the actual DataContext itself. For example, I am using DelegateCommand from Composite Application Library and needed to bind a command to perform an action on the</summary>
+  </entry>
+  <entry>
+    <title>MVVM with Prism 101 – Part 1: The Bootstrapper</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/"/>
+    <id>http://www.developmentalmadness.com/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/</id>
+    <published>2009-10-03T11:50:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Source Code
+
+
+Part 1: The Bootstrapper
+Part 2: The Shell
+
+Part 3: Regions
+
+
+Part 3b: View Injection and The Controller Pattern
+
+
+Part 4: Modules
+
+Part 5: The View-Model
+
+
+Part 5b: ServiceLocator vs Dependency Injection
+
+
+
+Part 6: Commands
+
+
+Part 6b: Wrapping
+
+
+</summary>
+  </entry>
+</feed>

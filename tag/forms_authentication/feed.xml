@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: forms_authentication</title>
+  <subtitle>Posts tagged with forms_authentication</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/forms_authentication/feed.xml" rel="self"/>
+  <updated>2009-07-02T06:00:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Building a Single Sign On Provider Using ASP.NET and WCF: Part 2</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/02/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_2/"/>
+    <id>http://www.developmentalmadness.com/2009/07/02/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_2/</id>
+    <published>2009-07-02T06:00:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Using Forms Authentication with WCF
+
+This is the second article in a four part series on building a single sign on () provider using the platform. If you just want to know about forms authentication and and aren’t interested in implementing SSO read ahead</summary>
+  </entry>
+</feed>

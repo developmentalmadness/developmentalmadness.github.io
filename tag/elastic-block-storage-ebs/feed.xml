@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: elastic-block-storage-ebs</title>
+  <subtitle>Posts tagged with elastic-block-storage-ebs</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/elastic-block-storage-ebs/feed.xml" rel="self"/>
+  <updated>2016-02-01T17:26:12+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>AWS: Mount and Format an EBS Data Volume on EC2 Initialize</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/02/01/aws-mount-and-format-an-ebs-data-volume-on-ec2-initialize/"/>
+    <id>http://www.developmentalmadness.com/2016/02/01/aws-mount-and-format-an-ebs-data-volume-on-ec2-initialize/</id>
+    <published>2016-02-01T17:26:12+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">The developer guide for AWS EC2 has a section titled Making an Amazon EBS Volume Available for Use. It describes how to make an EBS volume available after you’ve attached it to your EC2 instance and connected over SSH. But if you’re using Auto-Scaling</summary>
+  </entry>
+</feed>

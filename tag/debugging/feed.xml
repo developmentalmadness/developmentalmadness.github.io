@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: debugging</title>
+  <subtitle>Posts tagged with debugging</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/debugging/feed.xml" rel="self"/>
+  <updated>2008-04-25T18:46:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Debugging Custom Report Item controls for Sql Server Reporting Services</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/25/debugging-custom-report-item-controls/"/>
+    <id>http://www.developmentalmadness.com/2008/04/25/debugging-custom-report-item-controls/</id>
+    <published>2008-04-25T18:46:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">When you are developing a control which inherits from CustomReportItem for Sql Server Reporting Services (SSRS) you will certainly want to debug your code. The documentation is shoddy and at best incomplete, and the examples are poorly explained. So being</summary>
+  </entry>
+</feed>

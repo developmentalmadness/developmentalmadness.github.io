@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Viewing XML Query Plans in SSMS</title>
+<meta content='Well after a long absence due to a crazy workload, I&amp;rsquo;m baaaack! Keepin&amp;rsquo; it simple at this point. I&amp;rsquo;ve resumed studying for MCT...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Viewing XML Query Plans in SSMS' property='og:title'>
+<meta content='Well after a long absence due to a crazy workload, I&amp;rsquo;m baaaack! Keepin&amp;rsquo; it simple at this point. I&amp;rsquo;ve resumed studying for MCT...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2006/11/21/viewing-xml-query-plans-in-ssms/' property='og:url'>
+<meta content='2006-11-21' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Viewing XML Query Plans in SSMS' name='twitter:title'>
+<meta content='Well after a long absence due to a crazy workload, I&amp;rsquo;m baaaack! Keepin&amp;rsquo; it simple at this point. I&amp;rsquo;ve resumed studying for MCT...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2006/11/21/viewing-xml-query-plans-in-ssms/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Viewing XML Query Plans in SSMS</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2006-11-21'>
+21 November 2006
+</time>
+on <a href='/tag/ssms/'>ssms</a>, <a href='/tag/sql_server_management_studio/'>sql_server_management_studio</a>, <a href='/tag/sql_query_plan/'>sql_query_plan</a>, <a href='/tag/sql_server/'>sql_server</a>
+</section>
+</header>
+<section class='post-content'><p>Well after a long absence due to a crazy workload, I&rsquo;m baaaack!</p>
+
+<p>Keepin&rsquo; it simple at this point. I&rsquo;ve resumed studying for MCTS exams and I&rsquo;ve been reading about dynamic management views. I love them. What&rsquo;s more, I love the detail they provide and the capability for deeper analysis.</p>
+
+<p>So today I was exploring sys.dm<em>exec</em>query<em>stats and I run across the ability to use CROSS APPLY to view the execution plan xml or the sql text using sys.dm</em>exec<em>query</em>plan and sys.dm<em>exec</em>sql_text. I&rsquo;m really excited about this - I figure I can use all these together like I might use Profiler to find problem queries. For example:</p>
+<pre class="highlight plaintext"><code>SELECT * FROM sys.dm_exec_query_stats
+CROSS APPLY sys.dm_exec_query_plan(plan_handle)
+ORDER BY max_elapsed_time DESC
+</code></pre>
+<p>The result is an additional column, query_plan. Which is the XML show plan. But when I tried to save the result and open it to view the graphical execution plan I got errors.</p>
+
+<p>The first error was an &ldquo;unexpected error&rdquo; which can be reproduced by first, clicking the link in the results pane which is available when
+a field contains XML. This opens a new query window to display the XML. When I used &ldquo;Save As&hellip;&rdquo; to save the file as a *.sqlplan file, then tried to open the file I get an &ldquo;unexpected error&rdquo; message from Visual Studio (SSMS). Fortunately, I found that if I close the file and then open it to view the graphical plan, it works. I&rsquo;m assuming there must be some file handle problem.</p>
+
+<p>The second error occurs if I right-click the xml in the results pane and select &ldquo;Save Results As&hellip;&rdquo;. I&rsquo;m sure some of you who will be
+reading this have already realized what I did wrong. Yes, it&rsquo;s embarrassing, but I write this blog to publish those stupid mistakes in hopes
+that someone else experiencing a brain-lapse (as I often do) might find help.</p>
+
+<p>Anyway, back to the problem, when I try to open the results I get the following:</p>
+<pre class="highlight plaintext"><code>TITLE: Microsoft SQL Server Management Studio
+------------------------------
+
+Error loading execution plan XML file {path}\query_plan4.sqlplan. (SQLEditors)
+
+------------------------------
+ADDITIONAL INFORMATION:
+
+There is an error in XML document (1, 1). (System.Xml)
+
+------------------------------
+
+Data at the root level is invalid. Line 1, position 1. (System.Xml)
+
+------------------------------
+BUTTONS:
+
+OK
+------------------------------
+</code></pre>
+<p>For those who haven&rsquo;t figured the problem out already, the answer is that you can&rsquo;t open a CSV file (output of &ldquo;Save Results As&hellip;&rdquo;) using the execution plan editor, no matter what extension you save it as. Just cause the extension is .sqlplan, doesn&rsquo;t mean that&rsquo;s the contents of the file.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Viewing XML Query Plans in SSMS&amp;amp;url=http://www.developmentalmadness.com/2006/11/21/viewing-xml-query-plans-in-ssms/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2006/11/21/viewing-xml-query-plans-in-ssms/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2006/11/21/viewing-xml-query-plans-in-ssms/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2006/07/25/database-load-balancing-service-for/'>
+<section class='post'>
+<h2>Database Load Balancing Service for SQL Server</h2>
+<p>I have been working on a &ldquo;load balancing&rdquo; application for OLAP applications and one or two of my previous&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2007/01/12/use-sql-parameters-to-overcome-ad-hoc/'>
+<section class='post'>
+<h2>Use SQL Parameters to Overcome Ad Hoc Performance Issues</h2>
+<p>As I look around the net at different articles and tutorials I&rsquo;m surprised at how many use Dynamic SQL&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

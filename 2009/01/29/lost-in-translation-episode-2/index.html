@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Lost in Translation – Episode 2: Tablespaces</title>
+<meta content='In Episode 1 I addressed database instances but I&amp;rsquo;d like to correct a technicality. I compared SQL Server instances with Oracle Database i...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Lost in Translation – Episode 2: Tablespaces' property='og:title'>
+<meta content='In Episode 1 I addressed database instances but I&amp;rsquo;d like to correct a technicality. I compared SQL Server instances with Oracle Database i...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-2/' property='og:url'>
+<meta content='2009-01-29' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Lost in Translation – Episode 2: Tablespaces' name='twitter:title'>
+<meta content='In Episode 1 I addressed database instances but I&amp;rsquo;d like to correct a technicality. I compared SQL Server instances with Oracle Database i...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-2/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Lost in Translation – Episode 2: Tablespaces</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-01-29'>
+29 January 2009
+</time>
+on <a href='/tag/lost_in_translation/'>lost_in_translation</a>, <a href='/tag/oracle/'>oracle</a>, <a href='/tag/tablespaces/'>tablespaces</a>, <a href='/tag/sql_server/'>sql_server</a>
+</section>
+</header>
+<section class='post-content'><p>In Episode 1 I addressed database instances but I&rsquo;d like to correct a technicality. I compared SQL Server instances with Oracle Database instances. While this is pretty much correct, I&rsquo;d like to add that technically this isn&rsquo;t correct. At least not according to Oracle&rsquo;s documentation. If you look on your installation disk for the docs directory I recommend reading the <strong>2 Day DBA</strong> document. So far I&rsquo;m finding it very valuable.</p>
+
+<p>Here&rsquo;s a quote from the Chapter 2 overview:</p>
+
+<blockquote>
+<p>After you create a database, either during installation or as a 
+standalone operation, you do not need to create another. Each Oracle 
+instance works with a single database only. Rather than requiring that 
+you to create multiple databases to accommodate different 
+applications, Oracle Database uses a single database, and 
+accommodates multiple applications by enabling you to separate data 
+into different schemas within the single database.</p>
+</blockquote>
+
+<p>According to the docs, an instance of Oracle is the same as a database. This is really all about semantics here, because I still view my original viewpoint as correct. But I also want to make sure what I post here is correct. To reference my language analogy from the first episode, two words or phrases from different languages can be considered direct translations, but there can often be cases where there is a better translation. That doesn&rsquo;t make the translation incorrect. That&rsquo;s the case here and it will be in other comparisons I make. I see it as a many to many relationship between terms in language as well as RDBMS vendors.</p>
+
+<h1>Tablespaces</h1>
+
+<p>From reading the documentation I would translate the term Tablespace in Oracle as a SQL Server database. To quote from the documentation:</p>
+
+<p>A database is divided into logical storage units called tablespaces, which group 
+together related logical structures (such as tables, views, and other database objects).</p>
+
+<p>Which sounds like the definition of a database to me. An Oracle instance comes with a set of default tablespaces installed. EXAMPLE, SYSTEM, SYSAUX, TEMP, UNDOTBS1 and USERS.</p>
+
+<ul>
+<li>EXAMPLE is an optional tablespace. Example is analogous to Northwind and is used by samples and the documentation to provide guidance and a source for demos.</li>
+<li>SYSTEM is Oracle&rsquo;s version of SQL Server&rsquo;s master database. It is a master catalog of the objects in the database.</li>
+<li>SYSAUX is a compliment to System and is used to reduce the demand on System by offloading some of its data into a separate data file, which could be placed on separate physical drive to increase system performance.</li>
+<li>TEMP is basically the same as SQL Server.</li>
+<li>UNDOTBS1 is related to undo files, which are like SQL Server transaction logs. I&rsquo;m not real clear on how this tablespace is used with undo files yet, I&rsquo;m just pretty much rehashing the documentation here.</li>
+<li>USERS is a user tablespace. If you create a database object and don&rsquo;t have your own tablespace or don&rsquo;t specify which tablespace your object will be stored in then it will be stored in USERS. SQL Server doesn&rsquo;t have an equivalent here. SQL Server requires you to create a user database for your data and when you create an object, unless you use a fully-qualified object name the object you create will be placed in whichever database you&rsquo;re connected to.</li>
+</ul>
+
+<p>Each of the built-in tablespaces has its own data file and each user tablespace you create will contain one or more data file.</p>
+
+<p>Just to touch on the system tables in SQL Server for a second, SQL Server also has two other system databases named “model” and “msdb”:</p>
+
+<ul>
+<li><strong>model</strong> is actually attached to an instance of SQL Server and there is no equivalent tablespace in Oracle. However, Oracle does have a different way of accomplishing the same thing. The DBCA has templates you can use, both default and user defined which can be used to create a new Oracle Database Instance.  This is generally the purpose of SQL Server&rsquo;s model database, to act as a template for new user databases.</li>
+<li><strong>msdb</strong> is where objects like scheduled jobs are stored. I don&rsquo;t know the exact correlation with Oracle, I imagine these are either in SYS or SYSAUX. But since I don&rsquo;t know what is stored in the specific system tables in Oracle, I can&rsquo;t make the comparison at this time.</li>
+</ul>
+
+<h1>Creating Tablespaces</h1>
+
+<p>Creating a new tablespace using the Oracle Enterprise Manager is much like it is in SQL Server, the options are very similar and once you locate the tools for creating a tablespace the rest should come naturally, assuming of course you&rsquo;re familiar with how this is done in SQL Server.</p>
+
+<p>If you&rsquo;re logged into Enterprise Manager, click on the “Server” link located in the top nav bar. Then click on “Tablespaces” under the “Storage” heading.</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2009/01_29/OracleTablespaces_thumb.jpg" alt="Oracletablespaces thumb" /></p>
+
+<p>To create a new tablespace, click “Create” located just above the list of tablespaces.</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2009/01_29/Oracle_CreateTablespace_thumb%5B1%5D.jpg" alt="Oracle createtablespace thumb%5b1%5d" /></p>
+
+<p>One the next screen, name the tablespace and accept the default settings. But before saving the settings, you need to add a data file:</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2009/01_29/Oracle_CreateTablespaceGeneral_thumb%5B2%5D.jpg" alt="Oracle createtablespacegeneral thumb%5b2%5d" /></p>
+
+<p>After clicking the “Add” button, fill out the file name, check the AUTOEXTEND option and set the amount the file will grow by each time you exceed the currently allocated file space. Unfortunately, Oracle doesn&rsquo;t have a option to grow by percent, which is what I always select in SQL Server. Once you&rsquo;re selected the options, click “Continue”.</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2009/01_29/OracleEM_AddDatafile_thumb.jpg" alt="Oracleem adddatafile thumb" /></p>
+
+<p>Before saving these changes, click “Show SQL” at the bottom right. You can skip this step, of course, but I usually script my own DDL in SQL Server and so I want to learn the syntax by looking at what is generated by Enterprise Manager. Here&rsquo;s what you&rsquo;ll see:</p>
+<pre class="highlight plaintext"><code>CREATE SMALLFILE TABLESPACE "MYFIRSTORACLEDB" DATAFILE 'C:\APP\MARK\ORADATA\ORACLE11\DataFile1' SIZE 100M AUTOEXTEND ON NEXT 10M MAXSIZE UNLIMITED LOGGINGEXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO DEFAULT NOCOMPRESS
+</code></pre>
+<p>To return to “Create Tablespace”, just click “Return”. Now click “OK” and you&rsquo;re set. You&rsquo;ve created your tablespace.</p>
+
+<h1>Conclusion</h1>
+
+<p>Now you can either script a tablespace or use the GUI to create one. Either way, you&rsquo;ve done the equivalent of creating a SQL Server database file by creating your own Oracle tablespace. Next episode, we&rsquo;ll look into creating tables. I don&rsquo;t know about you, but already I feel like things have cleared up considerably and I&rsquo;m much farther along. Once we&rsquo;ve created our database objects we&rsquo;ll look into connecting to our database from a client application and writing DML statements against our schema. Then we can look at other database objects like views, procedures, functions, triggers. These are obviously the same as SQL Server, but will of course have their own syntax and that&rsquo;s what we&rsquo;ll focus on at that point.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Lost in Translation – Episode 2: Tablespaces&amp;amp;url=http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-2/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-2/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-2/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/01/29/lost-in-translation-episode-1-database/'>
+<section class='post'>
+<h2>Lost In Translation - Episode 1: Database Instances</h2>
+<p>I have been using SQL Server for about 8 years now. When compared to my peers (read: coworkers) I&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/02/02/lost-in-translation-episode-3-users-and/'>
+<section class='post'>
+<h2>Lost In Translation – Episode 3: Users and Schemas</h2>
+<p>In my last post I mentioned I would be addressing tables next, but as I read through the documentation&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

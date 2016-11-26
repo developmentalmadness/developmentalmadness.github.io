@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: datepicker</title>
+  <subtitle>Posts tagged with datepicker</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/datepicker/feed.xml" rel="self"/>
+  <updated>2009-08-27T18:34:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Silverlight/WPF: Customizing the DatePicker Control</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/08/27/silverlightwpf-customizing-the-datepicker-control/"/>
+    <id>http://www.developmentalmadness.com/2009/08/27/silverlightwpf-customizing-the-datepicker-control/</id>
+    <published>2009-08-27T18:34:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Source Code
+
+I’m working on a Silverlight scheduling application and wanted to make the DatePicker control from the Silverlight Toolkit look like the program icon on my iPod Touch. The calendar looks icon like a day calendar and dynamically displays the</summary>
+  </entry>
+</feed>

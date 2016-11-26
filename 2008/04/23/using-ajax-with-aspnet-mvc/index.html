@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Using Ajax with ASP.NET MVC</title>
+<meta content='One of the features I continue to wait for from the ASP.NET MVC team is a server control library to work with the MVC framework. So as I have be...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Using Ajax with ASP.NET MVC' property='og:title'>
+<meta content='One of the features I continue to wait for from the ASP.NET MVC team is a server control library to work with the MVC framework. So as I have be...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/' property='og:url'>
+<meta content='2008-04-23' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Using Ajax with ASP.NET MVC' name='twitter:title'>
+<meta content='One of the features I continue to wait for from the ASP.NET MVC team is a server control library to work with the MVC framework. So as I have be...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Using Ajax with ASP.NET MVC</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2008-04-23'>
+23 April 2008
+</time>
+on <a href='/tag/extjs/'>extjs</a>, <a href='/tag/mvc/'>mvc</a>, <a href='/tag/scriptmanager/'>scriptmanager</a>, <a href='/tag/system_web_extensions/'>system_web_extensions</a>, <a href='/tag/clientscriptmanager/'>clientscriptmanager</a>, <a href='/tag/scriptcontrol/'>scriptcontrol</a>, <a href='/tag/asp_net/'>asp_net</a>, <a href='/tag/asp_net_mvc/'>asp_net_mvc</a>, <a href='/tag/ajax/'>ajax</a>
+</section>
+</header>
+<section class='post-content'><p>One of the features I continue to wait for from the ASP.NET MVC team is a server control library to work with the MVC framework. So as I have been working on a project using ASP.NET MVC I have begun developing my own library of server controls.</p>
+
+<p>Recently, I began looking at the ExtJs library as a client-side script library for my project. I love how extensible the library is and the documentation is very good. However, there seems to be quite a bit of boiler plate code to be written for any data driven controls. So I decided to look into developing a library of controls to wrap the creation and configuration of ExtJs controls.</p>
+
+<p>The main problem is that the MVC framework doesn&rsquo;t currently provide built-in javascript/ajax support. Sure you can do it all by hand, but I am determined that the current project I am working on will be very designer friendly. Which is one of the reasons I really like MVC - the code is moved away from the view which means away from the designer.</p>
+
+<p>When developing server controls with client capabilities for the ASP.NET web forms model the controls depend heavily on the ScriptManager and ClientScriptManager classes which in turn depend upon a form element with the runat attribute set to &ldquo;server&rdquo;. But the MVC model doesn&rsquo;t use a server-side form element.</p>
+
+<p>However, I determined that by creating an abstraction layer I could create server controls using the same model as web forms. The abstraction layer then allows the authoring of server controls which no longer depend on the web forms model. This allows the controls to then be used for both the web forms model as well as the MVC model.</p>
+
+<p>Today, I created a project on CodePlex which consists of the abstraction layer I created as well as a server control library based on the abstraction layer which encapsulates the ExtJs library.</p>
+
+<p>So far, the Panel control is the only control I have authored. But over the next few weeks and months I plan to continue developing additional server controls which will make it easy to create client controls which connect to web services and WCF services by simply dragging the control to the designer and setting a view properties.</p>
+
+<p>Here&rsquo;s just an example of how easy it is to use these server controls in your MVC or web forms project.</p>
+
+<p>At the top of your aspx file include the following declaration:</p>
+<pre class="highlight plaintext"><code>&lt;%@ Register Assembly="DevelopmentalMadness.Web.UI.ExtJsControlLibrary" Namespace="DevelopmentalMadness.Web.UI.ExtJsControlLibrary" TagPrefix="js" %&gt;
+</code></pre>
+<p>Then anywhere in your page include the next two control declarations:</p>
+<pre class="highlight plaintext"><code>&lt;js:extjsscriptmanager id="ScriptManager1" runat="server"/&gt;
+
+&lt;js:extjspanel id="myPanel" title="control title" width="300px" runat="server" collapsible="true" html="control content"/&gt;
+</code></pre>
+<p>And that&rsquo;s it. If you download the latest source code from my CodePlex project you&rsquo;ll see an example of using these controls in both an MVC application as well as a web forms project.</p>
+
+<p>As I add new capabilities I&rsquo;ll write tutorials. My biggest hope is that others will use the abstraction library to write controls for other javascript libraries like JQuery or others.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Using Ajax with ASP.NET MVC&amp;amp;url=http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2008/04/01/fast-rowcount-for-sql-2005/'>
+<section class='post'>
+<h2>Fast RowCount for SQL 2005</h2>
+<p>This is nothing new or revolutionary, but is important nonetheless for those maintaining large-scale SQL Server databases. For years&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2008/04/24/fix-for-syswebformspagerequestmanagerse/'>
+<section class='post'>
+<h2>"FIX" for Sys.WebForms.PageRequestManagerServerErrorException 12019 Problem with MultipleIEs</h2>
+<p>Before I started working with ASP.NET Ajax I found using MultipleIEs very valuable for testing pages for both IE6&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

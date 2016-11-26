@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: New findings on CLR string split performance</title>
+<meta content='Today I was envolved in a discussion thread which revolved around the SQL CLR. Naturally I jumped in in defense of the CLR based on my own exper...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='New findings on CLR string split performance' property='og:title'>
+<meta content='Today I was envolved in a discussion thread which revolved around the SQL CLR. Naturally I jumped in in defense of the CLR based on my own exper...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2008/05/13/new-findings-on-clr-string-split/' property='og:url'>
+<meta content='2008-05-13' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='New findings on CLR string split performance' name='twitter:title'>
+<meta content='Today I was envolved in a discussion thread which revolved around the SQL CLR. Naturally I jumped in in defense of the CLR based on my own exper...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2008/05/13/new-findings-on-clr-string-split/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>New findings on CLR string split performance</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2008-05-13'>
+13 May 2008
+</time>
+</section>
+</header>
+<section class='post-content'><p>Today I was envolved in a discussion thread which revolved around the SQL CLR. Naturally I jumped in in defense of the CLR based on my own experience. But one of the other participants pointed me to a blog post by Paul Nielsen about lessons learned while building a system with a SLA of 35k tps (transactions per second).</p>
+
+<p>According to Paul, due to the marshalling requirements of the CLR the string split method eventually becomes much slower than the regular T-SQL solution. Apparenly, it doesn&rsquo;t hold up under a large number of concurrent transactions.</p>
+
+<p>Before I go all chicken little and dump the CLR, splitting strings is not the only use for it in SQL Server. So don&rsquo;t throw the baby out with the bath water. But what this tells me is how important it is to do proper testing under realistic conditions.</p>
+
+<p>http://sqlblog.com/blogs/paul_nielsen/archive/2007/12/12/10-lessons-from-35k-tps.aspx</p>
+
+<p>On a side note, another user pointed out a more efficient method for doing T-SQL splits - the tally table. Here&rsquo;s a link to a very good article on that topic. A must read: http://www.sqlservercentral.com/articles/TSQL/62867/</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=New findings on CLR string split performance&amp;amp;url=http://www.developmentalmadness.com/2008/05/13/new-findings-on-clr-string-split/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2008/05/13/new-findings-on-clr-string-split/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2008/05/13/new-findings-on-clr-string-split/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2008/05/08/ntro-to-wcf-for-ajax/'>
+<section class='post'>
+<h2>Intro to WCF for Ajax</h2>
+<p>It&rsquo;s finally time to dig into what all the buzz with WCF is about. From what I hear it&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2008/06/09/information-for-every-developer-owasp/'>
+<section class='post'>
+<h2>Information for every developer: OWASP</h2>
+<p>A friend of mine recently was the victim of identity theft. Fortunately, for him the bank caught it before&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

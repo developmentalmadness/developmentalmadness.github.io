@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: t-sql</title>
+  <subtitle>Posts tagged with t-sql</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/t-sql/feed.xml" rel="self"/>
+  <updated>2010-04-29T15:20:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>SQL Server add column with DEFAULT CONSTRAINT: The Dumb Little Things</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2010/04/29/sql-server-add-column-with-default-constraint-the-dumb-little/"/>
+    <id>http://www.developmentalmadness.com/2010/04/29/sql-server-add-column-with-default-constraint-the-dumb-little/</id>
+    <published>2010-04-29T15:20:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Sometimes you think you know and then when you go and open your big mouth and make a fool of yourself. 
+
+
+
+I generally script all my database changes by hand. Not 100%, if it’s a big change I’ll right-click the object and use the script menu command to</summary>
+  </entry>
+</feed>

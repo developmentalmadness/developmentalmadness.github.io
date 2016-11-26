@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness</title>
+<meta content='The musings, frustrations and epiphanies of a common web programmer.' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='website' property='og:type'>
+<meta content='The musings, frustrations and epiphanies of a common web programmer.' property='og:description'>
+<meta content='http://www.developmentalmadness.com/page/3/' property='og:url'>
+<meta content='summary' name='twitter:card'>
+<meta content='The musings, frustrations and epiphanies of a common web programmer.' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/page/3/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='paged nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover'>
+<nav class='main-nav overlay clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+<div class='vertical'>
+<div class='main-header-content inner'>
+<h1 class='page-title'>developMENTALmadness</h1>
+<h2 class='page-description'>The musings, frustrations and epiphanies of a common web programmer.</h2>
+</div>
+</div>
+<a class='scroll-down icon-arrow-left' data-offset='-45' href='#content'>
+<span class='hidden'>Scroll Down</span>
+</a>
+</header>
+<main class='content' id='content' role='main'>
+<div class='extra-pagination inner'>
+<nav class='pagination' role='pagination'>
+<a href="../2/" class="newer-posts">← Newer Posts</a>
+<span class='page-number'>Page 3 of 21</span>
+<a href="../4/" class="older-posts">Older Posts →</a>
+</nav>
+
+</div>
+<article class='post'>
+<header class='post-header'>
+<h2 class='post-title'><a href="../../2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/">Docker: Permanently Mount a VirtualBox Shared Folder</a></h2>
+</header>
+<section class='post-excerpt'>
+<p>
+While this technique works for both Windows and OSX, most Windows developers I know don’t keep their source code in the Users folder on the system drive. Historically there have been too many problems:
+
+
+The path used to start with C:\Documents and Settings
+
+
+<a href="../../2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/" class="read-more">&raquo;</a>
+</p>
+</section>
+<footer class='post-meta'>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+on <a href='/tag/docker/'>docker</a>, <a href='/tag/virtualbox/'>virtualbox</a>
+<time class='post-date' datetime='2016-03-05'>
+05 March 2016
+</time>
+</footer>
+</article>
+<article class='post'>
+<header class='post-header'>
+<h2 class='post-title'><a href="../../2016/02/27/working-with-docker/">Working with Docker</a></h2>
+</header>
+<section class='post-excerpt'>
+<p>
+Every developer has a workflow: how their environment is configured and how they access tools and resources. Personally, I have come to prefer lightweight tools and minimal setup.
+
+I thought as I started working with Docker I would need to setup either
+<a href="../../2016/02/27/working-with-docker/" class="read-more">&raquo;</a>
+</p>
+</section>
+<footer class='post-meta'>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+on <a href='/tag/docker/'>docker</a>
+<time class='post-date' datetime='2016-02-27'>
+27 February 2016
+</time>
+</footer>
+</article>
+<article class='post'>
+<header class='post-header'>
+<h2 class='post-title'><a href="../../2016/02/23/scala-connecting-to-postgres-via-slick-3/">scala: Connecting to Postgres via Slick 3</a></h2>
+</header>
+<section class='post-excerpt'>
+<p>
+Got Slick working with Postgres this morning and I thought I’d just write it up before I forget. I’m assuming you already know how to create a new scala project that uses sbt for build and dependencies.
+
+Environment Variables
+
+For this post you’ll need
+<a href="../../2016/02/23/scala-connecting-to-postgres-via-slick-3/" class="read-more">&raquo;</a>
+</p>
+</section>
+<footer class='post-meta'>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+on <a href='/tag/postgresql/'>postgresql</a>, <a href='/tag/docker/'>docker</a>, <a href='/tag/scala/'>scala</a>, <a href='/tag/typesafe-slick/'>typesafe-slick</a>
+<time class='post-date' datetime='2016-02-23'>
+23 February 2016
+</time>
+</footer>
+</article>
+<article class='post'>
+<header class='post-header'>
+<h2 class='post-title'><a href="../../2016/02/18/security-theres-a-password-in-my-repository/">security: There's a password in my repository!</a></h2>
+</header>
+<section class='post-excerpt'>
+<p>
+TLDR - Environment Variables
+
+Where possible you won’t see me do this anymore:
+url = "jdbc:postgresql://127.0.0.1:5432/postgres?user=postgres&amp;password=12345"
+
+Or this:
+&lt;connectionStrings&gt;
+  &lt;add name="my-db" connectionString="server=.;database=my-app
+<a href="../../2016/02/18/security-theres-a-password-in-my-repository/" class="read-more">&raquo;</a>
+</p>
+</section>
+<footer class='post-meta'>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+on <a href='/tag/security/'>security</a>
+<time class='post-date' datetime='2016-02-18'>
+18 February 2016
+</time>
+</footer>
+</article>
+<article class='post'>
+<header class='post-header'>
+<h2 class='post-title'><a href="../../2016/02/16/git-collaborate-using-pull-requests/">git: Collaborate Using Pull Requests</a></h2>
+</header>
+<section class='post-excerpt'>
+<p>
+Following is my take on the Integration-Manager Workflow:
+
+
+
+I hope to help others better understand how to implement collaborative workflows with git and github and improve my own understanding. Let’s dive in:
+
+Creating A Pull Request
+
+We’ll start with
+<a href="../../2016/02/16/git-collaborate-using-pull-requests/" class="read-more">&raquo;</a>
+</p>
+</section>
+<footer class='post-meta'>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+on <a href='/tag/git/'>git</a>, <a href='/tag/github/'>github</a>
+<time class='post-date' datetime='2016-02-16'>
+16 February 2016
+</time>
+</footer>
+</article>
+<article class='post'>
+<header class='post-header'>
+<h2 class='post-title'><a href="../../2016/02/04/aws-hosting-a-static-website-in-s3/">AWS: Hosting a Static Website in S3</a></h2>
+</header>
+<section class='post-excerpt'>
+<p>
+My team at work has decided to adopt the Thoughtworks Technology Radar as a means to communicate what our team is working on at a high level. One of our team members found a project on Github that uses an SVG library to create a Tech Radar graph client
+<a href="../../2016/02/04/aws-hosting-a-static-website-in-s3/" class="read-more">&raquo;</a>
+</p>
+</section>
+<footer class='post-meta'>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+on <a href='/tag/amazon-web-services-aws/'>amazon-web-services-aws</a>, <a href='/tag/simple-storage-service-s3/'>simple-storage-service-s3</a>
+<time class='post-date' datetime='2016-02-04'>
+04 February 2016
+</time>
+</footer>
+</article>
+<nav class='pagination' role='pagination'>
+<a href="../2/" class="newer-posts">← Newer Posts</a>
+<span class='page-number'>Page 3 of 21</span>
+<a href="../4/" class="older-posts">Older Posts →</a>
+</nav>
+
+
+</main>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../javascripts/application.js"></script>
+</body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Wrestling with XML Namespaces and WPF</title>
+<meta content='I have been using XML for internal data formats for many years. Mostly for the purpose of transforming data using XSLT. So while I&amp;rsquo;ve been...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Wrestling with XML Namespaces and WPF' property='og:title'>
+<meta content='I have been using XML for internal data formats for many years. Mostly for the purpose of transforming data using XSLT. So while I&amp;rsquo;ve been...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2008/10/27/wrestling-with-xml-namespaces-and-wpf/' property='og:url'>
+<meta content='2008-10-27' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Wrestling with XML Namespaces and WPF' name='twitter:title'>
+<meta content='I have been using XML for internal data formats for many years. Mostly for the purpose of transforming data using XSLT. So while I&amp;rsquo;ve been...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2008/10/27/wrestling-with-xml-namespaces-and-wpf/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Wrestling with XML Namespaces and WPF</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2008-10-27'>
+27 October 2008
+</time>
+on <a href='/tag/wpf/'>wpf</a>, <a href='/tag/data_binding/'>data_binding</a>, <a href='/tag/namespace/'>namespace</a>, <a href='/tag/xmldocument/'>xmldocument</a>, <a href='/tag/xmldataprovider/'>xmldataprovider</a>
+</section>
+</header>
+<section class='post-content'><p>I have been using XML for internal data formats for many years. Mostly for the purpose of transforming data using XSLT. So while I&rsquo;ve been working with XML for a long time, I have never had the need to work with namespaces other than those that were standard with XSLT.</p>
+
+<p>But this weekend I had my first real run-in with namespaces and I figure I&rsquo;ll share a bit of what I learned here.</p>
+
+<p>I am planning on using Amazon Web Service&rsquo;s S3 service to store what I&rsquo;m hoping will be a large number of images for a startup I&rsquo;m working on. In order to initially manage my buckets (and because I&rsquo;m trying to dabble a bit with WPF) I&rsquo;m writing a small application to allow me to create and manage S3 buckets.</p>
+
+<p>I&rsquo;ve downloaded the .NET library for S3 and so far it has been pretty slick for creating buckets and objects. But the ACL methods for managing permissions don&rsquo;t really try to do much for you, so you&rsquo;ve got to work the the raw XML yourself. Here&rsquo;s an example of an ACL response:</p>
+<pre class="highlight plaintext"><code>&lt;AccessControlPolicy&gt;
+  &lt;Owner&gt;
+    &lt;ID&gt;a9a7b886d6fd24a52fe8ca5bef65f89a64e0193f23000e241bf9b1c61be666e9&lt;/ID&gt;
+    &lt;DisplayName&gt;chriscustomer&lt;/DisplayName&gt;
+  &lt;/Owner&gt;
+  &lt;AccessControlList&gt;
+    &lt;Grant&gt;
+      &lt;Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CanonicalUser"&gt;
+        &lt;ID&gt;a9a7b886d6fd24a52fe8ca5bef65f89a64e0193f23000e241bf9b1c61be666e9&lt;/ID&gt;
+        &lt;DisplayName&gt;chriscustomer&lt;/DisplayName&gt;
+      &lt;/Grantee&gt;
+      &lt;Permission&gt;FULL_CONTROL&lt;/Permission&gt;
+    &lt;/Grant&gt;
+    &lt;Grant&gt;
+      &lt;Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CanonicalUser"&gt;
+        &lt;ID&gt;79a59df900b949e55d96a1e698fbacedfd6e09d98eacf8f8d5218e7cd47ef2be&lt;/ID&gt;
+        &lt;DisplayName&gt;Frank&lt;/DisplayName&gt;
+      &lt;/Grantee&gt;
+      &lt;Permission&gt;WRITE&lt;/Permission&gt;
+    &lt;/Grant&gt;
+    &lt;Grant&gt;
+      &lt;Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CanonicalUser"&gt;
+        &lt;ID&gt;79a59df900b949e55d96a1e698fbacedfd6e09d98eacf8f8d5218e7cd47ef2be&lt;/ID&gt;
+        &lt;DisplayName&gt;Frank&lt;/DisplayName&gt;
+      &lt;/Grantee&gt;
+      &lt;Permission&gt;READ_ACP&lt;/Permission&gt;
+    &lt;/Grant&gt;
+    &lt;Grant&gt;
+      &lt;Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CanonicalUser"&gt;
+        &lt;ID&gt;e019164ebb0724ff67188e243eae9ccbebdde523717cc312255d9a82498e394a&lt;/ID&gt;
+        &lt;DisplayName&gt;Jose&lt;/DisplayName&gt;
+      &lt;/Grantee&gt;
+      &lt;Permission&gt;WRITE&lt;/Permission&gt;
+    &lt;/Grant&gt;
+    &lt;Grant&gt;
+      &lt;Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CanonicalUser"&gt;
+        &lt;ID&gt;e019164ebb0724ff67188e243eae9ccbebdde523717cc312255d9a82498e394a&lt;/ID&gt;
+        &lt;DisplayName&gt;Jose&lt;/DisplayName&gt;
+      &lt;/Grantee&gt;
+      &lt;Permission&gt;READ_ACP&lt;/Permission&gt;
+    &lt;/Grant&gt;
+    &lt;Grant&gt;
+      &lt;Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="Group"&gt;
+        &lt;URI&gt;http://acs.amazonaws.com/groups/global/AllUsers&lt;/URI&gt;
+      &lt;/Grantee&gt;
+      &lt;Permission&gt;READ&lt;/Permission&gt;
+    &lt;/Grant&gt;
+  &lt;/AccessControlList&gt;
+&lt;/AccessControlPolicy&gt;
+</code></pre>
+<p>I&rsquo;m still pretty new to WPF so it took some wrangling to get everything to databind the way I wanted. I wanted to display the owner at the top of the form and then list the permissions using a ListView. So I wanted the data bound to the window object and then allow child controls to inherit from the Window&rsquo;s DataContext.</p>
+
+<p>The frustrating point was that it seems as if every single WPF example is written using data that&rsquo;s embedded directly in the XAML. This does nothing to help me understand as I don&rsquo;t write many applications where the data is static. So first I did some reading up on data binding to help me to better understand the concepts behind it:
+http://msdn.microsoft.com/en-us/library/ms750612.aspx
+Then after searching around I found a few helpful examples. First, an example of declaring namespaces in XAML along with an XmlDataProvider:
+http://www.codeproject.com/KB/WPF/Picasaweb<em>Album</em>Viewer.aspx
+This was nice since the article is about working with Google&rsquo;s Picasa, so it also involved using namespaces defined by an external web service, so it exactly correlated with what I was trying to do. After reading through that article I came up with this:</p>
+<pre class="highlight plaintext"><code>&lt;Window x:Class="AWSS3Manager.Windows.Permissions"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Permissions" Height="310" Width="484"&gt;
+    &lt;Window.Resources&gt;
+        &lt;XmlNamespaceMappingCollection x:Key="AWSNamespaces"&gt;
+            &lt;XmlNamespaceMapping Uri="http://s3.amazonaws.com/doc/2006-03-01/" Prefix="aws" /&gt;
+            &lt;XmlNamespaceMapping Uri="http://www.w3.org/2001/XMLSchema-instance" Prefix="xsi" /&gt;
+        &lt;/XmlNamespaceMappingCollection&gt;
+        &lt;XmlDataProvider x:Key="m_Data" XPath="/aws:AccessControlPolicy" 
+                         XmlNamespaceManager="{StaticResource AWSNamespaces}" /&gt;
+    &lt;/Window.Resources&gt;
+    &lt;Window.DataContext&gt;
+        &lt;Binding Source="{StaticResource m_Data}" /&gt;
+    &lt;/Window.DataContext&gt;
+
+    .... XAML goes here ....
+
+&lt;/Window&gt;
+</code></pre>
+<p>I bind the XmlDataProvider like this: </p>
+<pre class="highlight plaintext"><code>XmlDocument data = new XmlDocument();
+//data.LoadXml(response.Object.Data);
+data.LoadXml("&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;"
+    + "&lt;AccessControlPolicy xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"&gt;"
+    + "&lt;Owner&gt;&lt;ID&gt;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&lt;/ID&gt;"
+    + "&lt;DisplayName&gt;developmentalmadness&lt;/DisplayName&gt;"
+    + "&lt;/Owner&gt;&lt;AccessControlList&gt;&lt;Grant&gt;"
+    + "&lt;Grantee xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:type=\"CanonicalUser\"&gt;"
+    + "&lt;ID&gt;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&lt;/ID&gt;"
+    + "&lt;DisplayName&gt;developmentalmadness&lt;/DisplayName&gt;&lt;/Grantee&gt;"
+    + "&lt;Permission&gt;FULL_CONTROL&lt;/Permission&gt;&lt;/Grant&gt;"
+    + "&lt;/AccessControlList&gt;&lt;/AccessControlPolicy&gt;");
+
+XmlDataProvider m_Data = this.FindResource("m_Data") as XmlDataProvider;
+if (m_Data == null)
+    return;
+
+m_Data.Document = data;
+</code></pre>
+<p>Now I&rsquo;m able to use XAML to bind the owner to a TextBlock like this:</p>
+<pre class="highlight plaintext"><code>        &lt;TextBlock Grid.Column="1" Grid.Row="0" 
+                   Text="{Binding XPath=aws:Owner/aws:DisplayName}" /&gt;
+</code></pre>
+<p>And a ListView like this:</p>
+<pre class="highlight plaintext"><code>        &lt;ListView Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Height="217" 
+                  Name="m_ACLList" ItemsSource="{Binding XPath=aws:AccessControlList/aws:Grant}"&gt;
+            &lt;ListView.View&gt;
+                &lt;GridView&gt;
+                    &lt;GridViewColumn Header="Name" Width="310" 
+                        DisplayMemberBinding="{Binding XPath=aws:Grantee/aws:DisplayName}" /&gt;
+                    &lt;GridViewColumn Header="Permission" Width="150" 
+                        DisplayMemberBinding="{Binding XPath=aws:Permission}" /&gt;
+                &lt;/GridView&gt;
+            &lt;/ListView.View&gt;
+        &lt;/ListView&gt;
+</code></pre>
+<p>The trick is that without the namespace declarations the binding will not work. This isn&rsquo;t so much WPF that requires this as System.Xml.XmlDocument. Which brings us to my second point. Now that I am able to bind to an XmlDocument object I need to be able to add items to the document. It didn&rsquo;t occur to me that this would be as difficult as it was. Here&rsquo;s the XAML my event handler depends on:</p>
+<pre class="highlight plaintext"><code>        &lt;StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal"&gt;
+            &lt;TextBlock&gt;Type:&lt;/TextBlock&gt;
+            &lt;ComboBox Name="m_AclType" Width="75"&gt;
+                &lt;ComboBoxItem&gt;Anonymous&lt;/ComboBoxItem&gt;
+                &lt;ComboBoxItem&gt;Email&lt;/ComboBoxItem&gt;
+            &lt;/ComboBox&gt;
+
+            &lt;TextBlock&gt;Value:&lt;/TextBlock&gt;
+            &lt;TextBox Name="m_AclValue" Width="145"&gt;&lt;/TextBox&gt;
+
+            &lt;TextBlock&gt;Permission:&lt;/TextBlock&gt;
+            &lt;ComboBox Name="m_AclPermission" Width="100"&gt;
+                &lt;ComboBoxItem&gt;READ&lt;/ComboBoxItem&gt;
+                &lt;ComboBoxItem&gt;WRITE&lt;/ComboBoxItem&gt;
+                &lt;ComboBoxItem&gt;READ_ACP&lt;/ComboBoxItem&gt;
+                &lt;ComboBoxItem&gt;WRITE_ACP&lt;/ComboBoxItem&gt;
+                &lt;ComboBoxItem&gt;FULL_CONTROL&lt;/ComboBoxItem&gt;
+            &lt;/ComboBox&gt;
+
+            &lt;Button Name="m_AddAcl" Click="m_AddAcl_Click"&gt;Add&lt;/Button&gt;
+        &lt;/StackPanel&gt;
+</code></pre>
+<p>And here&rsquo;s the event handler:</p>
+<pre class="highlight plaintext"><code>private void m_AddAcl_Click(object sender, RoutedEventArgs e)
+{
+    XmlNamespaceMappingCollection manager = this.FindResource("AWSNamespaces") 
+        as XmlNamespaceMappingCollection;
+    if (manager == null)
+        return;
+
+    XmlDataProvider m_Data = this.FindResource("m_Data") as XmlDataProvider;
+    if (m_Data == null)
+        return;
+
+    XmlDocument data = m_Data.Document;
+    XmlNode acl = data.SelectSingleNode(
+        "/aws:AccessControlPolicy/aws:AccessControlList", 
+        manager);
+
+    XmlElement grant = data.CreateElement("Grant");
+
+    XmlElement grantee = data.CreateElement("Grantee");
+    XmlAttribute type = data.CreateAttribute("xsi:type", 
+        "http://www.w3.org/2001/XMLSchema-instance");
+    XmlElement detail = null;
+
+    switch (m_AclType.SelectionBoxItem as String)
+    {
+        case "Email":
+            type.Value = "EmailAddress";
+            detail = data.CreateElement("EmailAddress");
+            detail.InnerText = m_AclValue.Text;
+            break;
+        case "Anonymous":
+            type.Value = "Anonymous";
+            detail = data.CreateElement("Uri");
+            detail.InnerText = "http://acs.amazonaws.com/groups/global/AllUsers";
+            break;
+    }
+
+    grantee.Attributes.Append(type);
+    grantee.AppendChild(detail);
+    grant.AppendChild(grantee);
+
+    XmlElement permission = data.CreateElement("Permission");
+    permission.InnerText = m_AclPermission.SelectionBoxItem as String;
+    grant.AppendChild(permission);
+
+    acl.AppendChild(grant);
+}
+</code></pre>
+<p>The problem is that new items wouldn&rsquo;t show up in the ListView after this ran. After a while of trying to figure this out I finally noticed that the &ldquo;Grant&rdquo; element had a blank xmlns attribute, like this:</p>
+<pre class="highlight xml"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;AccessControlPolicy</span> <span class="na">xmlns=</span><span class="s">"http://s3.amazonaws.com/doc/2006-03-01/"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;Owner&gt;</span>
+        <span class="nt">&lt;ID&gt;</span>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx<span class="nt">&lt;/ID&gt;</span>
+        <span class="nt">&lt;DisplayName&gt;</span>developmentalmadness<span class="nt">&lt;/DisplayName&gt;</span>
+    <span class="nt">&lt;/Owner&gt;</span>
+    <span class="nt">&lt;AccessControlList&gt;</span>
+        <span class="nt">&lt;Grant&gt;</span>
+            <span class="nt">&lt;Grantee</span> <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="na">xsi:type=</span><span class="s">"CanonicalUser"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;ID&gt;</span>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx<span class="nt">&lt;/ID&gt;</span>
+                <span class="nt">&lt;DisplayName&gt;</span>developmentalmadness<span class="nt">&lt;/DisplayName&gt;</span>
+            <span class="nt">&lt;/Grantee&gt;</span>
+            <span class="nt">&lt;Permission&gt;</span>FULL_CONTROL<span class="nt">&lt;/Permission&gt;</span>
+        <span class="nt">&lt;/Grant&gt;</span>
+        <span class="nt">&lt;Grant</span> <span class="na">xmlns=</span><span class="s">""</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;Grantee</span> <span class="na">xsi:type=</span><span class="s">"EmailAddress"</span> <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;EmailAddress&gt;</span>user@domain.com<span class="nt">&lt;/EmailAddress&gt;</span>
+            <span class="nt">&lt;/Grantee&gt;</span>
+            <span class="nt">&lt;Permission&gt;</span>FULL_CONTROL<span class="nt">&lt;/Permission&gt;</span>
+        <span class="nt">&lt;/Grant&gt;</span>
+    <span class="nt">&lt;/AccessControlList&gt;</span>
+<span class="nt">&lt;/AccessControlPolicy&gt;</span>
+</code></pre>
+<p>The first Grant element is from the web service, but the second one was added by my event handler. It turns out that when using namespaces with XmlDocument you need to be explicit about it. By leaving out the NamespaceURI when creating a new element I was effectively changing the namespace by setting it to null.</p>
+
+<p>Finding out what to do about this was especially frustrating because all I was finding was solutions to parse the XML and strip the attributes. Other posts just seemed to say, &ldquo;If you don&rsquo;t want a namespace in the document, don&rsquo;t put any there&rdquo;. Which isn&rsquo;t really helpful when I don&rsquo;t control the format of the document.</p>
+
+<p>Finally, I found this post:</p>
+
+<p>http://stackoverflow.com/questions/135000/how-to-prevent-blank-xmlns-attributes-in-output-from-nets-xmldocument</p>
+
+<p>After reading this I added a value for namespaceURI for each call to the CreateElement() method and this issue was fixed as well, here&rsquo;s the updated event handler:</p>
+<pre class="highlight plaintext"><code>private void m_AddAcl_Click(object sender, RoutedEventArgs e)
+{
+    XmlNamespaceMappingCollection manager = this.FindResource("AWSNamespaces") 
+        as XmlNamespaceMappingCollection;
+
+    if (manager == null)
+        return;
+
+    XmlDataProvider m_Data = this.FindResource("m_Data") as XmlDataProvider;
+    if (m_Data == null)
+        return;
+
+    XmlDocument data = m_Data.Document;
+    XmlNode acl = data.SelectSingleNode(
+        "/aws:AccessControlPolicy/aws:AccessControlList", 
+        manager);
+
+    // prevent empty xmlns attribute (xmlns="") rendering by 
+    // assigning NamespaceUri for all elements
+    String uri = data.DocumentElement.NamespaceURI;
+    XmlElement grant = data.CreateElement("Grant", uri);
+
+    XmlElement grantee = data.CreateElement("Grantee", uri);
+    XmlAttribute type = data.CreateAttribute("xsi:type", 
+        "http://www.w3.org/2001/XMLSchema-instance");
+    XmlElement detail = null;
+
+    switch (m_AclType.SelectionBoxItem as String)
+    {
+        case "Email":
+            type.Value = "EmailAddress";
+            detail = data.CreateElement("EmailAddress", uri);
+            detail.InnerText = m_AclValue.Text;
+            break;
+        case "Anonymous":
+            type.Value = "Anonymous";
+            detail = data.CreateElement("Uri", uri);
+            detail.InnerText = "http://acs.amazonaws.com/groups/global/AllUsers";
+            break;
+    }
+
+    grantee.Attributes.Append(type);
+    grantee.AppendChild(detail);
+    grant.AppendChild(grantee);
+
+    XmlElement permission = data.CreateElement("Permission", uri);
+    permission.InnerText = m_AclPermission.SelectionBoxItem as String;
+    grant.AppendChild(permission);
+
+    acl.AppendChild(grant);
+}
+</code></pre>
+<p>Now I have a window, bound to an XmlDocument which contains namespace declarations, was loaded at runtime, and when the document changes the UI is updated.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Wrestling with XML Namespaces and WPF&amp;amp;url=http://www.developmentalmadness.com/2008/10/27/wrestling-with-xml-namespaces-and-wpf/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2008/10/27/wrestling-with-xml-namespaces-and-wpf/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2008/10/27/wrestling-with-xml-namespaces-and-wpf/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2008/09/25/wcf-unknown-error-0xc000009a-couldnt/'>
+<section class='post'>
+<h2>WCF: Unknown error (0xc000009a) Couldn't get process information from performance counter</h2>
+<p>I&rsquo;ve been working with WCF in an intranet environment over the last couple weeks and have been getting some&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2008/11/05/sending-datetime-parameters-from-ajax/'>
+<section class='post'>
+<h2>Sending DateTime Parameters from AJAX to WCF Operations (methods)</h2>
+<p>Yesterday I got stuck on a problem with a DateTime parameter I was attempting to submit to a WCF&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

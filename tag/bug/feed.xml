@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: bug</title>
+  <subtitle>Posts tagged with bug</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/bug/feed.xml" rel="self"/>
+  <updated>2006-06-24T19:45:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>BUG: ASP.NET 2.0 HttpApplication cannot find IHttpHandlerFactory when HttpContext.RewritePath(string) includes PathInfo</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2006/06/24/bug-aspnet-20-httpapplication-cannot/"/>
+    <id>http://www.developmentalmadness.com/2006/06/24/bug-aspnet-20-httpapplication-cannot/</id>
+    <published>2006-06-24T19:45:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">This week we’ve been testing our migration configuration for our upgrade from the .Net 1.1 Framework to 2.0. Last summer I wrote an HttpModule which masks our urls. Internally our url structure resembles “http://domain/path/page.aspx/pathinfo?querystring</summary>
+  </entry>
+</feed>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: error_handling</title>
+  <subtitle>Posts tagged with error_handling</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/error_handling/feed.xml" rel="self"/>
+  <updated>2008-03-19T19:08:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>ASP.NET MVC Error Handling</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/03/19/aspnet-mvc-error-handling/"/>
+    <id>http://www.developmentalmadness.com/2008/03/19/aspnet-mvc-error-handling/</id>
+    <published>2008-03-19T19:08:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">When working with the latest MVC release (Preview 2) I was having trouble working with the Application_Error event in global.asax. While this does work if you want to redirect to an html file, if you want to redirect to an aspx file you need to use the</summary>
+  </entry>
+</feed>

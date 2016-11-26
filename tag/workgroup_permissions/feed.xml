@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: workgroup_permissions</title>
+  <subtitle>Posts tagged with workgroup_permissions</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/workgroup_permissions/feed.xml" rel="self"/>
+  <updated>2009-01-09T18:25:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Modifying XP Pro Permissions For Workgroup Computers</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/01/09/modifying-xp-pro-permissions-for/"/>
+    <id>http://www.developmentalmadness.com/2009/01/09/modifying-xp-pro-permissions-for/</id>
+    <published>2009-01-09T18:25:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Sql Server best practices recommend using a local, low-permissions account as the service account. But if your machine isn’t a member of a domain then you don’t get a security tab in the folder properties window. There’s many reasons to want to control</summary>
+  </entry>
+</feed>

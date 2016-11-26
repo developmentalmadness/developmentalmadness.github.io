@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Use SQL Parameters to Overcome Ad Hoc Performance Issues</title>
+<meta content='As I look around the net at different articles and tutorials I&amp;rsquo;m surprised at how many use Dynamic SQL for samples. Even after the many wa...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Use SQL Parameters to Overcome Ad Hoc Performance Issues' property='og:title'>
+<meta content='As I look around the net at different articles and tutorials I&amp;rsquo;m surprised at how many use Dynamic SQL for samples. Even after the many wa...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2007/01/12/use-sql-parameters-to-overcome-ad-hoc/' property='og:url'>
+<meta content='2007-01-12' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Use SQL Parameters to Overcome Ad Hoc Performance Issues' name='twitter:title'>
+<meta content='As I look around the net at different articles and tutorials I&amp;rsquo;m surprised at how many use Dynamic SQL for samples. Even after the many wa...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2007/01/12/use-sql-parameters-to-overcome-ad-hoc/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Use SQL Parameters to Overcome Ad Hoc Performance Issues</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2007-01-12'>
+12 January 2007
+</time>
+on <a href='/tag/sql_parameters/'>sql_parameters</a>, <a href='/tag/dynamic_sql/'>dynamic_sql</a>, <a href='/tag/injection_attacks/'>injection_attacks</a>, <a href='/tag/sql_performance/'>sql_performance</a>
+</section>
+</header>
+<section class='post-content'><p>As I look around the net at different articles and tutorials I&rsquo;m surprised at how many use Dynamic SQL for samples. Even after the many warnings about SQL injection attacks. But there are other issues besides security. One of which is performance - dynamic SQL performs very poorly when not used properly. So I decided to write an article pointing out how poorly dynamic SQL can be if improperly used. I hope it will convince some to change how they write their client SQL code. Here&rsquo;s the link:</p>
+
+<p>http://www.codeproject.com/cs/database/ParameterizingAdHocSQL.asp</p>
+
+<p>I might even write another article that expands on this idea to put down the misconception that as long as stored procedures are used that the database is free from SQL injection vulnerabilities.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Use SQL Parameters to Overcome Ad Hoc Performance Issues&amp;amp;url=http://www.developmentalmadness.com/2007/01/12/use-sql-parameters-to-overcome-ad-hoc/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2007/01/12/use-sql-parameters-to-overcome-ad-hoc/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2007/01/12/use-sql-parameters-to-overcome-ad-hoc/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2006/11/21/viewing-xml-query-plans-in-ssms/'>
+<section class='post'>
+<h2>Viewing XML Query Plans in SSMS</h2>
+<p>Well after a long absence due to a crazy workload, I&rsquo;m baaaack! Keepin&rsquo; it simple at this point. I&rsquo;ve&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2007/01/22/using-vista-sidebar-gadget-to-consume/'>
+<section class='post'>
+<h2>Using a Vista Sidebar Gadget to Consume an Image Feed</h2>
+<p>CodeProject.com has several Windows Vista coding competitions running at the moment so I thought I&rsquo;d throw my hat in&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

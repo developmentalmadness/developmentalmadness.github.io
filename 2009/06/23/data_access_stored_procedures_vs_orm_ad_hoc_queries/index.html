@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Data Access: Stored Procedures vs. ORM (ad hoc) Queries</title>
+<meta content='I’ve had many spirited discussions over time with my colleagues on this issue. And I will most likely invite a flame war from the developer comm...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Data Access: Stored Procedures vs. ORM (ad hoc) Queries' property='og:title'>
+<meta content='I’ve had many spirited discussions over time with my colleagues on this issue. And I will most likely invite a flame war from the developer comm...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/06/23/data_access_stored_procedures_vs_orm_ad_hoc_queries/' property='og:url'>
+<meta content='2009-06-23' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Data Access: Stored Procedures vs. ORM (ad hoc) Queries' name='twitter:title'>
+<meta content='I’ve had many spirited discussions over time with my colleagues on this issue. And I will most likely invite a flame war from the developer comm...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/06/23/data_access_stored_procedures_vs_orm_ad_hoc_queries/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Data Access: Stored Procedures vs. ORM (ad hoc) Queries</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-06-23'>
+23 June 2009
+</time>
+on <a href='/tag/sql_server_security/'>sql_server_security</a>, <a href='/tag/orm/'>orm</a>, <a href='/tag/sql_server_performance/'>sql_server_performance</a>, <a href='/tag/stored_procedures/'>stored_procedures</a>, <a href='/tag/sql_server/'>sql_server</a>
+</section>
+</header>
+<section class='post-content'><p>I’ve had many spirited discussions over time with my colleagues on this issue. And I will most likely invite a flame war from the developer community for this post, but after reading <a href="http://mattias-jakobsson.net/Item/39/Why%20I%20would%20not%20use%20Stored%20Procedures" rel="nofollow">this post</a></p>
+
+<p>As a disclaimer I don’t take issue with the decision to use /ad hoc SQL over . I use both in my applications and I have always maintained that this is a decision to made by you and your team (if applicable) after weighing the pros/cons against the requirements of your application. But I do take issue with those who <a href="http://weblogs.asp.net/fbouma/archive/2003/11/18/38178.aspx" rel="nofollow">make blanket statements</a></p>
+
+<p>Not only have I used and tested a number of ORM components, but I have had the experience of writing my own to support a large, high-traffic application. I am no stranger to ORM.</p>
+
+<h2>Manageability</h2>
+
+<p>Everybody talks about all the work involved in maintaining stored procedures. Heck, I worked on an application which contained almost 4,000 stored procedures so I agree it can get unwieldy. When we re-wrote the application we went ad hoc with an ORM component. But the ORM couldn’t meet the needs of all our queries so we hand crafted many queries, but now our SQL code was littered across the entire application. Plus, I had to constantly battle improper use of parameters which caused a bloated SQL procedure cache. I was constantly on my soap box pleading with my team to be explicit when declaring their SqlClient parameters.</p>
+
+<p>So you can have an unmanageable mess even without the help of stored procedures. However, the argument that an ORM allows you to just regenerate and go can be applied to stored procedures as well. I have a project I’m working on where I do just that. My stored procedures are largely generated, so they are just as easy to update as an ORM component.</p>
+
+<h4>Troubleshooting</h4>
+
+<p>I have spent many hours analyzing <a href="http://msdn.microsoft.com/en-us/library/ms181091.aspx" rel="nofollow">SQL Profiler</a></p>
+
+<h2>Performance</h2>
+
+<h4><font color="#333333">The Procedure Cache</font></h4>
+
+<p><font color="#333333">There are 3 types of plans in the procedure cache: SQL, Prepared and Compiled. Compiled plans have the highest priority and in the event SQL Server experiences memory pressure compiled plans are the most likely to stick around when the procedure cache gets flushed. (<font color="#333333"><a href="http://technet.microsoft.com/en-us/library/cc293624.aspx" rel="nofollow">http://technet.microsoft.com/en-us/library/cc293624.aspx</a></font>)</font></p>
+
+<p><font color="#333333">Many think of the Procedure Cache as a memory issue, but the procedure cache is a huge CPU saver on your database. <a href="http://www.codeproject.com/KB/database/ParameterizingAdHocSQL.aspx" rel="nofollow">Compiling a SQL query is a very expensive CPU operation</a></font></p>
+
+<p>Additionally, many ORM implementations don’t properly implement parameters for variable-length data types (ex: VARCHAR, DECIMAL). LINQ to SQL is a prime example: <a href="https://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=363290" rel="nofollow">The length for string parameters is set to the size of the string</a></p>
+
+<h4><font color="#333333">Many Databases == High Traffic Database</font></h4>
+
+<p><font color="#333333">If your web application is being hosted by some sort of hosting provider or if you work for a corporation with a multiple LOB applications your database is hosted on the same SQL server as any number of other databases all of which are competing for the same resources. The result is the same as running a single high traffic web application – your database server is dealing with high traffic.</font></p>
+
+<p>If you don’t control all the applications on the database server it is in your best interest to consider the use of stored procedures since your execution plans will be less likely to be flushed from cache than those of the other applications running on the same database instance.</p>
+
+<h4><font color="#333333">RBAR</font></h4>
+
+<p><font color="#333333">“Keep business logic out of my database” is a good practice, but I also say, “keep database logic out of my business logic”. I’ve yet to meet an ORM framework which properly supports batch updates. I’m not talking about submitting a string of INSERT or UPDATE statements in the same batch, that’s still RBAR, just without the network latency (not to mention can’t be cached by the optimizer). I’m talking about using any number of features supported by SQL Server which, when used allow you to submit an entire data set (, , ) and allow the database to work with the data as a set. Anything else is <a href="http://www.simple-talk.com/sql/t-sql-programming/rbar--row-by-agonizing-row/" rel="nofollow">RBAR</a></font></p>
+
+<p><font color="#333333">If anything is <a href="http://www.tonymarston.net/php-mysql/stored-procedures-are-evil.html" rel="nofollow">evil</a></font></p>
+
+<h5>Caveat</h5>
+
+<p>Back in 2003 I was looking for a nice clean way to build a data access layer. I found by <a href="http://weblogs.asp.net/fbouma/default.aspx" rel="nofollow">Frans Bouma</a></p>
+
+<h2>Security</h2>
+
+<p>In my opinion, this is an argument that is inaccurately made by both camps, with the ORM camp simply saying “create two roles and give one update permissions”. Yeah, that works fine until an account (or the account) with update permission gets compromised.</p>
+
+<p>The security model for stored procedures is an example of security in-depth. Stored procedures provide an API on your database that can be secured for each operation. Yes you could do this as a service but you’re still running around with an account that has full CRUD access to your tables. And last I checked SQL Injection isn’t the only way to hack your database. As one example, a recent study claims there are about <a href="http://www.computerworlduk.com/management/security/data-control/news/index.cfm?newsid=6198" rel="nofollow">a half-million database servers publicly exposed on the internet</a></p>
+
+<p>Here’s an example I’ve seen used to show how stored procedures don’t protect you from SQL injection attacks:</p>
+
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px">strsql = "EXECUTE findtitle '" & textboxtitle.text & "'"</pre>
+
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px">objCmd = New SqlCommand(strSQL, objConn) </pre>
+
+<p>This is true, but only if your application has been granted access to perform operations other than EXECUTE. If you’re using stored procedures as a security measure, then the account won’t have access other than EXECUTE and you’re safe.</p>
+
+<h2>Vendor Lock-in</h2>
+
+<p>How many applications have you really worked on that you’ve had to move between database vendors? Really? And if you have, how many other applications have you worked on that didn’t require it?</p>
+
+<p>I don’t think stored procedures are the issue here. If you wanted to change database vendors and couldn’t was it really because of stored procedures? Or was it because your database layer wasn’t properly abstracted from the rest of your application? I worked on an application once with this issue and we were using an ORM, but we still couldn’t change. The reason was GUIDs, the target we wanted to move to didn’t support the UNIQUEIDENTIFIER data type. We had some UDFs and actually had a stored procedure or two, but these were supported and could have been migrated.</p>
+
+<h2>Be Smart</h2>
+
+<p>Up to this point I have largely argued in favor of stored procedures. My reasoning is that among developers those who favor stored procedures are in the minority (the reverse is most likely true among DBAs). My preference is to use a hybrid of both. ORM/Ad hoc queries have very strong advantages over stored procedures, but the argument can be made both ways. This is why the debate gets so hot, because no one is 100% right. Here’s what I recommend:</p>
+
+<p><strong>Generate your CUD as stored procedures</strong> – Here I’m referring to CRUD, minus the “R”. I strongly believe that you should never directly update records in your table. I cannot be convinced that a two-role model where one role has write access to the table is sufficient. Your application is not the only attack vector on your database. Since it is true that maintaining stored procedures by hand after a schema change is a nightmare you should generate your stored procedures in this case. This is easy enough to do by writing a script that uses SQL Server metadata to build your procedures. If possible, provide a means to do batch updates in a single call, you’ll thank me.</p>
+
+<p><strong>Use ORM/Ad hoc for SELECT</strong> – if you want to use a stored procedure for “select by id” or “select all” you can it makes no difference really. But in my experience there are too many different ways to retrieve your data and you WILL have a maintenance nightmare on your hands if you try to write stored procedures for every case. Many who use stored procedures will do this in one of two ways (both are bad in my opinion):</p>
+
+<ul>
+<li><strong><font color="#ff0000">Dynamic SQL</font></strong>: This is just plain wrong and evil IMHO. You open your stored procedures up to SQL injection attack vectors. This means you now have a false sense of security, just don’t do it. Also, it’s like building HTML strings in your code – difficult to maintain and hard to debug (plus it’s like nails on a chalkboard for me). A second argument against this method is that your stored procedure will be recompiled every time the different arguments are used, the more parameters you have the more often you will see the stored procedure recompiled.</li>
+<li><strong><font color="#ff0000">COALESCE/ISNULL Functions</font></strong>: This protects you from SQL injection attacks, but you now opened up a performance problem. I usually see these used to along with default parameters to make a stored procedure flexible enough to search on any column, but it can disable the use of indexes. Avoid this practice if you can.</li>
+</ul>
+
+<p>In the long run, using ORM for any trivial execution plan will save you time and headaches. As far as security goes, granting SELECT on the table is not a huge problem unless you have sensitive data. If you have data you don’t want to expose carte blanche then use a view.</p>
+
+<p><strong>Use stored procedures for complex queries</strong> – ORM tools are great, but it can be difficult to really optimize complex queries being generated by an ORM.</p>
+
+<p>Some queries which would be otherwise simple are made complex by ORM tools which of necessity must accommodate any scenario. It will be easier to track down these problem children when using Profiler and you can also create solutions which don’t match your object model but will vastly outperform anything your ORM can generate.</p>
+
+<p>And remember that your query will survive procedure cache flushes longer.</p>
+
+<p>NOTE: I don’t mean to imply that you should do your performance tuning before you determine it’s needed. But you can encapsulate the query in your DAL and then as soon as you need it, replace your ad hoc query with a stored procedure – you’ll keep your hair.</p>
+
+<p><strong>Avoid Lazy-Loading</strong> - Lazy loading is just that: lazy. Lazy is synonymous with sloppy. This is one feature that is almost guaranteed to come back and bite you. The main reason is you will almost certainly end up in a loop and inside that loop you will need related data. You will say, “Hey, this is so cool! Look, ma! No Hands”. This is VERY BAD! Enough said. Dump your ORM and find one that supports eager loading and LINQ (LINQ is my own preference, it’s not required I just really like it).</p>
+
+<p><strong>Use Repository/ActiveRecord</strong> – use some sort of pattern to abstract your database from your business logic. This gives you the freedom to mix and match and go back and forth between either stored procedures or ORM/Ad hoc without affecting your application. You’ll be able to choose the best solution for each situation and you’re not tied to either choice.</p>
+
+<h2>Conclusion</h2>
+
+<p>Don’t be a lemming. Give it some thought, weigh the pros and cons and then pick what’s right for the application you’re working on. Whatever your preference is try to be objective enough to step back and think about what will meet the needs of your application. If you ever hear some zealot/disciple screaming about how they’ll never use one or the other just smile and nod. Then when they’re not looking deck ‘em and run :).</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Data Access: Stored Procedures vs. ORM (ad hoc) Queries&amp;amp;url=http://www.developmentalmadness.com/2009/06/23/data_access_stored_procedures_vs_orm_ad_hoc_queries/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/06/23/data_access_stored_procedures_vs_orm_ad_hoc_queries/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/06/23/data_access_stored_procedures_vs_orm_ad_hoc_queries/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/06/09/asp_net_mvc_discover_the_master_page_file_value_at_runtime/'>
+<section class='post'>
+<h2>ASP.NET MVC: Discover the MasterPageFile Value at Runtime</h2>
+<p>A couple weeks ago it was finally time to add a context-sensitive, data driven menu system to our MVC&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/06/24/asp_net_mvc_an_application_platform/'>
+<section class='post'>
+<h2>ASP.NET MVC: An Application Platform</h2>
+<p>The MVC / WebForms Debate Yesterday I wrote about the stored procedure/dynamic sql debate - I must be feeling&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

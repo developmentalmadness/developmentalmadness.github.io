@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: localization</title>
+  <subtitle>Posts tagged with localization</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/localization/feed.xml" rel="self"/>
+  <updated>2009-05-20T21:03:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>ASP.NET MVC Globalization/Localization: Referencing Resource Files in Your View</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/20/asp_net_mvc_globalization_localization_referencing_resource_files_in_your_view/"/>
+    <id>http://www.developmentalmadness.com/2009/05/20/asp_net_mvc_globalization_localization_referencing_resource_files_in_your_view/</id>
+    <published>2009-05-20T21:03:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’ve been using ASP.NET MVC
+
+ 1: 
+
+Until today, I took that for granted. I received an email this morning referencing on ASP.NET.
+
+Create Your Resource (.resx) File
+
+There are 3 ways to create a Resources file in an ASP.NET application (MVC or WebForms</summary>
+  </entry>
+</feed>

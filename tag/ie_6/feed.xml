@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: ie_6</title>
+  <subtitle>Posts tagged with ie_6</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/ie_6/feed.xml" rel="self"/>
+  <updated>2008-04-24T18:57:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>"FIX" for Sys.WebForms.PageRequestManagerServerErrorException 12019 Problem with MultipleIEs</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/24/fix-for-syswebformspagerequestmanagerse/"/>
+    <id>http://www.developmentalmadness.com/2008/04/24/fix-for-syswebformspagerequestmanagerse/</id>
+    <published>2008-04-24T18:57:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Before I started working with ASP.NET Ajax I found using MultipleIEs very valuable for testing pages for both IE6 and IE7. But then I started working on a project which had been developed using the ASP.NET UpdatePanel and IE6 became worthless. I got the</summary>
+  </entry>
+</feed>

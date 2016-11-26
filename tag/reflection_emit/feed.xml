@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: reflection_emit</title>
+  <subtitle>Posts tagged with reflection_emit</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/reflection_emit/feed.xml" rel="self"/>
+  <updated>2008-02-12T17:02:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Extend Anonymous Types using Reflection.Emit</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/02/12/extend-anonymous-types-using/"/>
+    <id>http://www.developmentalmadness.com/2008/02/12/extend-anonymous-types-using/</id>
+    <published>2008-02-12T17:02:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Update 2015 Dec 28: It has been brought to my attention that this code has been enhanced by Kyle Finley. You can read about his enhancements here and the source code is available on Github. Kyle has told me he plans to release a NuGet package which I</summary>
+  </entry>
+</feed>

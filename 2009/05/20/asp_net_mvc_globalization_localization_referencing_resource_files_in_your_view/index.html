@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: ASP.NET MVC Globalization/Localization: Referencing Resource Files in Your View</title>
+<meta content='I’ve been using ASP.NET MVC 1: Until today, I took that for granted. I received an email this morning referencing on ASP.NET. Create Your Resour...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='ASP.NET MVC Globalization/Localization: Referencing Resource Files in Your View' property='og:title'>
+<meta content='I’ve been using ASP.NET MVC 1: Until today, I took that for granted. I received an email this morning referencing on ASP.NET. Create Your Resour...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/05/20/asp_net_mvc_globalization_localization_referencing_resource_files_in_your_view/' property='og:url'>
+<meta content='2009-05-20' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='ASP.NET MVC Globalization/Localization: Referencing Resource Files in Your View' name='twitter:title'>
+<meta content='I’ve been using ASP.NET MVC 1: Until today, I took that for granted. I received an email this morning referencing on ASP.NET. Create Your Resour...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/05/20/asp_net_mvc_globalization_localization_referencing_resource_files_in_your_view/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>ASP.NET MVC Globalization/Localization: Referencing Resource Files in Your View</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-05-20'>
+20 May 2009
+</time>
+on <a href='/tag/localization/'>localization</a>, <a href='/tag/asp_net_mvc/'>asp_net_mvc</a>
+</section>
+</header>
+<section class='post-content'><p>I’ve been using <a href="http://www.asp.net/mvc/" rel="nofollow">ASP.NET MVC</a></p>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: white; border-bottom-style: none"> 1: <%=Resources.MyResourceFile.MyResourceKey%></pre>
+
+<p>Until today, I took that for granted. I received an email this morning referencing on <a href="http://www.asp.net/" rel="nofollow">ASP.NET.</a></p>
+
+<h2>Create Your Resource (.resx) File</h2>
+
+<p>There are 3 ways to create a Resources file in an ASP.NET application (MVC or WebForms):</p>
+
+<ol>
+<li><strong>Add New Item</strong>: Right-click anyware –&gt; Add –&gt; New Item…</li>
+<li><p>Add to App_GlobalResources:</p></li>
+<li><p>Right-click your project –&gt; Add –&gt; Add ASP.NET Folder –&gt; App_GlobalResources</p></li>
+<li><p>Right-click App_GlobalResources –&gt; Add –&gt; New Item…</p></li>
+<li><p>Add to App_LocalResources:</p></li>
+<li><p>Right-click a folder –&gt; Add –&gt; Add ASP.NET Folder –&gt; App_LocalResources</p></li>
+</ol>
+
+<h2>Local Resource Files</h2>
+
+<p>1 and 3 are essentially the same, I’ll refer to the result as a local resource file.When you create a local resource file all you need to do after you’ve added a view string values to the file is change the “Access Modifier” setting to “Public”.</p>
+
+<p><a href="http://lh3.ggpht.com/_09jBj8qnWKM/ShRwJ3ZDcbI/AAAAAAAAACo/tXGtWxhHZbE/s1600-h/VSResourceFile%5B7%5D.gif" rel="nofollow"><img src="http://lh6.ggpht.com/_09jBj8qnWKM/ShRwKLcJwuI/AAAAAAAAACs/jq92gPbQOHQ/VSResourceFile_thumb%5B3%5D.gif?imgmax=800" title="VSResourceFile" alt="VSResourceFile" /></a></p>
+
+<p>The only difference (as far as I can tell) between 1 and 3 is that the default value for Access Modifier for 1 is “Internal” and for 3 it’s “No code generation”. There may be some differences with regard to WebForms, but honestly I never noticed before.</p>
+
+<h2>Global Resource Files</h2>
+
+<p>Number 2 is just as easy, but there is a little more to explain, and here’s why: you can’t change the Access Modifier for a Global Resource File. If you create a Global Resource File and open it you’ll notice the option is disabled.</p>
+
+<p><a href="http://lh6.ggpht.com/_09jBj8qnWKM/ShRwKd5UgBI/AAAAAAAAACw/OkP2uiO-SxI/s1600-h/VSGlobalResourceFile%5B6%5D.gif" rel="nofollow"><img src="http://lh6.ggpht.com/_09jBj8qnWKM/ShRwKtrHAKI/AAAAAAAAAC0/gJhRl_4hdlE/VSGlobalResourceFile_thumb%5B4%5D.gif?imgmax=800" title="VSGlobalResourceFile" alt="VSGlobalResourceFile" /></a></p>
+
+<p>The only option for a Global Resource File is “Internal”. It reads public on the toolbar. But if you look at the designer.cs file you will see that the class and all its properties are marked as “internal”.</p>
+
+<p>However, you can still easily use a Global Resource File, with just one caveat. Intellisense doesn’t quite work the way you would expect (or maybe you would). The namespace will show up on intellisense, the class name will not, but once you have correctly typed the namespace and class name you’ll get intellisense for all your keys.</p>
+
+<p>Here you see the namespace in intellisense:</p>
+
+<p><a href="http://lh3.ggpht.com/_09jBj8qnWKM/ShRwK3onKcI/AAAAAAAAAC4/bUVQPw6tEZc/s1600-h/VSIntellisenseNamespace%5B7%5D.gif" rel="nofollow"><img src="http://lh3.ggpht.com/_09jBj8qnWKM/ShRwLBwqYqI/AAAAAAAAAC8/aynrBfxrda4/VSIntellisenseNamespace_thumb%5B5%5D.gif?imgmax=800" title="VSIntellisenseNamespace" alt="VSIntellisenseNamespace" /></a></p>
+
+<p>Here you see nothing comes up for the class:</p>
+
+<p><a href="http://lh4.ggpht.com/_09jBj8qnWKM/ShRwLjpdsrI/AAAAAAAAADA/FCHx8m53mig/s1600-h/VSIntellisenseClass%5B8%5D.gif" rel="nofollow"><img src="http://lh5.ggpht.com/_09jBj8qnWKM/ShRwL4gtbfI/AAAAAAAAADE/VDHBs_dYodA/VSIntellisenseClass_thumb%5B6%5D.gif?imgmax=800" title="VSIntellisenseClass" alt="VSIntellisenseClass" /></a></p>
+
+<p>But here you see the keys are picked up by intellisense once you enter the class name correctly:</p>
+
+<p><a href="http://lh6.ggpht.com/_09jBj8qnWKM/ShRwMJIFtuI/AAAAAAAAADI/iTfqgsF4978/s1600-h/VSIntellisenseProperties%5B5%5D.gif" rel="nofollow"><img src="http://lh6.ggpht.com/_09jBj8qnWKM/ShRwMb7A9bI/AAAAAAAAADM/gYqK3sfXeYM/VSIntellisenseProperties_thumb%5B3%5D.gif?imgmax=800" title="VSIntellisenseProperties" alt="VSIntellisenseProperties" /></a></p>
+
+<p>The funny thing is that this is not always true. Sometimes you will get intellisense for the class name and sometimes you won’t. Either way you can either use Local Resource Files or as suggested by in his book <a href="http://www.amazon.com/gp/product/1430210079?ie=UTF8&amp;tag=stesansblo-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1430210079" rel="nofollow">Pro ASP.NET MVC Framework</a></p>
+
+<p>I’ve seen <a href="http://blog.eworldui.net/post/2008/05/ASPNET-MVC---Localization.aspx" rel="nofollow">extension functions</a></p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=ASP.NET MVC Globalization/Localization: Referencing Resource Files in Your View&amp;amp;url=http://www.developmentalmadness.com/2009/05/20/asp_net_mvc_globalization_localization_referencing_resource_files_in_your_view/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/05/20/asp_net_mvc_globalization_localization_referencing_resource_files_in_your_view/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/05/20/asp_net_mvc_globalization_localization_referencing_resource_files_in_your_view/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/05/14/lamp_net_linux_apache_mono_net_postre_sql/'>
+<section class='post'>
+<h2>LAMP.NET (Linux Apache Mono.NET PostreSQL)</h2>
+<p>As an developer I’ve always worked for companies which had little or no support for any environments other than&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/05/21/lost_in_translation_oracle_10_g_2_client_hell/'>
+<section class='post'>
+<h2>Lost in Translation: Oracle 10g2 client hell</h2>
+<p>This is a post I’ve been meaning to write for a while. I had quite a bit of trouble&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: php</title>
+  <subtitle>Posts tagged with php</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/php/feed.xml" rel="self"/>
+  <updated>2009-09-11T11:44:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>PHP vs ASP.NET Rebuttal</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/09/11/php-vs-asp-net-rebuttal/"/>
+    <id>http://www.developmentalmadness.com/2009/09/11/php-vs-asp-net-rebuttal/</id>
+    <published>2009-09-11T11:44:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I should just ignore people sometimes, but today I couldn’t help it. I read this post which claims to compare PHP to ASP.NET. I don’t really care if someone likes one more than the other, but really this post didn’t back up any claims and was full of</summary>
+  </entry>
+</feed>

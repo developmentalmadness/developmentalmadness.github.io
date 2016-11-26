@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: play2</title>
+  <subtitle>Posts tagged with play2</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/play2/feed.xml" rel="self"/>
+  <updated>2016-05-03T22:21:08+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Play2: Debugging With IntelliJ Community Edition</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/05/03/play2-debugging-with-intellij-community-edition/"/>
+    <id>http://www.developmentalmadness.com/2016/05/03/play2-debugging-with-intellij-community-edition/</id>
+    <published>2016-05-03T22:21:08+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Configure build.sbt
+
+Comment out or remove 
+fork in run := true
+
+Configure IntelliJ
+
+Create a remote debug configuration:
+Run &amp;gt; Edit Configurations &amp;gt; Add New Configuration &amp;gt; Remote
+
+Set Host to localhost and Port to 9999, name your configuration. I called</summary>
+  </entry>
+</feed>

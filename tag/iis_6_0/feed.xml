@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: iis_6_0</title>
+  <subtitle>Posts tagged with iis_6_0</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/iis_6_0/feed.xml" rel="self"/>
+  <updated>2008-11-12T18:35:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>IIS 6.0 with Windows Authentication PITA</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/11/12/iis-60-with-windows-authentication-pita/"/>
+    <id>http://www.developmentalmadness.com/2008/11/12/iis-60-with-windows-authentication-pita/</id>
+    <published>2008-11-12T18:35:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">ulling. It all started when the test server was hosed (rebuilt) without asking me if it affect anything I was doing. Without going to much into the history, an application that should have been on production was on staging and being used as the production</summary>
+  </entry>
+</feed>

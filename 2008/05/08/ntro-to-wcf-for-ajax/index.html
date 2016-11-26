@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Intro to WCF for Ajax</title>
+<meta content='It&amp;rsquo;s finally time to dig into what all the buzz with WCF is about. From what I hear it should perform better than WebServices, has better ...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Intro to WCF for Ajax' property='og:title'>
+<meta content='It&amp;rsquo;s finally time to dig into what all the buzz with WCF is about. From what I hear it should perform better than WebServices, has better ...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2008/05/08/ntro-to-wcf-for-ajax/' property='og:url'>
+<meta content='2008-05-08' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Intro to WCF for Ajax' name='twitter:title'>
+<meta content='It&amp;rsquo;s finally time to dig into what all the buzz with WCF is about. From what I hear it should perform better than WebServices, has better ...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2008/05/08/ntro-to-wcf-for-ajax/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Intro to WCF for Ajax</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2008-05-08'>
+08 May 2008
+</time>
+on <a href='/tag/asp_net_ajax/'>asp_net_ajax</a>, <a href='/tag/wcf/'>wcf</a>
+</section>
+</header>
+<section class='post-content'><p>It&rsquo;s finally time to dig into what all the buzz with WCF is about. From what I hear it should perform better than WebServices, has better security and be more flexible. But I&rsquo;m a bit frustrated by some of the documentation out there. So much of what I&rsquo;m seeing is either glazed over too much for me to immediately apply it (blogs, articles and forums) or it&rsquo;s too high level to get me started quick enough to play with it. So in order to cement what I&rsquo;m learning about WCF I am planning on writing a series of posts that document what I&rsquo;ve learned and hopefully help anyone else who shares the same frustration.</p>
+
+<p>Since my plan is to use WCF for an application I am currently working on I wanted to start immediately with JSON formatting. So I am going to use two different examples of how this is done; running within an ASP.NET Application and running from a console application.</p>
+
+<h1>WCF Console Application</h1>
+
+<p>Let&rsquo;s start with the console application since it will be the most simple. Fire up Visual Studio 2008 and create a new console application project. Make sure your project has references to at least the following libraries:</p>
+
+<ul>
+<li>System - no explaination needed.</li>
+<li>System.Runtime.Serialization - required for defining DataContracts used for returning complex types.</li>
+<li>System.ServiceModel - used to define our ServiceContract and it&rsquo;s operations (OperationContract).</li>
+<li>System.ServiceModel.Web - used to configure our output as JSON and create a WebServiceHost needed to communicate over Http.</li>
+</ul>
+
+<p>Next add a new class file to our project and add the following code to the class file:</p>
+<pre class="highlight plaintext"><code>using System;
+using System.ServiceModel.Web;
+using System.ServiceModel;
+using System.Runtime.Serialization;
+
+namespace WcfClassLibrary
+{
+    [DataContract]
+    public class Greeting
+    {
+        [DataMember]
+        public String Message;
+    }
+
+    [ServiceContract]
+    public class HelloWorld
+    {
+        [OperationContract]
+        [WebGet(ResponseFormat=WebMessageFormat.Json)]
+        public Greeting GreetJson()
+        {
+            Greeting g = new Greeting();
+            g.Message = "Hello World!";
+
+            return g;
+        }
+    }
+}
+</code></pre>
+<p>The first class here is our complex type. I would have just returned a System.String for our OperationContract, but since we want to get JSON as output we&rsquo;ll need a complex type. Just returning a simple type will just return a string value to our client. The important thing to take away from this is that you need a class marked with the DataContract attribute and any properties you would like to expose must be public and marked with the DataMember attribute. You can think of this like marking the class as Serializable and flagging which members you want exposed. In any case the data is the only thing being sent down the wire here and so don&rsquo;t plan on any methods being exposed.</p>
+
+<p>The second class, our ServiceContract, defines the service and the available operations. To accomplish this we just need to use the ServiceContract and OperationContract attributes to flag public methods we want exposed by the service.</p>
+
+<p>Next let&rsquo;s go to our Main method in the class file created as part of our Console application template. Add the following to our file:</p>
+<pre class="highlight plaintext"><code>using System;
+using System.ServiceModel.Web;
+
+namespace WcfClassLibrary
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Uri baseAddress = new Uri("http://localhost:8001/");
+
+            using (WebServiceHost host = new WebServiceHost(typeof(HelloWorld), baseAddress))
+            {
+                host.Open();
+
+                Console.WriteLine("Greeting service listing at {0}", baseAddress);
+
+                Console.WriteLine("View greeting at {0}GreetJson", baseAddress);
+                Console.WriteLine("Press [Enter] to shut down service.");
+                Console.ReadLine();
+            }
+        }
+    }
+}
+</code></pre>
+<p>I wanted the bare basics and there you have it. New up a WebServiceHost object so we can expose our service over Http. If we were using IIS (as we will be doing below) we would not worry about creating a ServiceHost object since IIS would do that for us. We just need to specify the Uri and the type of our ServiceContract. There&rsquo;s no config file here because by using WebServiceHost our endpoint is created and configured for us since it didn&rsquo;t find one in our config file. If we had defined one it would use that, but my goal here is to present the minimum requirements to get WCF up and running. But even without a config you should be able to define whatever you need at this point by working with the properties of the WebServiceHost object.</p>
+
+<p>At this point, just hit F5. When your console loads up point your web browser (or whatever you client is) at http://localhost:8001/GreetJson (or whatever you may have configured your uri as) and you should get the following in your response:</p>
+<pre class="highlight plaintext"><code>{"Message":"Hello World!"}
+</code></pre>
+<p>This should be consumable from any JSON aware client and you&rsquo;re off and running.</p>
+
+<h1>AJAX-enabled WCF Service</h1>
+
+<p>You can also create a WCF Service which runs on IIS alongside your ASP.NET web app. Just open up any Web Application project targeting the 3.5 framework and from the &lsquo;add item&rsquo; dialog select an AJAX-enabled WCF service. This will add an &rsquo;.svc&rsquo; file to your project. Now add the following code to the &rsquo;.svc.cs&rsquo; file:</p>
+<pre class="highlight plaintext"><code>using System;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.ServiceModel.Activation;
+using System.ServiceModel.Web;
+
+namespace Developmentalmadness.WcfWebApplication
+{
+    [DataContract]
+    public class Greeting
+    {
+        [DataMember]
+        public string Message;
+    }
+
+    [ServiceContract]
+    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
+    public class HelloWorld
+    {
+        // Add [WebGet] attribute to use HTTP GET
+        [WebGet(ResponseFormat=WebMessageFormat.Json)]
+        [OperationContract]
+        public Greeting GreetJson()
+        {
+   WebOperationContext.Current.OutgoingResponse.ContentType = "text/plain";
+            Greeting g = new Greeting();
+            g.Message = "Hello World! " + System.Web.HttpContext.Current.Request.UserHostAddress;
+
+            return g;
+        }
+    }
+}
+</code></pre>
+<p>There are a few differences here from our last example. When you create a WCF service in a web application, by default the AspNetCompatibilityRequirements attribute is added as part of the code template. What does this do? Well it allows your service to function as part of your application like any other web page. So you get access to HttpContext, which means the intrinsic server objects (Request,Response,Server,Session). This allows you to work with authentication and other built-in mechanisms. If your service doesn&rsquo;t need this functionality, turn it off by first removing the attribute since the default is off. If you prefer to be explicit, then set it to &#39;NotAllowed&rsquo;. Then you&rsquo;ll need to go into your config file (unless your service is &#39;configless&rsquo; which we&rsquo;ll discuss in a minute) and change the aspNetCompatibilityEnabled to &#39;false&rsquo; for the serviceHostingEnvironment element. If you don&rsquo;t you&rsquo;ll see the following exception when you try to access the service:</p>
+
+<blockquote>
+<p><strong>The service cannot be activated because it does not support ASP.NET compatibility. ASP.NET compatibility is enabled for this application. Turn off ASP.NET compatibility mode in the web.config or add the AspNetCompatibilityRequirements attribute to the service type with RequirementsMode setting as &#39;Allowed&rsquo; or &#39;Required&rsquo;.</strong></p>
+</blockquote>
+
+<p>Once these two settings are off any code which uses intrinsic objects will still compile, but you will get a NullReferenceException when it runs. But since we have it on, you can see we are able to use System.Web.HttpContext.Current.Request to get the use&rsquo;s host address. If you do decide to turn it off, you still have access to a few settings such as the ContentType as you can see above through the use of WebOperationContext. We&rsquo;ve got it here so we actually see the result in the browser instead of getting a &#39;Save File&rsquo; dialog.</p>
+
+<p>Next if you right-click the &rsquo;.svc&rsquo; file and select &#39;View Markup&rsquo; you&rsquo;ll see something similar to this:</p>
+<pre class="highlight plaintext"><code>&lt;%@ ServiceHost Language="C#" Debug="true" Service="Developmentalmadness.WcfWebApplication.HelloWorld" CodeBehind="HelloWorld.svc.cs" %&gt;
+</code></pre>
+<p>We don&rsquo;t need to do anything here, but if you decide to change your namespace make sure to update this file as well. One other thing you can do here is make your service &#39;configless&rsquo; by setting the &#39;Factory&rsquo; attribute as follows:</p>
+<pre class="highlight plaintext"><code>Factory="System.ServiceModel.Activation.WebScriptServiceHostFactory"
+</code></pre>
+<p>There&rsquo;s more to this setting than just that, but since my goal here is just to get a service up and running it&rsquo;s out of the scope of this post for now. But suffice it to say that adding this setting means that you can just remove the system.serviceModel config section from your web.config.</p>
+
+<p>Now let&rsquo;s look at the serviceModel section in our web.config:</p>
+<pre class="highlight plaintext"><code> &lt;system.serviceModel&gt;
+  &lt;behaviors&gt;
+   &lt;endpointBehaviors&gt;
+    &lt;behavior name="WcfWebApplication.HelloWorldAspNetAjaxBehavior"&gt;
+     &lt;enableWebScript/&gt;
+    &lt;/behavior&gt;
+   &lt;/endpointBehaviors&gt;
+  &lt;/behaviors&gt;
+  &lt;serviceHostingEnvironment aspNetCompatibilityEnabled="true"/&gt;
+  &lt;services&gt;
+   &lt;service name="Developmentalmadness.WcfWebApplication.HelloWorld"&gt;
+    &lt;endpoint address="" behaviorConfiguration="WcfWebApplication.HelloWorldAspNetAjaxBehavior"
+                  binding="webHttpBinding" contract="Developmentalmadness.WcfWebApplication.HelloWorld"/&gt;
+   &lt;/service&gt;
+  &lt;/services&gt;
+ &lt;/system.serviceModel&gt;
+</code></pre>
+<p>This will be automatically added to your web.config file for you when you first add an WCF service to your application. Just make sure you change the name of your service here as well when you rename the service. You can name your behavior element anything you like, as long as you make sure to use the same name in the behaviorConfiguration attribute for your service element. The enableWebScript element is required for ASP.NET AJAX compatibility.</p>
+
+<p>Make sure that the name attribute of the service element matches the fully-qualified name of your service or you&rsquo;ll see this error:</p>
+
+<blockquote>
+<p><strong>Service &#39;Developmentalmadness.WcfWebApplication.HelloWorld&rsquo; has zero application (non-infrastructure) endpoints. This might be because no configuration file was found for your application, or because no service element matching the service name could be found in the configuration file, or because no endpoints were defined in the service element.</strong></p>
+</blockquote>
+
+<p>In like manner, make sure the contract attribute matches the fully-qualified name of your ServiceContract or this is what you&rsquo;ll see:</p>
+
+<blockquote>
+<p><strong>The contract name &#39;DevelopmentalMadness.WcfWebApplication.HelloWorldoops&rsquo; could not be found in the list of contracts implemented by the service &#39;DevelopmentalMadness.WcfWebApplication.HelloWorld&rsquo;.</strong></p>
+</blockquote>
+
+<p>Once we&rsquo;ve done all this, hit F5 and then point the browser at /Service1.svc/GreetJson and you should see this:</p>
+<pre class="highlight plaintext"><code>{"d":{"__type":"Greeting:#Developmentalmadness.WcfWebApplication","Message":"Hello World! 127.0.0.1"}}
+</code></pre>
+<p>From here it&rsquo;s up to you to write the client-side script to make use of this output, but you now have a working service which you can use. I&rsquo;m pretty happy so far with things and look forward to exploring more in depth as we build on this in future posts.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Intro to WCF for Ajax&amp;amp;url=http://www.developmentalmadness.com/2008/05/08/ntro-to-wcf-for-ajax/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2008/05/08/ntro-to-wcf-for-ajax/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2008/05/08/ntro-to-wcf-for-ajax/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2008/05/05/prb-that-assembly-does-not-allow/'>
+<section class='post'>
+<h2>PRB: 'That assembly does not allow partially trusted callers.' When installing a CRI on a dedicated SSRS server</h2>
+<p>I have been fighting a &ldquo;permissions&rdquo; issue with Sql Server Reporting Services (SSRS) for the last few days. When&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2008/05/13/new-findings-on-clr-string-split/'>
+<section class='post'>
+<h2>New findings on CLR string split performance</h2>
+<p>Today I was envolved in a discussion thread which revolved around the SQL CLR. Naturally I jumped in in&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

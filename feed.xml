@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness</title>
+  <subtitle>The musings, frustrations and epiphanies of a common web programmer.</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/feed.xml" rel="self"/>
+  <updated>2016-06-13T21:30:28+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Docker: running npm install</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/06/13/docker-running-npm-install/"/>
+    <id>http://www.developmentalmadness.com/2016/06/13/docker-running-npm-install/</id>
+    <published>2016-06-13T21:30:28+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Just spent most of the day trying to get npm install to work within a shared volume (-v). I’ve installed Docker Toolbox on Windows and I’m building a Docker image that will be shared with team members running on both Windows and OSX. This image is for</summary>
+  </entry>
+  <entry>
+    <title>Docker: Run Azure Command-Line Client Container</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/05/17/docker-run-azure-command-line-client-container/"/>
+    <id>http://www.developmentalmadness.com/2016/05/17/docker-run-azure-command-line-client-container/</id>
+    <published>2016-05-17T17:47:55+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’ve been using AWS, but I’m starting to look into Apache Spark for an up-coming project and Amazon EMR doesn’t qualify under the AWS Free Tier so I decided to head on over to the world of Microsoft Azure to use my MSDN credits to do some experimentation</summary>
+  </entry>
+  <entry>
+    <title>Play2: Debugging With IntelliJ Community Edition</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/05/03/play2-debugging-with-intellij-community-edition/"/>
+    <id>http://www.developmentalmadness.com/2016/05/03/play2-debugging-with-intellij-community-edition/</id>
+    <published>2016-05-03T22:21:08+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Configure build.sbt
+
+Comment out or remove 
+fork in run := true
+
+Configure IntelliJ
+
+Create a remote debug configuration:
+Run &amp;gt; Edit Configurations &amp;gt; Add New Configuration &amp;gt; Remote
+
+Set Host to localhost and Port to 9999, name your configuration. I called</summary>
+  </entry>
+  <entry>
+    <title>Recovery iPhone Recovery Password From Backup</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/04/28/recovery-iphone-recovery-password-from-backup/"/>
+    <id>http://www.developmentalmadness.com/2016/04/28/recovery-iphone-recovery-password-from-backup/</id>
+    <published>2016-04-28T15:25:19+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">My wife forgot her restrictions pin on her iPhone and wouldn’t let me reset the phone because she didn’t want to loose anything. I found multiple tools that would help with this but they wanted $$ and I knew this was something I could figure out. 
+
+Well</summary>
+  </entry>
+  <entry>
+    <title>The Zen of Akka (Lambda Days 2016) Cliff Notes</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/04/22/the-zen-of-akka-lambda-days-2016-notes/"/>
+    <id>http://www.developmentalmadness.com/2016/04/22/the-zen-of-akka-lambda-days-2016-notes/</id>
+    <published>2016-04-22T19:45:25+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">
+
+Below are all the points, what time to find them in the video and what I found were the important talking points. I left most stuff actually on the slide out.
+
+1. One Actor Is No Actor
+
+(about 3:17)
+
+Semantically, a system with a single actor is not</summary>
+  </entry>
+  <entry>
+    <title>Docker: Troubleshooting 500 Error From Registry 2</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/04/21/docker-troubleshooting-500-error-from-registry-2/"/>
+    <id>http://www.developmentalmadness.com/2016/04/21/docker-troubleshooting-500-error-from-registry-2/</id>
+    <published>2016-04-21T22:44:45+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Been fighting an HTTP 500 Internal Server Error from Docker Registry. We have several instances running on Amazon EC2 Container Service (ECS) behind Elastic Load Balancer (ELB). Whenever we tried to push a new image up we’d get:
+
+
+received unexpected
+</summary>
+  </entry>
+</feed>

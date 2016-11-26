@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: MVVM with Prism 101 – Part 6: Commands</title>
+<meta content='Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The Controller Pattern Part 4: Modules Part 5...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='MVVM with Prism 101 – Part 6: Commands' property='og:title'>
+<meta content='Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The Controller Pattern Part 4: Modules Part 5...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/11/04/mvvm-with-prism-101-ndash-part-6-commands/' property='og:url'>
+<meta content='2009-11-04' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='MVVM with Prism 101 – Part 6: Commands' name='twitter:title'>
+<meta content='Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The Controller Pattern Part 4: Modules Part 5...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/11/04/mvvm-with-prism-101-ndash-part-6-commands/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>MVVM with Prism 101 – Part 6: Commands</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-11-04'>
+04 November 2009
+</time>
+on <a href='/tag/silverlight/'>silverlight</a>, <a href='/tag/prism/'>prism</a>, <a href='/tag/mvvm/'>mvvm</a>, <a href='/tag/mvvm-with-prism-101/'>mvvm-with-prism-101</a>, <a href='/tag/icommand/'>icommand</a>, <a href='/tag/wcf-client-proxy/'>wcf-client-proxy</a>
+</section>
+</header>
+<section class='post-content'><p><a href="http://dvm-public-assets.s3.amazonaws.com/silverlight/CodeCamp.zip" rel="nofollow">Source Code</a></p>
+
+<ul>
+<li><a href="/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/" rel="nofollow">Part 1: The Bootstrapper</a></li>
+<li><a href="/2009/10/12/mvvm-with-prism-101-ndash-part-2-the-shell/" rel="nofollow">Part 2: The Shell</a></li>
+<li><a href="/2009/10/14/mvvm-and-prism-101-ndash-part-3-regions/" rel="nofollow">Part 3: Regions</a>
+
+<ul>
+<li><a href="/2009/10/15/mvvm-with-prism-101-ndash-part-3b-view-injection-and/" rel="nofollow">Part 3b: View Injection and The Controller Pattern</a></li>
+</ul></li>
+<li><a href="/2009/10/23/mvvm-with-prism-101-ndash-part-4-modules/" rel="nofollow">Part 4: Modules</a></li>
+<li><a href="2009/10/28/mvvm-with-prism-101-ndash-part-4-modules/" rel="nofollow">Part 5: The View-Model</a>
+
+<ul>
+<li><a href="/2009/11/02/mvvm-with-prism-101-ndash-part-5b-servicelocator-vs-depdency/" rel="nofollow">Part 5b: ServiceLocator vs Dependency Injection</a></li>
+</ul></li>
+<li><a href="/2009/11/04/mvvm-with-prism-101-ndash-part-6-commands/" rel="nofollow">Part 6: Commands</a>
+
+<ul>
+<li><a href="/2010/03/08/mvvm-with-prism-101-ndash-part-6b-wrapping-iclientchannel/" rel="nofollow">Part 6b: Wrapping IClientChannel</a></li>
+</ul></li>
+</ul>
+
+<p><em>I have to apologize for the length of this article. I wanted to split it into two separate parts, but the way I ended up writing it all just seems difficult to split it now that I&rsquo;m done. Hopefully the section headings are clear enough for those who are only interested in specifics can find what they are looking for.</em></p>
+
+<p>This is part 6 in my series on implementing MVVM with the Prism Framework (CompositeWPF). This time we&rsquo;re going to discuss Commands. You can think of Commands as an abstraction of Events, but don&rsquo;t confuse the two. An Event is fired by a single publisher and anyone who is interested in that event may subscribe to it. With regards to the UI, a Button has a Click event. If you want to handle that click event you subscribe to it by creating an event handler which will be called when the event fires. Your event handler can then perform an action whenever it is called in response to the event to which it is subscribed. In other words, if you subscribe to the Button.Click event your event handler will be called anytime the Button is clicked. Additionally, other objects interested in the Click event of the button may be notified and they will also be able to perform other operations when the Click event fires.</p>
+
+<p>A command is technically the opposite. The command itself performs a specific operation and the command is exposed as part of a public interface which can be called to execute that operation. It can be called by any object which can access the command but it provides no means to subscribe to the command or notifications that it has been called. The command itself is actually more analogous to the event handler than it is to the event. But the way you wire it up seems familiar to those used to wiring up events and event handlers using the Visual Studio designer.  When wiring up a Command to a Button object you use an attached property to bind the UI element to the Command, similar to the way you can use the OnClick attribute of the Button element to declare an event handler you wish to be called when the Button is clicked.</p>
+
+<h2>Event Example</h2>
+<pre class="highlight plaintext"><code>&lt;Button Content="Send" Click="Button_Clicked" /&gt;
+</code></pre>
+<h2>Command Example</h2>
+<pre class="highlight plaintext"><code>&lt;Button Content="Send" VerticalAlignment="Top" Width="100" 
+         cmd:Click.Command="{Binding SendMessage}" /&gt;
+</code></pre>
+<p>WPF and Silverlight both provide an interface named ICommand which is defined this way:</p>
+<pre class="highlight plaintext"><code>using System;
+
+namespace System.Windows.Input
+{
+    // Summary:
+    //     Defines the contract for commanding, 
+    //        using the same contract as used in WPF.
+    public interface ICommand
+    {
+        // Summary:
+        //     Occurs when changes occur that affect 
+        //        whether the command should execute.
+        event EventHandler CanExecuteChanged;
+
+        // Summary:
+        //     Defines the method that determines 
+        //        whether the command can execute in its
+        //         current state.
+        //
+        // Parameters:
+        //   parameter:
+        //     Data used by the command. If the 
+        //        command does not require data to be passed,
+        //        this object can be set to null.
+        //
+        // Returns:
+        //     true if this command can be executed; 
+        //        otherwise, false.
+        bool CanExecute(object parameter);
+        //
+        // Summary:
+        //     Defines the method to be called when the 
+        //        command is invoked.
+        //
+        // Parameters:
+        //   parameter:
+        //     Data used by the command. If the command 
+        //        does not require data to be passed,
+        //         this object can be set to null.
+        void Execute(object parameter);
+    }
+}
+</code></pre>
+<p>The important parts of the interface are the Execute and CanExecute methods. Execute is the method which will be called and CanExecute indicates wither or not the Command is currently active. For example, if you don&rsquo;t want the user clicking on the Save button which is bound to your SaveCommand then you can provide logic in the CanExecute method which will only return true when the state of your ViewModel (or the data model exposed by your ViewModel) is &ldquo;modified&rdquo;. If CanExecute returns &ldquo;false&rdquo; then WPF/Silverlight will disable the button until CanExecute returns &ldquo;true&rdquo;.</p>
+
+<h1>Exposing Commands</h1>
+
+<p>In order to bind a UI element to a command first you must provide a command from your View-Model. Prism provides an implementation of ICommand named DelegateCommand<T>. When implementing MVVM you will want to use a command implementation other than RoutedCommand provided by WPF. The reason for this is because RoutedCommand is tied to the UI and you will possibly experience some difficulties using RoutedCommand with MVVM as your application grows in complexity and you try to keep your views modular. If you want more details on what those issues are, see the Prism documentation for &ldquo;Commands&rdquo;. Most of my experience has been with Silverlight, which is why I defer to the Prism docs. Silverilght doesn&rsquo;t have an implementation of ICommand, so no RoutedCommand. For that reason, I would most likely say something wrong since I don&rsquo;t really have any experience with it.</p>
+
+<p>DelegateCommand<T> provides a UI agnostic means of exposing your commands to the View. And because it uses Generics it also allows you to work with strongly typed parameters. Here&rsquo;s how I&rsquo;ve implemented the SendMessage command in the sample application I have provided with this series:</p>
+<pre class="highlight plaintext"><code>public EditorViewModel(IMessageServiceAsync service, 
+    IEventAggregator aggregator)
+{
+    m_MessageService = service;
+    // ... other setup code ...
+    SendMessage = new DelegateCommand&lt;String&gt;(
+            SendMessageExecute, SendMessageCanExecute);
+}
+
+public ICommand SendMessage { get; set; }
+
+private void SendMessageExecute(String arg)
+{
+    Message message = new Message
+    {
+        Content = arg,
+        Date = DateTime.Now
+    };
+    IAsyncResult result = m_MessageService.BeginAddMessage(
+        message, new AsyncCallback(EndSendMessage), null);
+
+    if (result.CompletedSynchronously)
+        EndSendMessage(result);
+}
+
+private bool SendMessageCanExecute(String arg)
+{
+    return !String.IsNullOrEmpty(Message.Content);
+}
+
+private void EndSendMessage(IAsyncResult result)
+{
+    m_MessageService.EndInvoke(m =&gt; m.EndAddMessage(result));
+}
+</code></pre>
+<p>As you can see CanExecute will only return true when the the Message property of our ViewModel is not null or empty. In our view the Message property is bound to the TextBox where the user will enter the message they wish to send.</p>
+
+<h1>Command Parameters</h1>
+
+<p>In the last code snippet you may have noticed that Execute and CanExecute accept a string parameter. The ICommand interface declares these as simple object type parameters, but DelegateCommand<T> provides the strongly typed version for us. Either way, because of the parameters we can make our Command a bit more flexible (not that we need it in this situation). Prism provides a second attached property which allows you to bind a value to the parameter for ICommand.Execute.  If you are using WPF or Silverlight 3 you could bind to the TextBox&rsquo;s Text property or any other element on your UI. If you&rsquo;re using Silverlight 2 you can only bind to a StaticResource or some public property of the Button&rsquo;s DataContext.</p>
+<pre class="highlight plaintext"><code>&lt;Button Content="Send" VerticalAlignment="Top" Width="100" 
+         cmd:Click.Command="{Binding SendMessage}" 
+         cmd:Click.CommandParameter="{Binding Path=CurrentMessage.Content}" /&gt;
+</code></pre>
+<p>Using Command Parameters like this allows you to, for example, add a button to each item of a list and pass the object bound to the DataContext of each item to the Command on your view model. When a button is clicked the correct object will be passed as an argument to the Execute method.</p>
+
+<h1>Service Client Communication</h1>
+
+<p>Many of the commands you define will be backed by an external web service and given that Visual Studio provides a nice wizard to connect to a web service and generate a client proxy to communicate with any service I have been asked why I don&rsquo;t use the &ldquo;Add Service Reference&rdquo; utility provided by Visual Studio or SvcUtil.exe provided with the .NET Framework SDK. Personally, I don&rsquo;t like the messy designer file generated by the utility. I don&rsquo;t have full control over the namespace generated and I found mocking the interfaces to be a pain. Many of the examples which demonstrate using the proxy generated by the utility look like this:</p>
+<pre class="highlight plaintext"><code>private void GetMessagesExecute(Object arg)
+{
+    MessageServiceClient client = new MessageServiceClient();
+    client.GetMessagesCompleted += new EventHandler&lt;GetMessagesCompletedEventArgs&gt;(client_GetMessagesCompleted);
+    client.GetMessagesAsync();
+}
+
+void client_GetMessagesCompleted(object sender, GetMessagesCompletedEventArgs e)
+{
+    ObservableCollection&lt;Message&gt; result = e.Result;
+}
+</code></pre>
+<p>There are some nice features here. First and foremost, you don&rsquo;t have to worry about the UI thread. When the completed event fires you don&rsquo;t have to get a reference to the Dispatcher to update properties which raise INotifyPropertyChanged or INotifyCollectionChanged. It makes things nice and clean. But you can&rsquo;t mock this class. I&rsquo;ve tried and it requires practically writing the whole thing myself. The generated proxy has an interface which matches the interface I defined for my service, but there is no interface which exposes the &ldquo;MyMethodCompleted&rdquo; events or the &ldquo;MyMethodAsync&rdquo; methods. So if I want to be able to write unit tests which are independent of any external dependencies then I cannot use the Async/Completed model, I must use the Begin/End Async patterns. And if I am going to use those anyway then why mess with a generated proxy when all it requires is a single line of code to create my service proxy:</p>
+<pre class="highlight plaintext"><code>IMessageServiceAsync service = new ChannelFactory&lt;IMessageServiceAsync&gt;(
+    "BasicHttpBinding_IMessageEndpoint").CreateChannel();
+</code></pre>
+<p>To support this, there is an extra few steps:</p>
+
+<ul>
+<li>I must define an Async version of my Service Contract</li>
+<li>If I am using Silverlight I must add a link to not only the file which contains Async Service Contract definition but also the class files which define the types returned by my service.</li>
+<li>If I change my Service Contract I must mirror the change in the Async version of my Service Contract.</li>
+</ul>
+
+<p>But except for maintaining an async version of my Service Contract these are one time setup steps that really don&rsquo;t take much time. And as for maintaining an async interface, it really doesn&rsquo;t take any more time than it does to remove the service reference and re-add it. For me it is worth the time saved trying to create the mock objects needed to properly test in isolation. We are all generally allergic to additional typing but in the end I find that doing it this way saves me time in the long run.</p>
+
+<h2>Protecting from Faults</h2>
+
+<p>For a long time I was uncomfortable with just using the raw ClientChannel object provided for me. When applications are deployed in the wild, stuff happens and you want a clean way for your application to recover. For example, when you experience a Fault in your communication with the service you need to properly clean up the communication channel. But what do you do if you still need to communicate with the service. You need a new channel for communication. But in our scenario the ViewModel doesn&rsquo;t know how to create the channel. So how do we properly handle faults and recover gracefully from them without requiring our user to do anything?</p>
+<pre class="highlight plaintext"><code>using System;
+using System.Collections.Generic;
+using System.ServiceModel;
+using CodeCamp.Model;
+
+namespace CodeCamp.Common.Services
+{
+    public class MessageServiceWrapper : IMessageServiceAsync, IDisposable
+    {
+        private ChannelFactory&lt;IMessageServiceAsync&gt; m_Factory;
+        private IMessageServiceAsync m_Service;
+        private Object m_SyncRoot = new Object();
+
+        public MessageServiceWrapper(String endpointName)
+        {
+            m_Factory = new ChannelFactory&lt;IMessageServiceAsync&gt;(endpointName);
+        }
+
+        private void CloseChannel()
+        {
+            if (m_Service != null)
+            {
+                lock (m_SyncRoot)
+                {
+                    if (m_Service != null)
+                    {
+                        try
+                        {
+                            IClientChannel channel = (IClientChannel)m_Service;
+                            channel.Faulted -= IClientChannel_Faulted;
+                            if (channel.State == CommunicationState.Faulted)
+                                channel.Abort();
+                            else
+                                channel.Close();
+                            channel.Dispose();
+                        }
+                        catch (CommunicationException) { }
+                        catch (TimeoutException) { }
+                        m_Service = null;
+                    }
+                }
+            }
+        }
+
+        private IMessageServiceAsync Current
+        {
+            get
+            {
+                if (m_Service != null)
+                    return m_Service;
+
+                lock (m_SyncRoot)
+                {
+                    if (m_Service == null)
+                    {
+                        m_Service = m_Factory.CreateChannel();
+                        ((IClientChannel)m_Service).Faulted += IClientChannel_Faulted;
+                    }
+                }
+
+                return m_Service;
+            }
+        }
+
+        private void IClientChannel_Faulted(Object sender, EventArgs e)
+        {
+            CloseChannel();
+        }
+
+        #region IMessageServiceAsync Members
+
+        public IAsyncResult BeginAddMessage(Message message, 
+            AsyncCallback callback, object asyncState)
+        {
+            return Current.BeginAddMessage(message, callback, asyncState);
+        }
+
+        public void EndAddMessage(IAsyncResult result)
+        {
+            try
+            {
+                Current.EndAddMessage(result);
+            }
+            catch
+            {
+
+                CloseChannel();
+                throw;
+            }
+        }
+
+        public IAsyncResult BeginGetMessages(AsyncCallback callback, 
+            object asyncState)
+        {
+            return Current.BeginGetMessages(callback, asyncState);
+        }
+
+        public IList&lt;Message&gt; EndGetMessages(IAsyncResult result)
+        {
+            try
+            {
+                return Current.EndGetMessages(result);
+            }
+            catch
+            {
+                CloseChannel();
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region IDisposable Members
+
+        private Boolean m_IsDisposed = false;
+
+        public void Dispose()
+        {
+            if (m_IsDisposed)
+                throw new ObjectDisposedException("MessageServiceWrapper");
+
+            CloseChannel();
+
+            ((IDisposable)m_Factory).Dispose();
+
+            m_IsDisposed = true;
+        }
+
+        #endregion
+    }
+}
+</code></pre>
+<p>My first attempt at this was to create a wrapper class for each service I used on my client. The problem was it was too much work. I had to maintain the proper methods and signatures to keep my contracts in sync with my interfaces. This had to be done for every operation on every service. I really didn&rsquo;t like this method at all.</p>
+
+<p>So I created a base class which helped a little, but I still had to keep the interface in sync.</p>
+
+<h3>ClientChannelWrapper.cs</h3>
+<pre class="highlight plaintext"><code>using System;
+using System.Collections.Generic;
+using System.ServiceModel;
+using CodeCamp.Model;
+
+namespace CodeCamp.Common.Services
+{
+    public class ClientChannelWrapper&lt;T&gt; : IDisposable where T : class
+    {
+        private ChannelFactory&lt;T&gt; m_Factory;
+        private T m_Service;
+        private Object m_SyncRoot = new Object();
+
+        public ClientChannelWrapper(String endpointName)
+        {
+            m_Factory = new ChannelFactory&lt;T&gt;(endpointName);
+        }
+
+        protected void CloseChannel()
+        {
+            if (m_Service != null)
+            {
+                lock (m_SyncRoot)
+                {
+                    if (m_Service != null)
+                    {
+                        IClientChannel channel = (IClientChannel)m_Service;
+                        try
+                        {
+                            channel.Faulted -= IClientChannel_Faulted;
+                            if (channel.State == CommunicationState.Faulted)
+                                channel.Abort();
+                            else
+                                channel.Close();
+                        }
+                        catch (CommunicationException) { channel.Abort(); }
+                        catch (TimeoutException) { channel.Abort(); }
+                        catch (Exception) { channel.Abort(); throw; }
+                        finally { m_Service = null; }
+                    }
+                }
+            }
+        }
+
+        protected T Current
+        {
+            get
+            {
+                if (m_Service != null)
+                    return m_Service;
+
+                lock (m_SyncRoot)
+                {
+                    if (m_Service == null)
+                    {
+                        m_Service = m_Factory.CreateChannel();
+                        ((IClientChannel)m_Service).Faulted += IClientChannel_Faulted;
+                    }
+                }
+
+                return m_Service;
+            }
+        }
+
+        private void IClientChannel_Faulted(Object sender, EventArgs e)
+        {
+            CloseChannel();
+        }
+
+        #region IDisposable Members
+
+        private Boolean m_IsDisposed = false;
+
+        public void Dispose()
+        {
+            if (m_IsDisposed)
+                throw new ObjectDisposedException("ClientChannelWrapper");
+
+            try
+            {
+                CloseChannel();
+            }
+            finally
+            {
+                m_IsDisposed = true;
+            }
+        }
+
+        #endregion
+    }
+}
+</code></pre>
+<h3>MessageServiceWrapper.cs</h3>
+<pre class="highlight plaintext"><code>using System;
+using System.Collections.Generic;
+using CodeCamp.Common.Services;
+using CodeCamp.Model;
+
+namespace CodeCamp.Services
+{
+    public class MessageServiceWrapper : ClientChannelWrapper&lt;IMessageServiceAsync&gt;, IMessageServiceAsync
+    {
+        public MessageServiceWrapper(string endPointName)
+            : base(endPointName)
+        {
+
+        }
+
+        public MessageServiceWrapper()
+            : base("BasicHttpBinding_IMessageEndpoint")
+        {
+
+        }
+
+        #region IMessageServiceAsync Members
+
+        public IAsyncResult BeginAddMessage(Message message, AsyncCallback callback, object asyncState)
+        {
+            try
+            {
+                return Current.BeginAddMessage(message, callback, asyncState);
+            }
+            catch
+            {
+                CloseChannel();
+                throw;
+            }
+        }
+
+        public void EndAddMessage(IAsyncResult result)
+        {
+            try
+            {
+                Current.EndAddMessage(result);
+            }
+            catch
+            {
+
+                CloseChannel();
+                throw;
+            }
+        }
+
+        public IAsyncResult BeginGetMessages(AsyncCallback callback, object asyncState)
+        {
+            try
+            {
+                return Current.BeginGetMessages(callback, asyncState);
+            }
+            catch
+            {
+                CloseChannel();
+                throw;
+            }
+        }
+
+        public IList&lt;Message&gt; EndGetMessages(IAsyncResult result)
+        {
+            try
+            {
+                return Current.EndGetMessages(result);
+            }
+            catch
+            {
+                CloseChannel();
+                throw;
+            }
+        }
+
+        #endregion
+
+    }
+}
+</code></pre>
+<p>This wasn&rsquo;t much better, it did help but I knew I couldn&rsquo;t really use this in any more than a trivial application with few or only one service. But I&rsquo;ve been reading a bit on functional programming (not enough to write F# code or Haskell or anything for that matter) and I ran into this article by Jeremy Miller. He demonstrates using a technique to reduce the need to write so much boilerplate code required to call a repository. So I sacrificed a little cleanliness in my interfaces and came up with this:</p>
+
+<h3>IClientChannelWrapper.cs</h3>
+<pre class="highlight plaintext"><code>using System;
+
+namespace CodeCamp.Common.Services
+{
+    public interface IClientChannelWrapper&lt;T&gt; where T : class
+    {
+        IAsyncResult BeginInvoke(Func&lt;T, IAsyncResult&gt; function);
+        void Dispose();
+        void EndInvoke(Action&lt;T&gt; action);
+        TResult EndInvoke&lt;TResult&gt;(Func&lt;T, TResult&gt; function);
+    }
+}
+</code></pre>
+<h3>ClientChannelWrapper.cs</h3>
+<pre class="highlight plaintext"><code>using System;
+using System.Collections.Generic;
+using System.ServiceModel;
+using CodeCamp.Model;
+
+namespace CodeCamp.Common.Services
+{
+    /// &lt;summary&gt;
+    /// Wrapper class ensures proper life-cycle handling for IClientChannel 
+    /// objects by implementing proper Open, Close and Dispose techniques
+    /// based on recommended practices.
+    /// &lt;/summary&gt;
+    /// &lt;remarks&gt;
+    /// The idea for BeginInvoke and EndInvoke methods was derived from
+    /// this &lt;see cref="http://msdn.microsoft.com/en-us/magazine/ee309512.aspx"&gt;MSDN article&lt;/see&gt;
+    /// &lt;/remarks&gt;
+    /// &lt;typeparam name="T"&gt;An interface which defines an async ServiceContract&lt;/typeparam&gt;
+    public class ClientChannelWrapper&lt;T&gt; : IDisposable, IClientChannelWrapper&lt;T&gt; where T : class
+    {
+        private ChannelFactory&lt;T&gt; m_Factory;
+        private T m_Service;
+        private Object m_SyncRoot = new Object();
+
+        public ClientChannelWrapper(String endpointName)
+        {
+            m_Factory = new ChannelFactory&lt;T&gt;(endpointName);
+        }
+
+        public ClientChannelWrapper(T service)
+        {
+            m_Service = service;
+        }
+
+        public IAsyncResult BeginInvoke(Func&lt;T, IAsyncResult&gt; function)
+        {
+            try
+            {
+                return function.Invoke(Current);
+            }
+            catch (Exception)
+            {
+                CloseChannel();
+                throw;
+            }
+        }
+
+        public TResult EndInvoke&lt;TResult&gt;(Func&lt;T, TResult&gt; function)
+        {
+            try
+            {
+                return function.Invoke(Current);
+            }
+            catch (Exception)
+            {
+                CloseChannel();
+                throw;
+            }
+        }
+
+        public void EndInvoke(Action&lt;T&gt; action)
+        {
+            try
+            {
+                action.Invoke(Current);
+            }
+            catch (Exception)
+            {
+                CloseChannel();
+                throw;
+            }
+        }
+
+        protected void CloseChannel()
+        {
+            if (m_Service != null)
+            {
+                lock (m_SyncRoot)
+                {
+                    if (m_Service != null)
+                    {
+                        IClientChannel channel = m_Service as IClientChannel;
+                        if (channel != null)
+                        {
+                            try
+                            {
+                                channel.Faulted -= IClientChannel_Faulted;
+                                if (channel.State == CommunicationState.Faulted)
+                                    channel.Abort();
+                                else
+                                    channel.Close();
+                            }
+                            catch (CommunicationException) { channel.Abort(); }
+                            catch (TimeoutException) { channel.Abort(); }
+                            catch (Exception) { channel.Abort(); throw; }
+                            finally { m_Service = null; }
+                        }
+                    }
+                }
+            }
+        }
+
+        protected T Current
+        {
+            get
+            {
+                if (m_Service != null)
+                    return m_Service;
+
+                lock (m_SyncRoot)
+                {
+                    if (m_Service == null)
+                    {
+                        m_Service = m_Factory.CreateChannel();
+                        ((IClientChannel)m_Service).Faulted += IClientChannel_Faulted;
+                    }
+                }
+
+                return m_Service;
+            }
+        }
+
+        private void IClientChannel_Faulted(Object sender, EventArgs e)
+        {
+            CloseChannel();
+        }
+
+        #region IDisposable Members
+
+        private Boolean m_IsDisposed = false;
+
+        public void Dispose()
+        {
+            if (m_IsDisposed)
+                throw new ObjectDisposedException("ClientChannelWrapper");
+
+            try
+            {
+                CloseChannel();
+            }
+            finally
+            {
+                m_IsDisposed = true;
+            }
+        }
+
+        #endregion
+    }
+}
+</code></pre>
+<p>And here&rsquo;s how you use it :</p>
+
+<h3>Create/Register ClientChannelWrapper</h3>
+<pre class="highlight plaintext"><code>IClientChannelWrapper&lt;IMessageServiceAsync&gt; service = new ClientChannelWrapper&lt;IMessageServiceAsync&gt;("BasicHttpBinding_IMessageEndpoint");
+m_Container.RegisterInstance&lt;IClientChannelWrapper&lt;IMessageServiceAsync&gt;&gt;(service);
+</code></pre>
+<h3>Reference ClientChannelWrapper</h3>
+<pre class="highlight plaintext"><code>public class EditorViewModel : IEditorViewModel
+{
+    private IClientChannelWrapper&lt;IMessageServiceAsync&gt; m_MessageService;
+
+    public EditorViewModel(IClientChannelWrapper&lt;IMessageServiceAsync&gt; service, 
+        IEventAggregator aggregator)
+    {
+        m_MessageService = service;
+        // ... other ctor stuff ...
+    }
+</code></pre>
+<h3>Use ClientChannelWrapper</h3>
+<pre class="highlight plaintext"><code>IAsyncResult result = m_MessageService.BeginInvoke(
+    m =&gt; m.BeginAddMessage(message, new AsyncCallback(EndSendMessage), null));
+</code></pre>
+<p>What this does for us is that all our service calls can now be wrapped in try/catch blocks which will auto-magically clean up the connection correctly (call Abort - can&rsquo;t call Dispose) if there is a fault. Then you can gracefully catch the exception and recover. When you retry a new client channel will be created for you without any knowledge on the part of your ViewModel.</p>
+
+<h1>Mind Your UI Thread</h1>
+
+<p>If you aren&rsquo;t using a generated client proxy or if you are doing any other kind of asynchronous calls (like sockets) you need to be aware of the UI thread. Making your UI more responsive by performing long running tasks on a background thread is all well and good. However, when your operation completes and you need to update your ViewModel you must keep in mind that your UI is running on a static thread and can&rsquo;t be updated from a background thread. Basically this means any public properties on your ViewModel which will raise INotifyPropertyChanged or INotifyCollectionChanged cannot be updated by your background thread. So how do you update them if our ViewModel doesn&rsquo;t know anything about the UI?</p>
+
+<p>I have defined an interface I call IDispatcher:</p>
+<pre class="highlight plaintext"><code>using System;
+
+namespace CodeCamp.Common
+{
+    public interface IDispatcher
+    {
+        void BeginInvoke(Action action);
+        void BeginInvoke(Delegate action, params Object[] args);
+    }
+}
+</code></pre>
+<p>Then I have a concrete class called DispatcherFacade which allows me to pass in a flag telling it if the application is running on a UI thread or if is running in a test environment or design mode. If the application UI is not running (false) then the action or delegate is invoked on the current thread. If the UI is running (true) then it gets a reference to the UI thread and executes the delegate on the UI thread:</p>
+<pre class="highlight plaintext"><code>using System;
+using System.Windows;
+
+namespace CodeCamp.Common
+{
+    public class DispatcherFacade : IDispatcher
+    {
+        private Boolean m_IsHtmlEnabled;
+
+        public DispatcherFacade(Boolean isHtmlEnabled)
+        {
+            m_IsHtmlEnabled = isHtmlEnabled;
+        }
+
+        #region IDispatcher Members
+
+        public void BeginInvoke(Action action)
+        {
+            if (m_IsHtmlEnabled == false)
+                action.Invoke();
+
+            Deployment.Current.Dispatcher.BeginInvoke(action);
+        }
+
+        public void BeginInvoke(Delegate action, params object[] args)
+        {
+            if (m_IsHtmlEnabled == false)
+                action.DynamicInvoke(args);
+
+            Deployment.Current.Dispatcher.BeginInvoke(action, args);
+        }
+
+        #endregion
+    }
+}
+</code></pre>
+<p>This keeps me from having to write code which is dependent upon the UI and I don&rsquo;t have to write a mock for IDispatcher as DispatcherFacade handles all three situations.</p>
+
+<h1>Why Check IAsyncResult.CompletedSyncronously?</h1>
+<pre class="highlight plaintext"><code>private void GetMessagesExecute(Object arg)
+{
+    IAsyncResult result = m_MessageService.BeginInvoke(
+        m =&gt; m.BeginGetMessages(new AsyncCallback(EndGetMessages), null));
+    if (result.CompletedSynchronously)
+        EndGetMessages(result);
+}
+</code></pre>
+<p>You&rsquo;ll notice whenever I make a call to a BeginXX async method I check the CompletedSyncronously property. If it&rsquo;s &ldquo;true&rdquo; then I call my EndXX AsyncCallback method. The reason for this is to simplify testing. Writing tests for asynchronous method calls is a pain, this way my tests are cleaner and self-contained in a single method without having to account for race conditions caused by a different environment (test vs. runtime). In order for this to work I just needed to implement my own version of IAsyncResult:</p>
+<pre class="highlight plaintext"><code>using System;
+using System.Threading;
+
+namespace CodeCamp.Common.Utility
+{
+    public class MockAsyncResult : IAsyncResult
+    {
+
+        #region IAsyncResult Members
+
+        private Object m_AsyncState;
+        public object AsyncState
+        {
+            get { return m_AsyncState; }
+            set { m_AsyncState = value; }
+        }
+
+        ManualResetEvent m_WaitHandle = new ManualResetEvent(true);
+        public System.Threading.WaitHandle AsyncWaitHandle
+        {
+            get { return m_WaitHandle; }
+        }
+
+        public bool CompletedSynchronously
+        {
+            get { return true; }
+        }
+
+        public bool IsCompleted
+        {
+            get { return true; }
+        }
+
+        #endregion
+    }
+}
+</code></pre>
+<p>Then in my mock service implementation I use it like this:</p>
+<pre class="highlight plaintext"><code>using System;
+using System.Collections.Generic;
+using CodeCamp.Model;
+
+namespace CodeCamp.Common.Utility
+{
+    public class MockMessageService : IMessageServiceAsync
+    {
+        #region IMessageServiceAsync Members
+
+        public IAsyncResult BeginGetMessages(AsyncCallback callback, object state)
+        {
+            return new MockAsyncResult { AsyncState = state };
+        }
+
+        public System.Collections.Generic.IList&lt;Message&gt; EndGetMessages(IAsyncResult result)
+        {
+            return new List&lt;Message&gt; {
+                new Message { Content = "Message 1", Date = new DateTime(2009, 1, 1, 15, 02, 35) },
+                new Message { Content = "Message 2", Date = new DateTime(2009, 1, 1, 15, 08, 21) },
+                new Message { Content = "Message 3", Date = new DateTime(2009, 1, 1, 15, 11, 01) }
+            };
+        }
+
+        public IAsyncResult BeginAddMessage(Message message, AsyncCallback callback, object state)
+        {
+            return new MockAsyncResult { AsyncState = state };
+        }
+
+        public void EndAddMessage(IAsyncResult result)
+        {
+            return;
+        }
+
+        #endregion
+    }
+}
+</code></pre>
+<p>This also makes it easier to support design-time databinding because I make sure to call my AsyncCallback directly.</p>
+
+<h1>Conclusion</h1>
+
+<p>A lot has been covered in this last post. I wasn&rsquo;t able to cover as much as I would have liked because it was just getting too long. If you have questions specific to anything in this article or series I&rsquo;ll be happy to clarify.</p>
+
+<p>We&rsquo;re almost to the end of our series. In my next post, the last one, I&rsquo;ll be looking at events using the EventAggregator and we&rsquo;ll be using it to provide a global error handler to recover gracefully from unhandled exceptions.</p>
+
+<p><a href="http://dvm-public-assets.s3.amazonaws.com/silverlight/CodeCamp.zip" rel="nofollow">Source Code</a></p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=MVVM with Prism 101 – Part 6: Commands&amp;amp;url=http://www.developmentalmadness.com/2009/11/04/mvvm-with-prism-101-ndash-part-6-commands/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/11/04/mvvm-with-prism-101-ndash-part-6-commands/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/11/04/mvvm-with-prism-101-ndash-part-6-commands/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/11/02/mvvm-with-prism-101-ndash-part-5b-servicelocator-vs-depdency/'>
+<section class='post'>
+<h2>MVVM with Prism 101 – Part 5b: ServiceLocator vs Dependency Injection</h2>
+<p>Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2010/03/08/mvvm-with-prism-101-ndash-part-6b-wrapping-iclientchannel/'>
+<section class='post'>
+<h2>MVVM with Prism 101 – Part 6b: Wrapping IClientChannel</h2>
+<p>Source Code Part 1: The Bootstrapper Part 2: The Shell Part 3: Regions Part 3b: View Injection and The&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

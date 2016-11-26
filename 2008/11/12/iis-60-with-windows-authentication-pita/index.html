@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: IIS 6.0 with Windows Authentication PITA</title>
+<meta content='ulling. It all started when the test server was hosed (rebuilt) without asking me if it affect anything I was doing. Without going to much into ...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='IIS 6.0 with Windows Authentication PITA' property='og:title'>
+<meta content='ulling. It all started when the test server was hosed (rebuilt) without asking me if it affect anything I was doing. Without going to much into ...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2008/11/12/iis-60-with-windows-authentication-pita/' property='og:url'>
+<meta content='2008-11-12' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='IIS 6.0 with Windows Authentication PITA' name='twitter:title'>
+<meta content='ulling. It all started when the test server was hosed (rebuilt) without asking me if it affect anything I was doing. Without going to much into ...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2008/11/12/iis-60-with-windows-authentication-pita/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>IIS 6.0 with Windows Authentication PITA</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2008-11-12'>
+12 November 2008
+</time>
+on <a href='/tag/intranet/'>intranet</a>, <a href='/tag/anonymous_authentication/'>anonymous_authentication</a>, <a href='/tag/iis_6_0/'>iis_6_0</a>, <a href='/tag/integrated_windows_authentication/'>integrated_windows_authentication</a>
+</section>
+</header>
+<section class='post-content'><p>ulling. It all started when the test server was hosed (rebuilt) without asking me if it affect anything I was doing. Without going to much into the history, an application that should have been on production was on staging and being used as the production application. </p>
+
+<p>Stop right there - don&rsquo;t start pointing fingers cause I&rsquo;ve got no control over this other than the continual protesting that I have been doing. Not to mention that the person who requested the rebuild of the server has been in meetings where I have said, &ldquo;It&rsquo;s on test and needs to be deployed to production - the users are using test as production.&rdquo;.</p>
+
+<p>Anyway, I find about it from the users and am tasked with getting the server configured. I&rsquo;m no IIS guru/god, but I&rsquo;m hardly a neophyte. However, I don&rsquo;t have a lot of IIS experience in an intranet environment because usually when I work in these envrionments there is someone dedicated to this role. </p>
+
+<p>First, I verfied IIS was configured the same way as our development environment, which was working correctly. Then I dug through the security event logs and found this message:</p>
+<pre class="highlight plaintext"><code>Unknown user name or bad password
+</code></pre>
+<p>Also, the authentication method logged was kerberos - at the time this meant nothing to me for reasons I mentioned above. How was I supposed to know they weren&rsquo;t using kerberos? But it turns out that was the key.</p>
+
+<p>Apparently, this is by design. IIS is configured to use kerberos for Windows Authentication by default. But when your application pool is using a local machine account (the default) your application cannot access the domain controller. The key is to tell IIS to use NTLM instead of kerberos. This support link will tell you how to resolve this:</p>
+
+<p>http://support.microsoft.com/kb/871179</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=IIS 6.0 with Windows Authentication PITA&amp;amp;url=http://www.developmentalmadness.com/2008/11/12/iis-60-with-windows-authentication-pita/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2008/11/12/iis-60-with-windows-authentication-pita/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2008/11/12/iis-60-with-windows-authentication-pita/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2008/11/05/sending-datetime-parameters-from-ajax/'>
+<section class='post'>
+<h2>Sending DateTime Parameters from AJAX to WCF Operations (methods)</h2>
+<p>Yesterday I got stuck on a problem with a DateTime parameter I was attempting to submit to a WCF&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2008/12/24/in-place-list-editing-with-wpf/'>
+<section class='post'>
+<h2>In Place List Editing With WPF</h2>
+<p>I&rsquo;ve been working in WPF for the last month and learning some pretty cool stuff. I really like it.&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

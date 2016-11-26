@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: database_instance</title>
+  <subtitle>Posts tagged with database_instance</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/database_instance/feed.xml" rel="self"/>
+  <updated>2009-01-29T16:04:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Lost In Translation - Episode 1: Database Instances</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-1-database/"/>
+    <id>http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-1-database/</id>
+    <published>2009-01-29T16:04:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I have been using SQL Server for about 8 years now. When compared to my peers (read: coworkers) I would classify myself as a SQL Server guru. When compared to many I meet on sites like SQLServerCentral.com where there seem to be those I would classify</summary>
+  </entry>
+</feed>

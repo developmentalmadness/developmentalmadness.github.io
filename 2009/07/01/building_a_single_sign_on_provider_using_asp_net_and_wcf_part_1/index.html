@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Building a Single Sign On Provider Using ASP.NET and WCF: Part 1</title>
+<meta content='This is the first in a 4 part series on building a single sign on provider using the ASP.NET platform (ASP.NET and WCF). Originally, I wrote the...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Building a Single Sign On Provider Using ASP.NET and WCF: Part 1' property='og:title'>
+<meta content='This is the first in a 4 part series on building a single sign on provider using the ASP.NET platform (ASP.NET and WCF). Originally, I wrote the...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/' property='og:url'>
+<meta content='2009-07-01' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Building a Single Sign On Provider Using ASP.NET and WCF: Part 1' name='twitter:title'>
+<meta content='This is the first in a 4 part series on building a single sign on provider using the ASP.NET platform (ASP.NET and WCF). Originally, I wrote the...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Building a Single Sign On Provider Using ASP.NET and WCF: Part 1</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-07-01'>
+01 July 2009
+</time>
+on <a href='/tag/net_framework_3_5/'>net_framework_3_5</a>, <a href='/tag/wcf/'>wcf</a>, <a href='/tag/asp_net/'>asp_net</a>, <a href='/tag/ajax/'>ajax</a>
+</section>
+</header>
+<section class='post-content'><p>This is the first in a 4 part series on building a single sign on provider using the ASP.NET platform (ASP.NET and WCF). Originally, I wrote the article as a single post but it was pretty long, even for me.</p>
+
+<p><strong>Part 1</strong> addresses the problem in general and how I decided to architect it.</p>
+
+<p><a href="http://developmentalmadness.blogspot.com/2009/07/building-single-sign-on-provider-using_02.html" rel="nofollow"><strong>Part 2</strong></a></p>
+
+<p><a href="http://developmentalmadness.blogspot.com/2009/07/building-single-sign-on-provider-using_06.html" rel="nofollow"><strong>Part 3</strong></a></p>
+
+<p>describes the implementation details and includes the <a href="http://cid-2c81058206cadea2.skydrive.live.com/self.aspx/.Public/CodeSamples/SSO.zip" rel="nofollow">source code</a></p>
+
+<h2>Part 1: Planning an SSO Solution</h2>
+
+<p>We’re using a custom provider and I was asked last week to integrate into our application. Since we don’t have a single sign on service I had to build one from scratch. I found a few solutions I thought would work, but I had erroneously assumed that the applications would all live on the same <a href="http://en.wikipedia.org/wiki/Domain_name" rel="nofollow">domain</a></p>
+
+<h2>Architecture</h2>
+
+<p>I dug around and considered the two public SSO solutions I am most familiar with: and <a href="http://msdn.microsoft.com/en-us/library/bb676631.aspx" rel="nofollow">Microsoft LiveID</a></p>
+
+<p><a href="http://r4pflq.bay.livefilestore.com/y1pu3Y9DmmfOotQlrIBgxUtxukRxStzUIG8Trvi62xi5MGvHS4tnRd3SUmn2R6PYgGmGb06HTOQfFN4GPTFY9S1Vw/SSOFlowDiagram.gif" rel="nofollow"><img src="http://lh3.ggpht.com/_09jBj8qnWKM/SkuTK_LEERI/AAAAAAAAADY/gGkpRSuoWO0/SSOFlowDiagram_thumb24.gif?imgmax=800" title="SSOFlowDiagram_thumb2" alt="SSOFlowDiagram_thumb2" /></a></p>
+
+<p>Guess what? I can hear you laughing from here. Disclaimer: I suck at Visio.</p>
+
+<p>Here’s a description of what you’re seeing:</p>
+
+<ul>
+<li><strong>Client</strong> – a web browser attempting to access a web application which has been secured by a trusted SSO service.</li>
+<li><strong>Application</strong> – a web application which delegates the validation of user credentials to a centralized authentication service.</li>
+<li><strong>SSO Service</strong> – a centralized repository of user credentials and (potentially) profile data managed by a trusted 3rd party.</li>
+</ul>
+
+<p>The SSO service has no UI whatsoever. All communication between the client and SSO service is done via cross-domain calls (<a href="http://niryariv.wordpress.com/2009/05/05/jsonp-quickly/" rel="nofollow">JSONP</a></p>
+
+<p>Here’s how the process flows:</p>
+
+<ol>
+<li>When an unauthenticated client requests a secured resource from the application that client is redirected to an authentication page.</li>
+<li>The authentication page makes a request (via JSONP) to the SSO service for a token which can then be presented to the application as evidence of the client’s identity with the SSO service.</li>
+<li>If the client has already authenticated with the SSO service and has an active session then skip to step #7 otherwise the request is denied.</li>
+<li>An unauthenticated client (SSO authentication) is redirected to a login page where the client then submits credentials for the SSO service.</li>
+<li>Upon submitting a valid set of credentials to the SSO service the client receives a cookie containing a token which is valid for the SSO service.</li>
+<li>Now that the client has successfully authenticated with the SSO service the client is redirected back to the application’s authentication page (step #2).</li>
+<li>The client receives an encrypted copy of the authentication ticket from the SSO service which it can then submit to the application. NOTE: This extra step is required when cookies are set to “<a href="http://www.owasp.org/index.php/HTTPOnly" rel="nofollow">HttpOnly</a></li>
+<li>The client now submits the SSO token to the application. The application verifies the token with the SSO service by forwarding it and asking if it is a valid token.</li>
+<li>The SSO service responds to the application with a flag indicating wither or not the submitted token is valid or not. Potentially, the SSO service could also provide additional information regarding the identity of the client. If the token was valid, the application then responds to the client with a token of it’s own which identifies the client to the application.</li>
+<li>The client, now authenticated with both the SSO service as well as the application, resubmits the request for the resource from step #1.</li>
+</ol>
+
+<h4>Security</h4>
+
+<p>Messages over JSONP are not considered secure, so at the very least you will want to make sure and use SSL to protect communication with the SSO service.</p>
+
+<p>Also, EVAL is called on the JSONP response to execute the callback returned by the service. If the service is vulnerable to injection attacks and the scripts injected into the service are returned somehow via JSONP then those scripts will be executed on the client.</p>
+
+<p>There are security issues you should consider when using JSONP or any type of cross-domain communication.</p>
+
+<h2>Conclusion</h2>
+
+<p>There are those among you who would be able to implement the entire solution on your own at this point – none of this is cutting edge. Stay tuned for the next installment on setting up FormsAuthentication with WCF.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Building a Single Sign On Provider Using ASP.NET and WCF: Part 1&amp;amp;url=http://www.developmentalmadness.com/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/06/30/tip_open_sql_files_in_a_visual_studio_project_into_the_same_instance_of_ssms/'>
+<section class='post'>
+<h2>TIP: Open SQL Files in a Visual Studio Project Into the Same Instance of SSMS</h2>
+<p>Considering how integrated Microsoft tools usually are the result is frustrating when you tell to open SQL files using&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/07/02/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_2/'>
+<section class='post'>
+<h2>Building a Single Sign On Provider Using ASP.NET and WCF: Part 2</h2>
+<p>Using Forms Authentication with WCF This is the second article in a four part series on building a single&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

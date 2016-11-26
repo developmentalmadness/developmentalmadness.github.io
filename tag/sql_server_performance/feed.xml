@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: sql_server_performance</title>
+  <subtitle>Posts tagged with sql_server_performance</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/sql_server_performance/feed.xml" rel="self"/>
+  <updated>2008-04-01T19:02:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Fast RowCount for SQL 2005</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/01/fast-rowcount-for-sql-2005/"/>
+    <id>http://www.developmentalmadness.com/2008/04/01/fast-rowcount-for-sql-2005/</id>
+    <published>2008-04-01T19:02:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">This is nothing new or revolutionary, but is important nonetheless for those maintaining large-scale SQL Server databases. For years I’ve used the sysindexes system table to find out how many rows are in a large table. The reason for this is to prevent</summary>
+  </entry>
+  <entry>
+    <title>Data Access: Stored Procedures vs. ORM (ad hoc) Queries</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/06/23/data_access_stored_procedures_vs_orm_ad_hoc_queries/"/>
+    <id>http://www.developmentalmadness.com/2009/06/23/data_access_stored_procedures_vs_orm_ad_hoc_queries/</id>
+    <published>2009-06-23T20:48:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’ve had many spirited discussions over time with my colleagues on this issue. And I will most likely invite a flame war from the developer community for this post, but after reading this post
+
+As a disclaimer I don’t take issue with the decision to use</summary>
+  </entry>
+</feed>

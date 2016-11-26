@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: net_framework_3_5</title>
+  <subtitle>Posts tagged with net_framework_3_5</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/net_framework_3_5/feed.xml" rel="self"/>
+  <updated>2008-02-12T17:02:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Extend Anonymous Types using Reflection.Emit</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/02/12/extend-anonymous-types-using/"/>
+    <id>http://www.developmentalmadness.com/2008/02/12/extend-anonymous-types-using/</id>
+    <published>2008-02-12T17:02:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Update 2015 Dec 28: It has been brought to my attention that this code has been enhanced by Kyle Finley. You can read about his enhancements here and the source code is available on Github. Kyle has told me he plans to release a NuGet package which I</summary>
+  </entry>
+  <entry>
+    <title>ASP.NET: Removing System.Web Dependencies</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/05/aspnet-removing-systemweb-dependencies/"/>
+    <id>http://www.developmentalmadness.com/2009/02/05/aspnet-removing-systemweb-dependencies/</id>
+    <published>2009-02-05T17:21:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">As a general rule I prefer to avoid referencing System.Web in my library classes. But if it can’t be avoided it’s still a good idea to avoid the use of HttpContext.Current. It must be nice to live in a perfect world you say? Yes, there are times that</summary>
+  </entry>
+  <entry>
+    <title>Entity Framework: Connection Strings</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/10/entity_framework_connection_strings/"/>
+    <id>http://www.developmentalmadness.com/2009/02/10/entity_framework_connection_strings/</id>
+    <published>2009-02-10T22:29:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">
+
+ connectionString="metadata=.\AdventureWorks.csdl|.\AdventureWorks.ssdl|.\AdventureWorks.msl;
+
+ provider=System.Data.SqlClient;provider connection string='Data Source=localhost;
+
+ Initial Catalog=AdventureWorks;Integrated Security=True;Connection Timeout</summary>
+  </entry>
+  <entry>
+    <title>Building a Single Sign On Provider Using ASP.NET and WCF: Part 1</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/"/>
+    <id>http://www.developmentalmadness.com/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/</id>
+    <published>2009-07-01T16:47:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">This is the first in a 4 part series on building a single sign on provider using the ASP.NET platform (ASP.NET and WCF). Originally, I wrote the article as a single post but it was pretty long, even for me.
+
+Part 1 addresses the problem in general and</summary>
+  </entry>
+  <entry>
+    <title>Building a Single Sign On Provider Using ASP.NET and WCF: Part 2</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/02/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_2/"/>
+    <id>http://www.developmentalmadness.com/2009/07/02/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_2/</id>
+    <published>2009-07-02T06:00:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Using Forms Authentication with WCF
+
+This is the second article in a four part series on building a single sign on () provider using the platform. If you just want to know about forms authentication and and aren’t interested in implementing SSO read ahead</summary>
+  </entry>
+  <entry>
+    <title>Building a Single Sign On Provider Using ASP.NET and WCF: Part 3</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/06/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_3/"/>
+    <id>http://www.developmentalmadness.com/2009/07/06/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_3/</id>
+    <published>2009-07-06T18:00:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Using JSONP with WCF
+
+This is the third article in a four part series on building a single sign on () provider using the platform. If you just want to know about and and aren’t interested in implementing SSO read ahead. Otherwise, make sure to check out</summary>
+  </entry>
+</feed>

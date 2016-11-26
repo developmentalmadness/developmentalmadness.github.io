@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Entity Framework: How to Prevent Eager Loading</title>
+<meta content='As we have been using Entity Framework on my current project I have found that it can be easy to kill eager loading on your queries. This can be...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Entity Framework: How to Prevent Eager Loading' property='og:title'>
+<meta content='As we have been using Entity Framework on my current project I have found that it can be easy to kill eager loading on your queries. This can be...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/02/24/entity_framework_how_to_prevent_eager_loading/' property='og:url'>
+<meta content='2009-02-24' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Entity Framework: How to Prevent Eager Loading' name='twitter:title'>
+<meta content='As we have been using Entity Framework on my current project I have found that it can be easy to kill eager loading on your queries. This can be...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/02/24/entity_framework_how_to_prevent_eager_loading/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Entity Framework: How to Prevent Eager Loading</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-02-24'>
+24 February 2009
+</time>
+on <a href='/tag/entity_framwork/'>entity_framwork</a>
+</section>
+</header>
+<section class='post-content'><p>As we have been using Entity Framework on my current project I have found that it can be easy to kill eager loading on your queries. This can be a real problem if you are counting on it. I have been working on cross-cutting concerns up to this point, but because of my experience with Linq 2 SQL I was asked about some issues our team was having with eager loading. Namely, the Include() method, which is a method of the ObjectQuery type. If you’ve read any documentation on eager loading I’m sure you’ve read that using projections precludes the use of the Include method. That is you can use it, but it will be ignored (no errors), and you will be left scratching your head. I found we were doing two things which were killing eager loading, which I believe are tied to projections.</p>
+
+<h2>Eager Loading</h2>
+
+<p>Before I mention the 3 issues I’ve seen to this point, I wanted to preface the list with a summary of how eager loading works.</p>
+
+<p>In order to get the benefit of eager loading you need to, at minimum, define an association between your entities. This is done either in the designer or in your csdl (class structure element of your entity definition file (edmx). When you first create your model, you get this for free if you have defined foreign key constraints in your data model (RDBMS). If you have then the designer will automatically add navigation properties for each entity and an association between the two.</p>
+
+<p>If you want Entity Framework to eager load related entities then you simply call the Include method of a ObjectQuery instance and pass in the name of the NavigationProperty for the association you want included:</p>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: white; border-bottom-style: none">using(AdventureWorksModel ctx = new AdventureWorksModel())</pre>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: #f4f4f4; border-bottom-style: none">{</pre>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: white; border-bottom-style: none"> var results = from p in ctx.Persons.Include("Addresses")</pre>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: #f4f4f4; border-bottom-style: none"> select p;</pre>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: #f4f4f4; border-bottom-style: none"> List<Person> customers = results.ToList();</pre>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: white; border-bottom-style: none">}</pre>
+
+<p>Once you execute your query Entity Framework all the data, including the data for the association, will be loaded into a collection for you. When you reference the navigation property of an entity for the specified association you’ll find the data is there waiting for you. As long as the Navigation Property exists and you’ve typed the name correctly this will work.</p>
+
+<h2>Eager Loading Anti-Patterns</h2>
+
+<p>So what can get in the way of eager loading? A couple things:</p>
+
+<ol>
+<li>As I mentioned above, projections do not support eager loading. I believe this is at the root of the issue if you’re experiencing problems with eager loading. Why don’t projections allow for eager loading? For the simple reason that projections create anonymous types. If you aren’t projecting an anonymous type then it’s because the type you are projecting to isn’t in your entity model. Your entity model includes ssdl (storage definition) and mdl (mapping definition) which allows your entity to be mapped to a SQL query. Without these pieces you get nothing. If you need to do a projection of some sort, but you want to include eager loading then see <a href="http://www.thejoyofcode.com/Projection_blows_includes_in_Entity_Framework.aspx" rel="nofollow">this article</a></li>
+<li>The first thing I ran into was casting to a subclass. With Entity Framework you can mark an entity as an abstract class and inherit from it. Then our LINQ query was casting the “select” clause to a subsclass like this:</li>
+</ol>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: white; border-bottom-style: none">var result = from ps in EntityModel.Persons.IncludeGraph("Addresses")</pre>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: #f4f4f4; border-bottom-style: none"> where ps is Customer</pre>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: white; border-bottom-style: none"> select ps as Customer;</pre>
+
+<p>I haven’t figured out yet what this is doing under the covers, but I’m guessing this is resulting in a projection, if not something very close to one. Here I am querying an EntitySet of type Person for a Customer type. While the Entity Framework supports inheritance like this, I can see how this would be treated like a projection because of the conversion required. Instead of doing this, I’ve found you can work around the issue by refraining from using the cast in the select statement. Instead cast the result of your query after it has been materialized.</p>
+
+<ol>
+<li>Joining two tables in a query will kill eager loading. It would seem to me that the reason this breaks is because when you join like this it is unreliable. If you were to run this query against a one-to-one relationship you’d be fine. But in any other scenario this breaks down because unless you’re using the DISTINCT clause, things get sloppy.</li>
+</ol>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: white; border-bottom-style: none">var result = from ps in EntityModel.Persons.IncludeGraph("Addresses")</pre>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: #f4f4f4; border-bottom-style: none"> join a in EntityModel.Addresses on ps.PersonID equals a.PersonID</pre>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: white; border-bottom-style: none"> where ps is Customer && a.State == "CA"</pre>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: #f4f4f4; border-bottom-style: none"> select ps;</pre>
+
+<p>So Unless you need to create a projection with the results, in which case you can’t use eager loading anyway, then try and use subquerys (Any()).</p>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: white; border-bottom-style: none">var result = from ps in EntityModel.Persons.IncludeGraph("Addresses")</pre>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: #f4f4f4; border-bottom-style: none"> where ps is Customer && ps.Addresses.Any( a => a.State == "CA" )</pre>
+
+<pre style="padding-right: 0px; padding-left: 0px; font-size: 8pt; padding-bottom: 0px; margin: 0em; overflow: visible; width: 100%; color: black; border-top-style: none; line-height: 12pt; padding-top: 0px; font-family: consolas, 'Courier New', courier, monospace; border-right-style: none; border-left-style: none; background-color: white; border-bottom-style: none"> select ps as Customer;</pre>
+
+<h2>Conclusion</h2>
+
+<p>So to recap, make sure you have defined navigation properties where you want to enable eager loading and that your arguments to the Include method are spelled the same as your navigation properties. Then avoid anything that Entity Framework would construe as an implicit (or explicit) projection. There may well be other reasons eager loading breaks down but this should be a start.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Entity Framework: How to Prevent Eager Loading&amp;amp;url=http://www.developmentalmadness.com/2009/02/24/entity_framework_how_to_prevent_eager_loading/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/02/24/entity_framework_how_to_prevent_eager_loading/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/02/24/entity_framework_how_to_prevent_eager_loading/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/02/10/entity_framework_connection_strings/'>
+<section class='post'>
+<h2>Entity Framework: Connection Strings</h2>
+<p>connectionString="metadata=.\AdventureWorks.csdl|.\AdventureWorks.ssdl|.\AdventureWorks.msl; provider=System.Data.SqlClient;provider connection string='Data Source=localhost; Initial Catalog=AdventureWorks;Integrated Security=True;Connection Timeout=60; multipleactiveresultsets=true'" providerName="System.Data.EntityClient" /> According to MSDN The calling assembly The&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/02/25/entity_framework_abstracting_object_context/'>
+<section class='post'>
+<h2>Entity Framework: Abstracting ObjectContext</h2>
+<p>Wither you are a TDD purest or not, if you are developing with Entity Framework and testability is important&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: database_mirroring</title>
+  <subtitle>Posts tagged with database_mirroring</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/database_mirroring/feed.xml" rel="self"/>
+  <updated>2006-07-05T19:38:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Adventures in Mirroring</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2006/07/05/adventures-in-mirroring/"/>
+    <id>http://www.developmentalmadness.com/2006/07/05/adventures-in-mirroring/</id>
+    <published>2006-07-05T19:38:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">SQL Server 2005 has introduced an exciting new feature - data mirroring. And the timing couldn’t be better. This summer as we upgrade our infrastructure we’re working to increase our uptime and start doing some things right. Since we don’t have a DBA</summary>
+  </entry>
+</feed>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: metamodel</title>
+  <subtitle>Posts tagged with metamodel</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/metamodel/feed.xml" rel="self"/>
+  <updated>2009-01-20T18:10:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Entity Framework POCO Adapter + System.Web.DynamicData == POCO Loco</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/01/20/entity-framework-poco-adapter/"/>
+    <id>http://www.developmentalmadness.com/2009/01/20/entity-framework-poco-adapter/</id>
+    <published>2009-01-20T18:10:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">This month I started with a new client. I’m excited because we’ll be rewriting a legacy app using Entity Framework against an Oracle backend, and possibly ASP.NET MVC. The team is full of good, experinced developers, any of which could lead their own</summary>
+  </entry>
+</feed>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: git</title>
+  <subtitle>Posts tagged with git</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/git/feed.xml" rel="self"/>
+  <updated>2016-02-16T01:18:15+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>git: Collaborate Using Pull Requests</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/02/16/git-collaborate-using-pull-requests/"/>
+    <id>http://www.developmentalmadness.com/2016/02/16/git-collaborate-using-pull-requests/</id>
+    <published>2016-02-16T01:18:15+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Following is my take on the Integration-Manager Workflow:
+
+
+
+I hope to help others better understand how to implement collaborative workflows with git and github and improve my own understanding. Let’s dive in:
+
+Creating A Pull Request
+
+We’ll start with</summary>
+  </entry>
+</feed>

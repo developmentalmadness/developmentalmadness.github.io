@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: lost_in_translation</title>
+  <subtitle>Posts tagged with lost_in_translation</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/lost_in_translation/feed.xml" rel="self"/>
+  <updated>2009-01-29T16:04:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Lost In Translation - Episode 1: Database Instances</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-1-database/"/>
+    <id>http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-1-database/</id>
+    <published>2009-01-29T16:04:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I have been using SQL Server for about 8 years now. When compared to my peers (read: coworkers) I would classify myself as a SQL Server guru. When compared to many I meet on sites like SQLServerCentral.com where there seem to be those I would classify</summary>
+  </entry>
+  <entry>
+    <title>Lost in Translation – Episode 2: Tablespaces</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-2/"/>
+    <id>http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-2/</id>
+    <published>2009-01-29T17:38:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">In Episode 1 I addressed database instances but I’d like to correct a technicality. I compared SQL Server instances with Oracle Database instances. While this is pretty much correct, I’d like to add that technically this isn’t correct. At least not according</summary>
+  </entry>
+  <entry>
+    <title>Lost In Translation – Episode 3: Users and Schemas</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/02/lost-in-translation-episode-3-users-and/"/>
+    <id>http://www.developmentalmadness.com/2009/02/02/lost-in-translation-episode-3-users-and/</id>
+    <published>2009-02-02T17:30:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">In my last post I mentioned I would be addressing tables next, but as I read through the documentation I realized something. Because Oracle doesn’t have the same concept of databases as SQL Server I need to use schemas to segregate my data. In order to</summary>
+  </entry>
+  <entry>
+    <title>Lost in Translation: Oracle 10g2 client hell</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/21/lost_in_translation_oracle_10_g_2_client_hell/"/>
+    <id>http://www.developmentalmadness.com/2009/05/21/lost_in_translation_oracle_10_g_2_client_hell/</id>
+    <published>2009-05-21T20:19:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">This is a post I’ve been meaning to write for a while. I had quite a bit of trouble getting the Oracle client working properly since I started with my current client. I’ve never used Oracle before and so it’s been pretty frustrating since I’ve wanted</summary>
+  </entry>
+  <entry>
+    <title>Java: using BigDecimal instead of double</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2011/06/01/java-using-bigdecimal-instead-of-double/"/>
+    <id>http://www.developmentalmadness.com/2011/06/01/java-using-bigdecimal-instead-of-double/</id>
+    <published>2011-06-01T16:02:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">For the last two months I’ve been using Linux and Java exclusively. For the times I still need to do .NET development, my laptop is setup to dual-boot into Windows 7. But since I’m learning a lot, I really want to try and catalog my experience of transitioning</summary>
+  </entry>
+</feed>

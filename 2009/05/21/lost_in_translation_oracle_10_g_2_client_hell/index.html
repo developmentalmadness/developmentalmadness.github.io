@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Lost in Translation: Oracle 10g2 client hell</title>
+<meta content='This is a post I’ve been meaning to write for a while. I had quite a bit of trouble getting the Oracle client working properly since I started w...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Lost in Translation: Oracle 10g2 client hell' property='og:title'>
+<meta content='This is a post I’ve been meaning to write for a while. I had quite a bit of trouble getting the Oracle client working properly since I started w...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/05/21/lost_in_translation_oracle_10_g_2_client_hell/' property='og:url'>
+<meta content='2009-05-21' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Lost in Translation: Oracle 10g2 client hell' name='twitter:title'>
+<meta content='This is a post I’ve been meaning to write for a while. I had quite a bit of trouble getting the Oracle client working properly since I started w...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/05/21/lost_in_translation_oracle_10_g_2_client_hell/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Lost in Translation: Oracle 10g2 client hell</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-05-21'>
+21 May 2009
+</time>
+on <a href='/tag/lost_in_translation/'>lost_in_translation</a>, <a href='/tag/oracle/'>oracle</a>
+</section>
+</header>
+<section class='post-content'><p>This is a post I’ve been meaning to write for a while. I had quite a bit of trouble getting the Oracle client working properly since I started with my current client. I’ve never used Oracle before and so it’s been pretty frustrating since I’ve wanted the opportunity to work with it for a long time. But it turns out that the solutions have been pretty simple. Here’s a list of some of the problems I’ve run into and their solutions:</p>
+
+<ol>
+<li>Use Admin install – When it comes to software/services that open up ports to the outside world I’m a fan of installing only what I need. So I was disappointed when our DBA told me that my first problem was that I needed the Admin install and that Instant client didn’t have everything I needed. But I’m thinking I’ll try Instant Client again now that I’ve resolved my other problems which I think were the cause. If I ever get around to it, I’ll update this post.</li>
+<li>Make sure you have Vista installer – I was given an installer for Oracle client that was stored on my client’s LAN, so that was the one I used. But it turns out that the installer wasn’t compatible with Vista. Oracle has a specific client for both the and <a href="http://www.oracle.com/technology/software/products/database/oracle10g/htdocs/10204_winx64_vista_win2k8.html" rel="nofollow">64-bit</a></li>
+<li>Make sure ORACLE<em>HOME environment variable matches the **<u></em>path_</u>** to your client installation (the parent folder of your bin directory). You need to make sure the correct values are in the following places:</li>
+</ol>
+
+<ul>
+<li>HKLM\Sofware\Oracle\ORACLE<em>HOME – this should be the path of your oracle home folder (the parent folder of your bin directory, but not including “\bin”). If you accepted the defaults during installation it should be something like: C:\oracle\product\10.2.0\client</em>1</li>
+<li>PATH environment variable – this should be the full path to the “bin” directory. Using the same setup as above this should be: C:\oracle\product\10.2.0\client_1\bin.</li>
+<li>Also, you may need an ORACLE_HOME environment variable. You can add this and assign it the same value as the registry key above.</li>
+</ul>
+
+<h2>Errors</h2>
+
+<h4>Can not load Oracle client library oci.dll from home</h4>
+
+<p>I had this problem trying to load TOAD and when I finally thought about it things made sense. TOAD couldn’t find the bin directory based on the paths in PATH and ORACLE home. Make sure you check #3 above to verify all this is correct.</p>
+
+<p>I also had a variation on this error when I was running a 64-bit OS. You’d think you should install the x64 Oracle client if your OS is 64-bit. But since TOAD is a 32-bit client you’ll need to install the x86 Oracle client. (See #2 above)</p>
+
+<h4>Can not load Oracle client. Check your PATH environment variable and registry settings</h4>
+
+<p>This was the error I got from DevArt’s dotConnect client for .NET Entity Framework. Unfortunately, the problem here was still causing me headaches even after I got the paths right. I also had to make sure that I had the Vista client installed. Once I did this, I no longer had this problem.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Lost in Translation: Oracle 10g2 client hell&amp;amp;url=http://www.developmentalmadness.com/2009/05/21/lost_in_translation_oracle_10_g_2_client_hell/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/05/21/lost_in_translation_oracle_10_g_2_client_hell/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/05/21/lost_in_translation_oracle_10_g_2_client_hell/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/05/20/asp_net_mvc_globalization_localization_referencing_resource_files_in_your_view/'>
+<section class='post'>
+<h2>ASP.NET MVC Globalization/Localization: Referencing Resource Files in Your View</h2>
+<p>I’ve been using ASP.NET MVC 1: Until today, I took that for granted. I received an email this morning&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/05/25/windows_critics_get_a_life/'>
+<section class='post'>
+<h2>Windows Critics: Get a life</h2>
+<p>I was working on a Windows 7 Two criticisms that I have heard leveled at Windows 7 are: It’s&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

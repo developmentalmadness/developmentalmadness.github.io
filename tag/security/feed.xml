@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: security</title>
+  <subtitle>Posts tagged with security</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/security/feed.xml" rel="self"/>
+  <updated>2016-02-18T22:46:26+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>security: There's a password in my repository!</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/02/18/security-theres-a-password-in-my-repository/"/>
+    <id>http://www.developmentalmadness.com/2016/02/18/security-theres-a-password-in-my-repository/</id>
+    <published>2016-02-18T22:46:26+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">TLDR - Environment Variables
+
+Where possible you won’t see me do this anymore:
+url = "jdbc:postgresql://127.0.0.1:5432/postgres?user=postgres&amp;amp;password=12345"
+
+Or this:
+&amp;lt;connectionStrings&amp;gt;
+  &amp;lt;add name="my-db" connectionString="server=.;database=my-app</summary>
+  </entry>
+</feed>

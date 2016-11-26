@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: In Place List Editing With WPF</title>
+<meta content='I&amp;rsquo;ve been working in WPF for the last month and learning some pretty cool stuff. I really like it. But then I spend a couple days trying t...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='In Place List Editing With WPF' property='og:title'>
+<meta content='I&amp;rsquo;ve been working in WPF for the last month and learning some pretty cool stuff. I really like it. But then I spend a couple days trying t...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2008/12/24/in-place-list-editing-with-wpf/' property='og:url'>
+<meta content='2008-12-24' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='In Place List Editing With WPF' name='twitter:title'>
+<meta content='I&amp;rsquo;ve been working in WPF for the last month and learning some pretty cool stuff. I really like it. But then I spend a couple days trying t...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2008/12/24/in-place-list-editing-with-wpf/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>In Place List Editing With WPF</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2008-12-24'>
+24 December 2008
+</time>
+on <a href='/tag/wpf/'>wpf</a>
+</section>
+</header>
+<section class='post-content'><p>I&rsquo;ve been working in WPF for the last month and learning some pretty cool stuff. I really like it. But then I spend a couple days trying to something that would take me 2 minutes in an ASP.NET Web Form and I want to swallow a bullet. I know there is just a learning curve and the more I use it and I&rsquo;ll be able to do it just as quickly. But as much as I love learning new stuff there are days I really long for less new technology to learn.</p>
+
+<p>I had a list of items displaying quite nicely in a ListBox. Here&rsquo;s the XAML:</p>
+<pre class="highlight plaintext"><code>&lt;ListBox Name="m_MyList" 
+    ItemsSource="{Binding MyDataItems}" 
+    SelectedItem="{Binding Mode=TwoWay, 
+        Path=MySelectedDataItem}"&gt;
+    &lt;ListBox.ItemTemplate&gt;
+        &lt;DataTemplate&gt;
+            &lt;Grid&gt;
+                &lt;TextBlock Text="{Binding Name}" /&gt;
+            &lt;/Grid&gt;
+        &lt;/DataTemplate&gt;
+    &lt;/ListBox.ItemTemplate&gt;
+&lt;/ListBox&gt;
+</code></pre>
+<p>But I wanted to replace the template with an edit template when the user selected an item. To make things more complex, my view was a UserControl which was used in 3 different &ldquo;Modes&rdquo; (Load, Apply, Save - Load/Apply are very similar but require different behavior). For Load I wanted the edit template only if &ldquo;New Item&rdquo; (MyObject.IsNew == true) were selected. For Apply I didn&rsquo;t want the edit template at all and for Save I wanted the edit template for everything.</p>
+
+<p>I started out with a Style using a Trigger to replace the control template. Basically, I had a Style with TargetType={x:Type TextBox} like this:</p>
+<pre class="highlight plaintext"><code>&lt;Control.Resources&gt;
+
+    &lt;Style x:Key="TextBoxBaseStyle" 
+           TargetType="{x:Type TextBox}"&gt;
+        &lt;Setter Property="Height" Value="25"&gt;&lt;/Setter&gt;
+        &lt;Setter Property="VerticalContentAlignment" Value="Center"&gt;&lt;/Setter&gt;
+    &lt;/Style&gt;
+
+    &lt;Style
+        x:Key="BasicTextBox"
+        TargetType="{x:Type TextBox}"
+        BasedOn="{StaticResource TextBoxBaseStyle}"&gt;
+
+        &lt;Style.Triggers&gt;
+            &lt;DataTrigger Binding="{Binding RelativeSource={RelativeSource 
+                        Mode=FindAncestor,
+                        AncestorType={x:Type ListBoxItem}}, 
+                    Path=IsSelected}" 
+                Value="True"&gt;
+                &lt;Setter Property="Template"&gt;
+                    &lt;Setter.Value&gt;
+                        &lt;ControlTemplate TargetType="{x:Type TextBox}"&gt;
+                            &lt;TextBox Text="{TemplateBinding Text}" /&gt;
+                        &lt;/ControlTemplate&gt;
+                    &lt;/Setter.Value&gt;
+                &lt;/Setter&gt;
+            &lt;/DataTrigger&gt;
+            &lt;DataTrigger Binding="{Binding RelativeSource={RelativeSource 
+                        Mode=FindAncestor,
+                        AncestorType={x:Type ListBoxItem}}, 
+                    Path=IsSelected}" 
+                Value="False"&gt;
+                &lt;Setter Property="Template"&gt;
+                    &lt;Setter.Value&gt;
+                        &lt;ControlTemplate TargetType="{x:Type TextBox}"&gt;
+                            &lt;TextBlock Text="{TemplateBinding Text}"/&gt;
+                        &lt;/ControlTemplate&gt;
+                    &lt;/Setter.Value&gt;
+                &lt;/Setter&gt;
+                &lt;Setter Property="Focusable" Value="false"/&gt;
+            &lt;/DataTrigger&gt;
+        &lt;/Style.Triggers&gt;
+    &lt;/Style&gt;
+
+&lt;/Control.Resources&gt;
+
+&lt;ListBox Name="m_MyList" 
+    ItemsSource="{Binding MyDataItems}" 
+    SelectedItem="{Binding Mode=TwoWay, 
+        Path=MySelectedDataItem}"&gt;
+    &lt;ListBox.ItemTemplate&gt;
+        &lt;DataTemplate&gt;
+            &lt;Grid&gt;
+                &lt;TextBox Text="{Binding Name}" 
+                    Style="{StaticResource BasicTextBox}" /&gt;
+            &lt;/Grid&gt;
+        &lt;/DataTemplate&gt;
+    &lt;/ListBox.ItemTemplate&gt;
+&lt;/ListBox&gt;
+</code></pre>
+<p>But the data binding was broken. My source wasn&rsquo;t being updated. I don&rsquo;t know exactly why, but my theroy is that my trigger for edit was replacing the template for a TextBox with another TextBox - essentially a nested TextBox. Somehow this killed two-way binding.</p>
+
+<p>I tried several other things, including replacing the style of the TextBox from the SelectionChanged event. Which would have worked if it hadn&rsquo;t been so complicated to fingure out. In the end here&rsquo;s what I came up with and I like this the best (that is when comparing to other possible &lsquo;working&rsquo; solutions).:</p>
+<pre class="highlight plaintext"><code>&lt;Control.Resources&gt;
+
+    &lt;!-- selected item template --&gt;
+    &lt;DataTemplate x:Key="SelectedTemplate"&gt;
+        &lt;Grid&gt;
+            &lt;Grid.ColumnDefinitions&gt;
+                &lt;ColumnDefinition Width="75" /&gt;
+                &lt;ColumnDefinition Width="*" /&gt;
+            &lt;/Grid.ColumnDefinitions&gt;
+            &lt;Grid.RowDefinitions&gt;
+                &lt;RowDefinition /&gt;
+                &lt;RowDefinition /&gt;
+            &lt;/Grid.RowDefinitions&gt;
+
+            &lt;TextBlock Grid.Column="0" Grid.Row="0" Text="Name: " /&gt;
+            &lt;TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Name}" /&gt;
+
+            &lt;TextBlock Grid.Column="0" Grid.Row="1" Text="Description: " /&gt;
+            &lt;TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Description}" /&gt;
+        &lt;/Grid&gt;
+    &lt;/DataTemplate&gt;
+
+    &lt;!-- unselected item template --&gt;
+    &lt;DataTemplate x:Key="DefaultTemplate"&gt;
+        &lt;TextBlock Text="{Binding Path=Name}" /&gt;
+    &lt;/DataTemplate&gt;
+
+    &lt;!-- ListBox ItemContainerStyle --&gt;
+    &lt;Style TargetType="{x:Type ListBoxItem}" x:Key="ContainerStyle"&gt;
+        &lt;Setter Property="ContentTemplate" 
+            Value="{StaticResource DefaultTemplate}" /&gt;
+        &lt;Style.Triggers&gt;
+            &lt;MultiDataTrigger&gt;
+                &lt;MultiDataTrigger.Conditions&gt;
+                    &lt;Condition Binding="{Binding IsNewRecord}" Value="True" /&gt;
+                    &lt;Condition Binding="{Binding 
+                            RelativeSource={RelativeSource Mode=FindAncestor,
+                                AncestorType={x:Type UserControl}}, 
+                            Path=DataContext.State}" 
+                        Value="{x:Static ui:MyModelState.Load}" /&gt;
+                    &lt;Condition Binding="{Binding RelativeSource={RelativeSource Self}, 
+                        Path=IsSelected}" Value="True" /&gt;
+                &lt;/MultiDataTrigger.Conditions&gt;
+                &lt;Setter Property="ContentTemplate" 
+                    Value="{StaticResource SelectedTemplate}" /&gt;
+            &lt;/MultiDataTrigger&gt;
+            &lt;MultiDataTrigger&gt;
+                &lt;MultiDataTrigger.Conditions&gt;
+                    &lt;Condition Binding="{Binding 
+                        RelativeSource={RelativeSource Mode=FindAncestor,
+                            AncestorType={x:Type UserControl}}, 
+                        Path=DataContext.State}" 
+                        Value="{x:Static ui:MyModelState.Save}" /&gt;
+                    &lt;Condition Binding="{Binding 
+                        RelativeSource={RelativeSource Self}, 
+                        Path=IsSelected}" 
+                        Value="True" /&gt;
+                &lt;/MultiDataTrigger.Conditions&gt;
+                &lt;Setter Property="ContentTemplate" 
+                    Value="{StaticResource SelectedTemplate}" /&gt;
+            &lt;/MultiDataTrigger&gt;
+        &lt;/Style.Triggers&gt;
+    &lt;/Style&gt;
+&lt;/Control.Resources&gt;
+</code></pre>
+<p>So first, I have two DataTemplate elements an edit template named &ldquo;SelectedTemplate&rdquo; and a read only template named &ldquo;DefaultTemplate&rdquo;. Then I have a Style element which targets ListBoxItem named &ldquo;ContainerStyle&rdquo;. &ldquo;ContainerStyle&rdquo; sets the ContentTemplate to &ldquo;DefaultTemplate&rdquo;. Then based on two different Triggers (MultiDataTrigger) it determines when to apply the edit template.</p>
+
+<p>A couple of things I learned here. First, my Triggers are trying to target my data binding properties and my control properties at the same time. I found that I couldn&rsquo;t do this with a standard Trigger element. So you&rsquo;ll see the last Condition element of each MultiDataTrigger is referencing the IsSelected property of the ListBoxItem like this:</p>
+<pre class="highlight plaintext"><code>&lt;Condition Binding="{Binding RelativeSource={RelativeSource Self}, 
+    Path=IsSelected}" Value="True" /&gt;
+</code></pre>
+<p>Then the second tricky part (for me anyways) was figuring out how to access a property of the Control&rsquo;s DataContext (this would apply if we were talking about Window as well). I wasn&rsquo;t sure how to approach this for a couple reasons: DataContext is of type Object and my ListBox was bound to a property on the DataContext, not the DataContext itself.</p>
+
+<p>As it turns out these weren&rsquo;t really any problem, I just had to find the correct RelativeSource arguments:</p>
+<pre class="highlight plaintext"><code>&lt;Condition Binding="{Binding 
+    RelativeSource={RelativeSource Mode=FindAncestor,
+        AncestorType={x:Type UserControl}}, 
+    Path=DataContext.State}" 
+    Value="{x:Static ui:MyModelState.Save}" /&gt;
+</code></pre>
+<p>It turns out it is pretty simple, use FindAncestor to query for the UserControl (or Window if that is your situation). Then your Path can reference the UserControl&rsquo;s DataContext property. No casting is needed (that was a pleasant surprise) and I could reference the &ldquo;State&rdquo; property (a custom property of the object I assigned to the DataContext). &ldquo;State&rdquo; is an enum value, so hence the x:Static and the &ldquo;ui&rdquo; namespace in &ldquo;ui:MyModelState.Save&rdquo;.</p>
+
+<p>So, I&rsquo;m liking WPF again, because I was able to do this without writing &ldquo;any&rdquo; code. I put &ldquo;any&rdquo; in quotes because I did cheat a little by adding an &ldquo;IsNew&rdquo; property to my custom Type. IsNew returns true if the ID is &ldquo;0&rdquo;, otherwise it returns false. I did this because there didn&rsquo;t seem to be any way to use a range condition or a &ldquo;not&rdquo; condition. But other than that I used 100% XAML for this solution.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=In Place List Editing With WPF&amp;amp;url=http://www.developmentalmadness.com/2008/12/24/in-place-list-editing-with-wpf/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2008/12/24/in-place-list-editing-with-wpf/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2008/12/24/in-place-list-editing-with-wpf/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2008/11/12/iis-60-with-windows-authentication-pita/'>
+<section class='post'>
+<h2>IIS 6.0 with Windows Authentication PITA</h2>
+<p>ulling. It all started when the test server was hosed (rebuilt) without asking me if it affect anything I&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/01/09/modifying-xp-pro-permissions-for/'>
+<section class='post'>
+<h2>Modifying XP Pro Permissions For Workgroup Computers</h2>
+<p>Sql Server best practices recommend using a local, low-permissions account as the service account. But if your machine isn&rsquo;t&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

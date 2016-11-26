@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Search the source of SQL Server views and stored procedures</title>
+<meta content='Ever have to work on a database with a large number of views and you needed to search the content of the objects? Well, here&amp;rsquo;s a query whi...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Search the source of SQL Server views and stored procedures' property='og:title'>
+<meta content='Ever have to work on a database with a large number of views and you needed to search the content of the objects? Well, here&amp;rsquo;s a query whi...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2008/02/18/search-source-of-sql-server-views/' property='og:url'>
+<meta content='2008-02-18' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Search the source of SQL Server views and stored procedures' name='twitter:title'>
+<meta content='Ever have to work on a database with a large number of views and you needed to search the content of the objects? Well, here&amp;rsquo;s a query whi...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2008/02/18/search-source-of-sql-server-views/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Search the source of SQL Server views and stored procedures</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2008-02-18'>
+18 February 2008
+</time>
+on <a href='/tag/sql_tools/'>sql_tools</a>, <a href='/tag/ssms/'>ssms</a>, <a href='/tag/sql_server/'>sql_server</a>
+</section>
+</header>
+<section class='post-content'><p>Ever have to work on a database with a large number of views and you needed to search the content of the objects? Well, here&rsquo;s a query which will allow you to search inside your view objects:</p>
+<pre class="highlight plaintext"><code>DECLARE @search VARCHAR(1000)
+SET @search = '[text]'
+
+SELECT c.[Text]
+FROM dbo.sysobjects AS v
+INNER JOIN dbo.syscomments c ON c.id = v.id
+ AND CASE WHEN c.Number &gt; 1 THEN c.Number
+   ELSE 0 END = 0
+WHERE v.type = 'V' AND c.[Text] LIKE '%' + @search + '%'
+</code></pre>
+<p>Just set the value of @search to the value you&rsquo;d like to find.</p>
+
+<p>This was very useful to me as I was trying to muddle through an application which used a lot of nested views and I needed to determine which views referenced the view I was working on.</p>
+
+<p>As a bonus (and of course for my own benefit) here&rsquo;s a method to search the source of stored procedures:</p>
+<pre class="highlight plaintext"><code>DECLARE @find VARCHAR(1000)
+
+SET @find = '{search text here}'
+
+SELECT
+sp.name,
+ISNULL(smsp.definition, ssmsp.definition) AS [Definition]
+FROM
+sys.all_objects AS sp
+LEFT OUTER JOIN sys.sql_modules AS smsp ON smsp.object_id = sp.object_id
+LEFT OUTER JOIN sys.system_sql_modules AS ssmsp ON ssmsp.object_id = sp.object_id
+WHERE
+(sp.type = N'P' OR sp.type = N'RF' OR sp.type='PC')
+AND ISNULL(smsp.definition, ssmsp.definition) LIKE '%' + @find + '%'
+</code></pre></section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Search the source of SQL Server views and stored procedures&amp;amp;url=http://www.developmentalmadness.com/2008/02/18/search-source-of-sql-server-views/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2008/02/18/search-source-of-sql-server-views/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2008/02/18/search-source-of-sql-server-views/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2008/02/13/better-generate-scripts-tool-for-sql/'>
+<section class='post'>
+<h2>Better Generate Scripts Tool for SQL 2005</h2>
+<p>Frustrated by the inability to script SQL Server 2005 objects with BOTH a CREATE and DROP statement? Generally, I&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2008/03/11/aspnet-ajax-update-panel-timeout/'>
+<section class='post'>
+<h2>ASP.NET AJAX - Update Panel Timeout</h2>
+<p>When using the asp:UpdatePanel server control for asyncronous communication with the web server the default timeout is 90 seconds.&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

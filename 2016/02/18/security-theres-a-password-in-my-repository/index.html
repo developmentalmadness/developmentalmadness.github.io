@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: security: There's a password in my repository!</title>
+<meta content='TLDR - Environment Variables Where possible you won&amp;rsquo;t see me do this anymore: url = "jdbc:postgresql://127.0.0.1:5432/postgres?user=postgr...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content="security: There's a password in my repository!" property='og:title'>
+<meta content='TLDR - Environment Variables Where possible you won&amp;rsquo;t see me do this anymore: url = "jdbc:postgresql://127.0.0.1:5432/postgres?user=postgr...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2016/02/18/security-theres-a-password-in-my-repository/' property='og:url'>
+<meta content='2016-02-18' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content="security: There's a password in my repository!" name='twitter:title'>
+<meta content='TLDR - Environment Variables Where possible you won&amp;rsquo;t see me do this anymore: url = "jdbc:postgresql://127.0.0.1:5432/postgres?user=postgr...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2016/02/18/security-theres-a-password-in-my-repository/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>security: There's a password in my repository!</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-02-18'>
+18 February 2016
+</time>
+on <a href='/tag/security/'>security</a>
+</section>
+</header>
+<section class='post-content'><h2>TLDR - Environment Variables</h2>
+
+<p>Where possible you won&rsquo;t see me do this anymore:</p>
+<pre class="highlight plaintext"><code>url = "jdbc:postgresql://127.0.0.1:5432/postgres?user=postgres&amp;password=12345"
+</code></pre>
+<p>Or this:</p>
+<pre class="highlight plaintext"><code>&lt;connectionStrings&gt;
+  &lt;add name="my-db" connectionString="server=.;database=my-app-db;uid=my-app-user;pwd=12345;" /&gt;
+&lt;/connectionStrings&gt;
+</code></pre>
+<p>Instead you&rsquo;ll see varying uses of this:</p>
+<pre class="highlight plaintext"><code>url = "${DB_URL}/postgres?user=${DB_USER}&amp;password=${DB_PWD}"
+</code></pre>
+<p>Where if I can I&rsquo;ll use an environment variable in place of even a &ldquo;fake&rdquo; password. </p>
+
+<p>If you see some form of:</p>
+<pre class="highlight plaintext"><code>$DB_URL
+</code></pre>
+<p>Or </p>
+<pre class="highlight plaintext"><code>%DB_URL%
+</code></pre>
+<p>It&rsquo;s probably an environment variable and I&rsquo;ll probably call it out in an explanation - which will probably link here and is probably why you&rsquo;re reading this.</p>
+
+<h2>How?</h2>
+
+<p>These are pretty easy to do and each platform has a means of creating and reading them. I&rsquo;ll list the ones I know and use here over time since some platforms do make it difficult (I&rsquo;m looking at you OSX).</p>
+
+<p><strong>OSX</strong></p>
+
+<p>I&rsquo;m using OSX 10.11 - This is what works for me: Open up <code>~/.bash_profile</code> and add:</p>
+<pre class="highlight plaintext"><code>export DB_URL=jdbc:postgresql://127.0.0.1:5432
+export DB_USER=postgres
+export DB_PWD=XXXXX
+</code></pre>
+<p>Save it, then restart your command line, IDE or whichever program needs it.</p>
+
+<p><strong>Windows</strong></p>
+
+<p>This is pretty universal across Windows versions:</p>
+
+<ul>
+<li><p>Depending on your Windows version, from Windows Explorer right-click <code>My Computer</code> or <code>This PC</code> and then click &ldquo;Properties&rdquo;</p></li>
+<li><p>Click &ldquo;Advanced System Settings&rdquo; tab</p></li>
+<li><p>Click &ldquo;Environment Variables&rdquo;</p></li>
+<li><p>Either add or edit a new System or User environment variable with the name you&rsquo;re going to use for your application.</p></li>
+</ul>
+
+<h2>Why?</h2>
+
+<p>We&rsquo;ve all done it - checked a password into a repository. Maybe not a public one (yet) but it will continue to happen, <a href="http://arstechnica.com/security/2015/03/ubers-epic-db-blunder-is-hardly-an-exception-github-is-awash-in-passwords/" rel="nofollow">even to the best of us</a> as long as we continue to store them in our config files. </p>
+
+<p>It&rsquo;s easy&hellip;YAGNI&hellip;you&rsquo;re getting your project started, it&rsquo;s just a local password&hellip;you&rsquo;ll change it later&hellip;much later :P</p>
+
+<p>Most places I work these days replace sensitive keys as part of a build process, but the passwords are still stored in the config file. It isn&rsquo;t a stretch to imagine a someone putting a production key to a database or cloud account of some kind into a config file - and accidentally checking it in.</p>
+
+<p>The root of the problem is that we shouldn&rsquo;t be editing any kind of sensitive key in files that exist anywhere in the source tree - ever!</p>
+
+<p>The simplest way I see to solve this is to use environment variables. Every project can use them in any language on any platform and they will never exist in the source tree. </p>
+
+<h2>Unite!</h2>
+
+<p>But the biggest problem is bloggers and forum users. I&rsquo;ve long felt that when we post online quick and dirty examples that ignore best security practices we perpetuate the problem. Those who are just learning won&rsquo;t know any better unless we show them. I used to see a lot of SQL examples posted which where vulnerable to SQL injection attacks. Not so much anymore. If we stop creating examples where the password is stored somewhere in the source tree we&rsquo;ll stop seeing credentials stored directly in Github!</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href="https://twitter.com/intent/tweet?text=security: There's a password in my repository!&amp;amp;url=http://www.developmentalmadness.com/2016/02/18/security-theres-a-password-in-my-repository/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2016/02/18/security-theres-a-password-in-my-repository/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2016/02/18/security-theres-a-password-in-my-repository/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/02/16/git-collaborate-using-pull-requests/'>
+<section class='post'>
+<h2>git: Collaborate Using Pull Requests</h2>
+<p>Following is my take on the Integration-Manager Workflow: I hope to help others better understand how to implement collaborative&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/02/23/scala-connecting-to-postgres-via-slick-3/'>
+<section class='post'>
+<h2>scala: Connecting to Postgres via Slick 3</h2>
+<p>Got Slick working with Postgres this morning and I thought I&rsquo;d just write it up before I forget. I&rsquo;m&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

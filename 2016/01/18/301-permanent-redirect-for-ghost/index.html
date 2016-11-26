@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: 301 Permanent Redirect for Ghost</title>
+<meta content='The Ghost blogging platform (currently v0.7.4) doesn&amp;rsquo;t currently provide a way to support moving resource urls. If you&amp;rsquo;re moving fro...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='301 Permanent Redirect for Ghost' property='og:title'>
+<meta content='The Ghost blogging platform (currently v0.7.4) doesn&amp;rsquo;t currently provide a way to support moving resource urls. If you&amp;rsquo;re moving fro...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2016/01/18/301-permanent-redirect-for-ghost/' property='og:url'>
+<meta content='2016-01-18' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='301 Permanent Redirect for Ghost' name='twitter:title'>
+<meta content='The Ghost blogging platform (currently v0.7.4) doesn&amp;rsquo;t currently provide a way to support moving resource urls. If you&amp;rsquo;re moving fro...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2016/01/18/301-permanent-redirect-for-ghost/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>301 Permanent Redirect for Ghost</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-01-18'>
+18 January 2016
+</time>
+on <a href='/tag/docker/'>docker</a>, <a href='/tag/ghost-tag/'>ghost-tag</a>, <a href='/tag/nginx/'>nginx</a>, <a href='/tag/seo/'>seo</a>
+</section>
+</header>
+<section class='post-content'><p>The <a href="https://ghost.org/" rel="nofollow">Ghost blogging platform</a> (currently v0.7.4) doesn&rsquo;t currently provide a way to support moving resource urls. If you&rsquo;re moving from a blogging platform with a different url scheme there&rsquo;s no native support. Instead the recommended practice is to use <a href="http://nginx.com" rel="nofollow">nginx</a>.</p>
+
+<p>I&rsquo;ve never used it before now and plus I&rsquo;m using <a href="http://www.docker.com/" rel="nofollow">Docker</a> to host Ghost on <a href="https://aws.amazon.com/ecs/" rel="nofollow">AWS EC2 Container Service</a>. My current focus is learning Docker and AWS so I wanted a nice clean way to set everything up correctly without spending too much time learning how to configure everything.</p>
+
+<h1>nginx-proxy</h1>
+
+<p>After some quick searching I stumbled onto <a href="https://github.com/jwilder/nginx-proxy" rel="nofollow">nginx-proxy</a> written by <a href="http://jasonwilder.com/" rel="nofollow">Jason Wilder</a>. The short of it is that nginx-proxy is a specialized version of the <a href="https://github.com/jwilder/docker-gen" rel="nofollow">docker-gen</a> docker image (also by jwilder) configured to dynamically maintain the nginx configuration file. </p>
+
+<p>docker-gen monitors the current docker host for any containers with the <code>VIRTUAL_HOST</code> environment variable set along with an <code>EXPOSE</code> port defined. nginx-proxy is configures docker-gen so that when a new container is detected it rebuilds the config file and calls <code>nginx -s reload</code> so the new container is dynamically added behind nginx.</p>
+
+<h1>nginx Configuration Template</h1>
+
+<p>Create a docker-gen template file (<code>nginx.tmpl</code>) for nginx:</p>
+<pre class="highlight plaintext"><code># If we receive X-Forwarded-Proto, pass it through; otherwise, pass along the
+# scheme used to connect to this server
+map $http_x_forwarded_proto $proxy_x_forwarded_proto {
+  default $http_x_forwarded_proto;
+  ''      $scheme;
+}
+# If we receive Upgrade, set Connection to "upgrade"; otherwise, delete any
+# Connection header that may have been passed to this server
+map $http_upgrade $proxy_connection {
+  default upgrade;
+  '' close;
+}
+gzip_types text/plain text/css application/javascript application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+log_format vhost '$host $remote_addr - $remote_user [$time_local] '
+                 '"$request" $status $body_bytes_sent '
+                 '"$http_referer" "$http_user_agent"';
+access_log off;
+# HTTP 1.1 support
+proxy_http_version 1.1;
+proxy_buffering off;
+proxy_set_header Host $http_host;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection $proxy_connection;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Proto $proxy_x_forwarded_proto;
+server {
+    server_name _; # This is just an invalid value which will never trigger on a real hostname.
+    listen 80;
+    access_log /var/log/nginx/access.log vhost;
+    return 503;
+}
+{{ range $host, $containers := groupBy $ "Env.VIRTUAL_HOST" }}
+upstream {{ $host }} {
+
+{{ range $index, $value := $containers }}
+    {{ with $address := index $value.Addresses 0 }}
+    server {{ $address.IP }}:{{ $address.Port }};
+    {{ end }}
+{{ end }}
+
+}
+
+{{/* Get the VIRTUAL_PROTO defined by containers w/ the same vhost, falling back to "http" */}}
+{{ $proto := or (first (groupByKeys $containers "Env.VIRTUAL_PROTO")) "http" }}
+
+server {
+    server_name {{ $host }};
+    listen 80;
+    access_log /var/log/nginx/access.log vhost;
+    location / {
+        # rewrite urls for blogger and subtext schemes
+        rewrite "^/archive/(\d{4}/\d{2}/\d{2}/.+)\.(?:aspx|html)$" /$1 last; 
+        rewrite "^/[Tt]ags/(.*)/default\.(aspx|html)$" /tag/$1/ last;
+        proxy_pass {{ trim $proto }}://{{ trim $host }};
+    }
+
+}
+{{ end }}
+</code></pre>
+<ul>
+<li>Quotes around the regex in the <code>rewrite</code> directives aren&rsquo;t always required. However I did find that using quantification in your patterns (ex. <code>{4}</code> and <code>{2}</code>) do require quoting the entire expression as I have above. If you don&rsquo;t you&rsquo;ll see the following when you run <code>docker logs blog-proxy</code>:</li>
+</ul>
+
+<blockquote>
+<p>Error running notify command: nginx -s reload, exit status 1</p>
+</blockquote>
+
+<p>And if you log into the actual docker container and run <code>nginx -s reload</code> you&rsquo;ll see this:</p>
+
+<blockquote>
+<p>nginx: [emerg] directive &ldquo;rewrite&rdquo; is not terminated by &ldquo;;&rdquo; in /etc/nginx/conf.d/default.conf:42</p>
+</blockquote>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/34662979/nginx-redirect-with-proxy-pass" rel="nofollow">I ran into an issue</a> where I had only a single <code>rewrite</code> directive and if I used <code>break</code> or <code>permanent</code> instead of <code>last</code> I didn&rsquo;t get any errors but the redirect never happened. It just went to Ghost unchanged, which of course returned an http 404 (not found) status. </li>
+</ul>
+
+<h1>Run nginx</h1>
+
+<p>Run nginx-proxy in Docker (<code>\</code> to format command on multiple lines for easier reading):</p>
+<pre class="highlight plaintext"><code>$ docker run --name blog-proxy -d -p 80:80 \
+    -v /var/run/docker.sock:/tmp/docker.sock:ro \
+    -v [host_path_to_template]/nginx.tmpl:/app/nginx.tmpl \
+    jwilder/nginx-proxy
+</code></pre>
+<ul>
+<li>The volume for <code>docker.sock</code> is required. If it doesn&rsquo;t exist the container will fail to start.</li>
+</ul>
+
+<h1>Run Ghost</h1>
+
+<p>Run <a href="https://hub.docker.com/_/ghost/" rel="nofollow">Ghost image</a>:</p>
+<pre class="highlight plaintext"><code>$ docker run --name ghost-blog -d -P \
+    -v [host_path_to_sqlite_db]/ghost.db:/var/lib/ghost/data/ghost.db \
+    -v [host_path_to_config]/config.js:/var/lib/ghost/config.js \
+    -e VIRTUAL_HOST=[blog_host_domain] \
+    ghost
+</code></pre>
+<ul>
+<li><p>If you have multiple container instances of Ghost running they will be grouped by <code>VIRTUAL_HOST</code> and <a href="http://nginx.org/en/docs/http/load_balancing.html" rel="nofollow">load-balanced</a> using a round-robin configuration. </p></li>
+<li><p>Using <code>-P</code> (uppercase) allows docker to decide the port number to assign and each instance will receive it&rsquo;s own unique port number. The nginx configuration file will pick up the port numbers for each instance and add them to it&rsquo;s pool for the given <code>VIRTUAL_HOST</code>. </p></li>
+<li><p>If you&rsquo;re using an RDBMS like MySql or postgres you can omit the volume mapping for the sqlite db since you&rsquo;ll have your connection string configured in <code>config.js</code>.</p></li>
+<li><p>If you want to use a theme other than the default Casper theme or if you have your own custom theme then you&rsquo;ll need to add a volume mapping that overwrites the container&rsquo;s <code>/var/lib/ghost/themes/</code> directory. Something like this:</p></li>
+</ul>
+
+<pre>
+    -v [host_path_to_themes]/themes/:/var/lib/ghost/themes/
+</pre>
+
+<p>Or build your own Docker image that inherits from the office Ghost image and includes your custom theme. <a href="https://github.com/developmentalmadness/coder-ghost-docker/blob/master/Dockerfile" rel="nofollow">Here&rsquo;s an example of one I created</a>. Just build the Dockerfile and replace the name of the <code>ghost</code> image in the Docker <code>run</code> command above with the name of your image.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=301 Permanent Redirect for Ghost&amp;amp;url=http://www.developmentalmadness.com/2016/01/18/301-permanent-redirect-for-ghost/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2016/01/18/301-permanent-redirect-for-ghost/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2016/01/18/301-permanent-redirect-for-ghost/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/01/08/bash-move-an-entire-directory-of-files/'>
+<section class='post'>
+<h2>Bash: Move an Entire Directory of Files</h2>
+<p>I recently wanted to nest all the files in a folder one level deeper. Which meant I needed to&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/01/28/eclipse-che-cloud-ide-first-thoughts/'>
+<section class='post'>
+<h2>Eclipse CHE Cloud IDE: Setup and First Thoughts</h2>
+<p>Just saw an announcement for Eclipse CHE beta last night. Currently I&rsquo;m more of an IntelliJ fan and I&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

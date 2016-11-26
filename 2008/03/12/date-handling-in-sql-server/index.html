@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: SARGable DateTime Handling in SQL Server</title>
+<meta content='I can&amp;rsquo;t believe I never thought of doing things this way before. It&amp;rsquo;s so much better than concatenating strings and converting back ...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='SARGable DateTime Handling in SQL Server' property='og:title'>
+<meta content='I can&amp;rsquo;t believe I never thought of doing things this way before. It&amp;rsquo;s so much better than concatenating strings and converting back ...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2008/03/12/date-handling-in-sql-server/' property='og:url'>
+<meta content='2008-03-12' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='SARGable DateTime Handling in SQL Server' name='twitter:title'>
+<meta content='I can&amp;rsquo;t believe I never thought of doing things this way before. It&amp;rsquo;s so much better than concatenating strings and converting back ...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2008/03/12/date-handling-in-sql-server/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>SARGable DateTime Handling in SQL Server</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2008-03-12'>
+12 March 2008
+</time>
+on <a href='/tag/sargable_datetime_handling/'>sargable_datetime_handling</a>, <a href='/tag/sql_server/'>sql_server</a>
+</section>
+</header>
+<section class='post-content'><p>I can&rsquo;t believe I never thought of doing things this way before. It&rsquo;s so much better than concatenating strings and converting back and forth between varchar, int and datetime. I&rsquo;d like to thank Marc for posting this jewel. Here&rsquo;s the link to the original content: <a href="http://musingmarc.blogspot.com/2006/07/more-on-dates-and-sql.html" rel="nofollow">Marc&rsquo;s Musings: More on DATEs and SQL</a>.</p>
+
+<p>I&rsquo;m including the actual functions below, just as a quick reference:</p>
+<pre class="highlight plaintext"><code>SELECT DATEADD(dd, DATEDIFF(dd, 0, GetDate()), 0) As Today, 
+    DATEADD(wk, DATEDIFF(wk, 0, GetDate()), 0) As ThisWeekStart, 
+    DATEADD(mm, DATEDIFF(mm, 0, GetDate()), 0) As ThisMonthStart, 
+    DATEADD(qq, DATEDIFF(qq, 0, GetDate()), 0) As ThisQuarterStart, 
+    DATEADD(yy, DATEDIFF(yy, 0, GetDate()), 0) As ThisYearStart, 
+    DATEADD(dd, DATEDIFF(dd, 0, GetDate()) + 1, 0) As Tomorrow, 
+    DATEADD(wk, DATEDIFF(wk, 0, GetDate()) + 1, 0) As NextWeekStart, 
+    DATEADD(mm, DATEDIFF(mm, 0, GetDate()) + 1, 0) As NextMonthStart, 
+    DATEADD(qq, DATEDIFF(qq, 0, GetDate()) + 1, 0) As NextQuarterStart, 
+    DATEADD(yy, DATEDIFF(yy, 0, GetDate()) + 1, 0) As NextYearStart, 
+    DATEADD(ms, -3, DATEADD(dd, DATEDIFF(dd, 0, GetDate()) + 1, 0)) As TodayEnd, 
+    DATEADD(ms, -3, DATEADD(wk, DATEDIFF(wk, 0, GetDate()) + 1, 0)) As ThisWeekEnd, 
+    DATEADD(ms, -3, DATEADD(mm, DATEDIFF(mm, 0, GetDate()) + 1, 0)) As ThisMonthEnd, 
+    DATEADD(ms, -3, DATEADD(qq, DATEDIFF(qq, 0, GetDate()) + 1, 0)) As ThisQuarterEnd, 
+    DATEADD(ms, -3, DATEADD(yy, DATEDIFF(yy, 0, GetDate()) + 1, 0)) As ThisYearEnd
+</code></pre></section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=SARGable DateTime Handling in SQL Server&amp;amp;url=http://www.developmentalmadness.com/2008/03/12/date-handling-in-sql-server/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2008/03/12/date-handling-in-sql-server/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2008/03/12/date-handling-in-sql-server/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2008/03/11/aspnet-ajax-update-panel-timeout/'>
+<section class='post'>
+<h2>ASP.NET AJAX - Update Panel Timeout</h2>
+<p>When using the asp:UpdatePanel server control for asyncronous communication with the web server the default timeout is 90 seconds.&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2008/03/13/aspnet-mvc-custom-routing-logic/'>
+<section class='post'>
+<h2>ASP.NET MVC Custom Routing Logic</h2>
+<p>I&rsquo;ve been working with the new ASP.NET MVC framework since the first CTP back in December. I love it&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: AWS: Mount and Format an EBS Data Volume on EC2 Initialize</title>
+<meta content='The developer guide for AWS EC2 has a section titled Making an Amazon EBS Volume Available for Use. It describes how to make an EBS volume avail...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='AWS: Mount and Format an EBS Data Volume on EC2 Initialize' property='og:title'>
+<meta content='The developer guide for AWS EC2 has a section titled Making an Amazon EBS Volume Available for Use. It describes how to make an EBS volume avail...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2016/02/01/aws-mount-and-format-an-ebs-data-volume-on-ec2-initialize/' property='og:url'>
+<meta content='2016-02-01' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='AWS: Mount and Format an EBS Data Volume on EC2 Initialize' name='twitter:title'>
+<meta content='The developer guide for AWS EC2 has a section titled Making an Amazon EBS Volume Available for Use. It describes how to make an EBS volume avail...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2016/02/01/aws-mount-and-format-an-ebs-data-volume-on-ec2-initialize/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>AWS: Mount and Format an EBS Data Volume on EC2 Initialize</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-02-01'>
+01 February 2016
+</time>
+on <a href='/tag/amazon-web-services-aws/'>amazon-web-services-aws</a>, <a href='/tag/elastic-block-storage-ebs/'>elastic-block-storage-ebs</a>, <a href='/tag/elastic-cloud-compute-ec2/'>elastic-cloud-compute-ec2</a>
+</section>
+</header>
+<section class='post-content'><p>The <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html" rel="nofollow">developer guide</a> for <a href="https://en.wikipedia.org/wiki/Amazon_Web_Services" rel="nofollow">AWS</a> <a href="https://en.wikipedia.org/wiki/Amazon_Elastic_Compute_Cloud" rel="nofollow">EC2</a> has a section titled <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-using-volumes.html" rel="nofollow">Making an Amazon EBS Volume Available for Use</a>. It describes how to make an <a href="https://en.wikipedia.org/wiki/Amazon_Elastic_Block_Store" rel="nofollow">EBS</a> volume available after you&rsquo;ve attached it to your EC2 instance and connected over <a href="https://en.wikipedia.org/wiki/Secure_Shell" rel="nofollow">SSH</a>. But if you&rsquo;re using <a href="https://aws.amazon.com/autoscaling/" rel="nofollow">Auto-Scaling Groups</a>, <a href="https://aws.amazon.com/cloudformation/" rel="nofollow">CloudFormation</a>, or you don&rsquo;t want to have to connect and manually format the volume there&rsquo;s a way to skip the manual steps. If you just put the following into the <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html?tag=duckduckgo-d-20" rel="nofollow">User Data</a> setting for your instance it will automatically run the script upon initialization:</p>
+<pre class="highlight shell"><code><span class="c">#!/bin/bash</span>
+mkfs -t ext4 <span class="o">[</span>device_name]
+mkdir <span class="o">[</span>mount_point]
+mount <span class="o">[</span>device_name] <span class="o">[</span>mount_point]
+</code></pre>
+<p>If you want the device mounted after any reboot you can also append the following line to the User Data script above:</p>
+<pre class="highlight plaintext"><code>echo "[device_name]    [mount_point]    ext4    defaults,nofail    0    2" &gt;&gt; /etc/fstab 
+</code></pre>
+<p>The <code>&gt;&gt;</code> operator will append the output of <code>echo</code> to the specified file - in this case <code>/etc/fstab</code> (<a href="https://help.ubuntu.com/community/Fstab" rel="nofollow">Ubuntu docs</a>).</p>
+
+<p>The explanation for all the commands and parameters above can be found in the developer guide, but you should be able to use these commands anywhere you can specify User Data for an EC2 instance.</p>
+
+<h1>Permissions</h1>
+
+<p>I used this technique to setup an EC2 instance I am using for <a href="https://aws.amazon.com/ecs/" rel="nofollow">EC2 Container Service (ECS)</a> and tried to find out what permissions I would need to set (read: <code>chown</code>) on my volume so my container could write to it. I was concerned when I saw everything was owned by <code>root</code>. However, I found that docker has root access so I never had to change permissions. YMMV and I&rsquo;d love any feedback on this, but for the moment I&rsquo;ll just say that for ECS you won&rsquo;t need to worry about file permissions outside of your container instances. </p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=AWS: Mount and Format an EBS Data Volume on EC2 Initialize&amp;amp;url=http://www.developmentalmadness.com/2016/02/01/aws-mount-and-format-an-ebs-data-volume-on-ec2-initialize/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2016/02/01/aws-mount-and-format-an-ebs-data-volume-on-ec2-initialize/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2016/02/01/aws-mount-and-format-an-ebs-data-volume-on-ec2-initialize/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/01/28/eclipse-che-cloud-ide-first-thoughts/'>
+<section class='post'>
+<h2>Eclipse CHE Cloud IDE: Setup and First Thoughts</h2>
+<p>Just saw an announcement for Eclipse CHE beta last night. Currently I&rsquo;m more of an IntelliJ fan and I&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/02/04/aws-hosting-a-static-website-in-s3/'>
+<section class='post'>
+<h2>AWS: Hosting a Static Website in S3</h2>
+<p>My team at work has decided to adopt the Thoughtworks Technology Radar as a means to communicate what our&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

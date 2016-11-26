@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: systemd</title>
+  <subtitle>Posts tagged with systemd</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/systemd/feed.xml" rel="self"/>
+  <updated>2016-03-09T21:16:42+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Docker: Configure Insecure Registry for systemd</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/03/09/docker-configure-insecure-registry-for-systemd/"/>
+    <id>http://www.developmentalmadness.com/2016/03/09/docker-configure-insecure-registry-for-systemd/</id>
+    <published>2016-03-09T21:16:42+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">If you’re running a flavor of Linux that uses systemd Docker recommends using it to configure and control your Docker daemon. I needed to connect my Docker daemon running on my Jenkins build server to my Docker Registry running in AWS (that’s a post for</summary>
+  </entry>
+</feed>

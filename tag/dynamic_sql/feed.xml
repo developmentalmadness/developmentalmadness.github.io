@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: dynamic_sql</title>
+  <subtitle>Posts tagged with dynamic_sql</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/dynamic_sql/feed.xml" rel="self"/>
+  <updated>2007-01-12T20:30:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Use SQL Parameters to Overcome Ad Hoc Performance Issues</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2007/01/12/use-sql-parameters-to-overcome-ad-hoc/"/>
+    <id>http://www.developmentalmadness.com/2007/01/12/use-sql-parameters-to-overcome-ad-hoc/</id>
+    <published>2007-01-12T20:30:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">As I look around the net at different articles and tutorials I’m surprised at how many use Dynamic SQL for samples. Even after the many warnings about SQL injection attacks. But there are other issues besides security. One of which is performance - dynamic</summary>
+  </entry>
+</feed>

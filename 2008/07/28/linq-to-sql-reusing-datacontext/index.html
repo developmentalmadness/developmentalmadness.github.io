@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: LINQ to SQL: Reusing DataContext</title>
+<meta content='I have been working on a project which uses a data access layer (DAL) to wrap some LINQ to SQL calls to the database. While I&amp;rsquo;ve played wi...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='LINQ to SQL: Reusing DataContext' property='og:title'>
+<meta content='I have been working on a project which uses a data access layer (DAL) to wrap some LINQ to SQL calls to the database. While I&amp;rsquo;ve played wi...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2008/07/28/linq-to-sql-reusing-datacontext/' property='og:url'>
+<meta content='2008-07-28' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='LINQ to SQL: Reusing DataContext' name='twitter:title'>
+<meta content='I have been working on a project which uses a data access layer (DAL) to wrap some LINQ to SQL calls to the database. While I&amp;rsquo;ve played wi...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2008/07/28/linq-to-sql-reusing-datacontext/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>LINQ to SQL: Reusing DataContext</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2008-07-28'>
+28 July 2008
+</time>
+on <a href='/tag/dlinq/'>dlinq</a>, <a href='/tag/linq_to_sql/'>linq_to_sql</a>, <a href='/tag/system_data_linq_datacontext/'>system_data_linq_datacontext</a>, <a href='/tag/system_transactions/'>system_transactions</a>, <a href='/tag/transactionscope/'>transactionscope</a>
+</section>
+</header>
+<section class='post-content'><p>I have been working on a project which uses a data access layer (DAL) to wrap some LINQ to SQL calls to the database. While I&rsquo;ve played with LINQ to SQL a bit, this was my first time working on a production application. So as I wrote some of the business logic I wrapped some updates in a transaction (as any good database dev would do). Here&rsquo;s pretty much what it looked like:</p>
+<pre class="highlight plaintext"><code>public void Swap(Product x, Product y)
+{
+  x.DisplayIndex += y.DisplayIndex;
+  y.DisplayIndex = x.DisplayIndex - y.DisplayIndex;
+  x.DisplayIndex -= y.DisplayIndex;
+
+  using( System.Transactions.TransactionScope txCtx = new System.Transactions.TransactionScope() ) {
+    x.Save();
+    y.Save();
+
+    txCtx.Complete();
+  }
+}
+</code></pre>
+<p>Here&rsquo;s what the save method looked like:</p>
+<pre class="highlight plaintext"><code>public Product Save(Product product)
+{
+  MyAppDataContext context = new MyAppDataContext("connection string");
+
+  Product oldProduct = context.Products.Single( p =&gt; p.ProductId == product.ProductId);
+
+  if(oldProduct == null){
+    context.Products.InsertOnSubmit(product);
+  } else {
+    oldProduct.Name = product.Name;
+    oldProduct.Price = product.Price;
+    oldProduct.DisplayIndex = product.DisplayIndex;
+  }
+  context.SubmitChanges();
+
+  return product;
+}
+</code></pre>
+<p>This worked fine until I moved my changes out to staging. Where I promptly was given an exception:</p>
+<pre class="highlight plaintext"><code>System.Transactions.TransactionManagerCommunicationException was unhandled by user code
+Message="Communication with the underlying transaction manager has failed."
+Source="System.Transactions"
+</code></pre>
+<p>As it turns out, my development machine had Network DTC access turned on (Administrative Tools &ndash;&gt; Component Services &ndash;&gt; Component Services &ndash;&gt; Computers &ndash;&gt; (right click) &ndash;&gt; properties&hellip; &ndash;&gt; MSDTC &ndash;&gt; Security Configuration&hellip; &ndash;&gt; Network DTC Access</p>
+
+<p>It had been turned on while I had been doing some tinkering with an SSIS project. So because my machine allowed network DTC calls, I had not recieved any errors. But because it was turned off (the default) on the staging web server it caused an error.</p>
+
+<p>The reason for the error is that each call to my Save method used a different DataContext, each with its own Connection object. The first call to Save opened a Connection and saved the changes. Then when the second call did the same thing it tried to enlist the second connection in a transaction with the first. In order to do this DTC was needed. This worked on my machine, because it was enabled, but not on the web server which was disabled.</p>
+
+<p>After talking to the developer who wrote the DAL I tried to think of how I could come up with a way to use the same DataContext. The EnterpriseLibrary already does this, so there should be a solution somewhere. I started looking into Thread Local Storage (TLS) and found this article, indicating the pitfalls of using TLS in ASP.NET. After reading the article I determined that HttpContext.Current.Items was the place to store my DataContext for the lifetime of the page request. The reason is that there are several cases where the thread context will change in the lifetime of a page request (async methods, page_load, application events).</p>
+
+<p>So I decided I needed a DataContextFactory. To accomplish this, I chose to add a partial class to the DAL with a single method GetDataContext(). If you look at the designer file (C# designer.cs, VB.NET designer.vb) for a dbml file you&rsquo;ll find that the DataContext class generated for your dbml file is a partial class. So my partial class looks like this:</p>
+<pre class="highlight plaintext"><code>public partial class MyAppDataContext{
+  public static MyAppDataContext GetDataContext(){
+    if(HttpContext.Current == null)
+      return new MyAppDataContext("connection string");
+
+    if(HttpContext.Current.Items.Contains("DataContext")){
+      return (MyAppDataContext) HttpContext.Current.Items["DataContext"];
+    }
+
+    MyAppDataContext context = new MyAppDataContext("connection string");
+    HttpContext.Current.Items.Add("DataContext", context);
+    return context;
+  }
+}
+</code></pre>
+<p>After, I did this my call to TransactionScope works. Plus, I was able to eliminate the additional database call in my save method because I am now using the same DataContext throughout the entire lifecycle of the page request. The save method now looks like this:</p>
+<pre class="highlight plaintext"><code>public Product Save(Product product)
+{
+  MyAppDataContext context = new MyAppDataContext("connection string");
+
+  if(product.ProductId &lt;= 0){
+    context.Products.InsertOnSubmit(product);
+  context.SubmitChanges();
+
+  return product;
+}
+</code></pre>
+<p>It is important to note that the code for the Save method is auto generated. So this code could be used within the company for either a web application or a winforms app. For this reason, I needed a solution which would work in both situations. Or that would at least allow me to provide an alternate solution in the event the application requires one. Plus, I wasn&rsquo;t really happy about adding a reference to the System.Web assembly in my DAL.</p>
+
+<p>So I created the following interface and provider:</p>
+<pre class="highlight plaintext"><code>using System;
+
+namespace DataAccess
+{
+    public interface IThreadLocalStorageProvider
+    {
+        void SaveItem ( String key, Object value );
+        Object GetItem ( String key );
+        Boolean ContainsItem ( String key );
+    }
+
+    public class ThreadLocalStorageProviderFactory
+    {
+        private static IThreadLocalStorageProvider _provider;
+
+        public static IThreadLocalStorageProvider Current
+        {
+            get
+            {
+                return _provider;
+            }
+            set
+            {
+                _provider = value;
+            }
+        }
+    }
+}
+</code></pre>
+<p>By creating a provider with a static reference to an interface, the application can define during startup how it will provide thread local storage without any changes required to the DAL. So for our web application we came up with this handy little class:</p>
+<pre class="highlight plaintext"><code>namespace RioTintoWebSolution
+{
+    public class WebThreadLocalStorageProvider : IThreadLocalStorageProvider
+    {
+        #region IThreadLocalStorageProvider Members
+
+        public void SaveItem ( string key, object value )
+        {
+            HttpContext.Current.Items.Add( key, value );
+        }
+
+        public object GetItem ( string key )
+        {
+            return HttpContext.Current.Items[key];
+        }
+
+        public bool ContainsItem ( string key )
+        {
+            return HttpContext.Current.Items.Contains( key );
+        }
+
+        #endregion
+    }
+}
+</code></pre>
+<p>And in the Appilcation_Start event in global.asax.cs we now do this:</p>
+<pre class="highlight plaintext"><code>protected void Application_Start(object sender, EventArgs e)
+{
+  ThreadLocalStorageProviderFactory.Current = new WebThreadLocalStorageProvider();
+}
+</code></pre>
+<p>And our DataContext factory method looks like this:</p>
+<pre class="highlight plaintext"><code>public partial class MyAppDataContext
+{
+    public static MyAppDataContext GetDataContext ()
+    {
+        // if TLS isn't available just return a new DataContext
+        if ( ThreadLocalStorageProviderFactory.Current == null )
+            return new MyAppDataContext( "connection string" );
+
+        MyAppDataContext context = null;
+
+        // check to see if DataContext already exists in TLS
+        if ( ThreadLocalStorageProviderFactory.Current.ContainsItem( "DataContext" ) )
+        {
+            // get DataContext
+            context = ThreadLocalStorageProviderFactory.Current.GetItem( "DataContext" ) as MyAppDataContext;
+
+            // verify DataContext
+            if ( context != null )
+                return context;
+        }
+
+        // if we got here, then just create a new DataContext
+        context = new MyAppDataContext( "connection string" );
+
+        // cache the DataContext
+        ThreadLocalStorageProviderFactory.Current.SaveItem( "DataContext", context );
+
+        // return to caller
+        return context;
+    }
+}
+</code></pre>
+<p>And finally, just to be safe I also decided to verify that the DataContext get cleaned up, I added the following to our Appliction_EndRequest event:</p>
+<pre class="highlight plaintext"><code>protected void Application_EndRequest(object sender, EventArgs e)
+{
+    if ( ThreadLocalStorageProviderFactory.Current.ContainsItem( "DataContext" ) )
+    {
+        DataContext ctx = ThreadLocalStorageProviderFactory.Current.GetItem( "DataContext" ) as DataContext;
+        if ( ctx != null &amp;&amp; ctx.Connection.State == ConnectionState.Open )
+        {
+            ctx.Dispose();
+        }
+    }
+}
+</code></pre>
+<p>Finally, I wanted to confirm that what I was doing wasn&rsquo;t going to bite me. So I searched around the net abit and found this post by Rick Strahl. Rick&rsquo;s solution is more &lsquo;generic&rsquo;, but at the same time I prefer the ProviderFactory pattern over the utility class with specialized methods (ie. GetWebRequestScopedDataContext and GetThreadScopedDataContext). Everybody has their preferences, and I&rsquo;m certainly not trying to disparage Nick in any way. His method, is excellent, and he makes it easy to use multiple different DataContexts within the same thread. The reason I prefer the ProviderFactory is becuase it is more generic, so I don&rsquo;t have to change my method calls when I move my DAL to a winforms app. And I can still add the same features he uses to create more flexibility.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=LINQ to SQL: Reusing DataContext&amp;amp;url=http://www.developmentalmadness.com/2008/07/28/linq-to-sql-reusing-datacontext/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2008/07/28/linq-to-sql-reusing-datacontext/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2008/07/28/linq-to-sql-reusing-datacontext/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2008/07/24/microsoft-vs-middle-school-power-toy-10/'>
+<section class='post'>
+<h2>Microsoft VS Middle School Power Toy 1.0</h2>
+<p>I just read an announcement today about Microsoft Visual Studio Middle School Power Toy 1.0. I&rsquo;ve always been interested&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2008/08/14/sql-2008-installation-fails-previous/'>
+<section class='post'>
+<h2>SQL 2008 Installation Fails: "Previous Release of Microsoft Visual Studio 2008"</h2>
+<p>I have been trying since yesterday to install the RTM of SQL 2008. But once I have selected the&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

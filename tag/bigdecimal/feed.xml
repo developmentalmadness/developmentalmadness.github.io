@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: bigdecimal</title>
+  <subtitle>Posts tagged with bigdecimal</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/bigdecimal/feed.xml" rel="self"/>
+  <updated>2011-06-01T16:02:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Java: using BigDecimal instead of double</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2011/06/01/java-using-bigdecimal-instead-of-double/"/>
+    <id>http://www.developmentalmadness.com/2011/06/01/java-using-bigdecimal-instead-of-double/</id>
+    <published>2011-06-01T16:02:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">For the last two months I’ve been using Linux and Java exclusively. For the times I still need to do .NET development, my laptop is setup to dual-boot into Windows 7. But since I’m learning a lot, I really want to try and catalog my experience of transitioning</summary>
+  </entry>
+</feed>

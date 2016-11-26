@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: sql_query_plan</title>
+  <subtitle>Posts tagged with sql_query_plan</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/sql_query_plan/feed.xml" rel="self"/>
+  <updated>2006-11-21T20:31:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Viewing XML Query Plans in SSMS</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2006/11/21/viewing-xml-query-plans-in-ssms/"/>
+    <id>http://www.developmentalmadness.com/2006/11/21/viewing-xml-query-plans-in-ssms/</id>
+    <published>2006-11-21T20:31:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Well after a long absence due to a crazy workload, I’m baaaack!
+
+Keepin’ it simple at this point. I’ve resumed studying for MCTS exams and I’ve been reading about dynamic management views. I love them. What’s more, I love the detail they provide and the</summary>
+  </entry>
+</feed>

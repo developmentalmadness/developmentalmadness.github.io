@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Eclipse CHE Cloud IDE: Setup and First Thoughts</title>
+<meta content='Just saw an announcement for Eclipse CHE beta last night. Currently I&amp;rsquo;m more of an IntelliJ fan and I was even excited to hear about the d...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Eclipse CHE Cloud IDE: Setup and First Thoughts' property='og:title'>
+<meta content='Just saw an announcement for Eclipse CHE beta last night. Currently I&amp;rsquo;m more of an IntelliJ fan and I was even excited to hear about the d...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2016/01/28/eclipse-che-cloud-ide-first-thoughts/' property='og:url'>
+<meta content='2016-01-28' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Eclipse CHE Cloud IDE: Setup and First Thoughts' name='twitter:title'>
+<meta content='Just saw an announcement for Eclipse CHE beta last night. Currently I&amp;rsquo;m more of an IntelliJ fan and I was even excited to hear about the d...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2016/01/28/eclipse-che-cloud-ide-first-thoughts/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Eclipse CHE Cloud IDE: Setup and First Thoughts</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-01-28'>
+28 January 2016
+</time>
+on <a href='/tag/net/'>net</a>, <a href='/tag/java/'>java</a>, <a href='/tag/docker/'>docker</a>, <a href='/tag/eclipse/'>eclipse</a>
+</section>
+</header>
+<section class='post-content'><p>Just saw an <a href="http://sdtimes.com/eclipse-che-beta-arrives/" rel="nofollow">announcement</a> for <a href="http://www.eclipse.org/che/" rel="nofollow">Eclipse CHE</a> beta last night. Currently I&rsquo;m more of an <a href="https://www.jetbrains.com/idea/" rel="nofollow">IntelliJ</a> fan and I was even excited to hear about the development of an IntelliJ-based IDE for .NET (<a href="http://blog.jetbrains.com/dotnet/2016/01/13/project-rider-a-csharp-ide/" rel="nofollow">Project Rider</a>). </p>
+
+<h1>Setting Up CHE</h1>
+
+<p>For those just interested in getting started with CHE here&rsquo;s how (you may want to also review the <a href="https://eclipse-che.readme.io/docs/usage#command-line" rel="nofollow">command-line startup docs</a> for troubleshooting or special conditions I don&rsquo;t cover here):</p>
+
+<p><a href="http://www.eclipse.org/che/download/" rel="nofollow">Download</a> Eclipse CHE ZIP or TGZ package. (There&rsquo;s installers for Windows &amp; OSX, but I prefer a low-impact setup).</p>
+
+<p>CHE is a server. So if your team is using it you&rsquo;ll do this on a central server instead of on a developer&rsquo;s machine. We&rsquo;re also going to go full Docker here instead of installing a local server on your machine - again low-impact.</p>
+
+<p>Extract the archive wherever you want it installed. For OSX/Linux:</p>
+<pre class="highlight plaintext"><code>tar -xvf eclipse-che-latest.tar.gz
+</code></pre>
+<h1>The Easy Way</h1>
+
+<p>If you prefer the easiest way, I was contacted by <a href="https://twitter.com/TylerJewell" rel="nofollow">@TylerJewell</a> CHE Team Lead to let me know I&rsquo;ve been trying to hard. If you don&rsquo;t care if the CHE server is running in Docker then simply do the following at this point:</p>
+<pre class="highlight plaintext"><code>$ cd eclipse-che-[version]
+$ bin/che.sh run
+</code></pre>
+<p>Or on windows</p>
+<pre class="highlight plaintext"><code>$ bin\che.bat run
+</code></pre>
+<p>Now just navigate to http://localhost:8080 and you&rsquo;re set.</p>
+
+<h1>All In With Docker</h1>
+
+<p>If you want to run 100% in docker keep reading. Otherwise, thanks for coming or you can skip over this section to my thoughts on the CHE project.</p>
+
+<p><strong>Update 2/1/16:</strong> Modifying the VirtualBox network settings as described below is not necessary. If you read the output from the <code>che.sh run</code> command you should see something like this:</p>
+<pre class="highlight plaintext"><code>############## HOW TO CONNECT YOUR CHE CLIENT ###############
+After Che server has booted, you can connect your clients by:
+1. Open browser to http://192.168.99.101:8080, or:
+2. Open native chromium app.
+#############################################################
+</code></pre>
+<p>Just enter the address from #1 into your browser instead of localhost (below) and you should be fine. If you however you want to play with using <code>localhost</code> instead of the IP address the VirtualBox network settings I describe below should work for you. Otherwise, skip head to the part about starting up CHE.</p>
+
+<h2>Using localhost</h2>
+
+<p>If you want to be able to point your browser to localhost on OSX/Windows in VirtualBox forward port 8080 from your Docker VM to port 8080 on your host.</p>
+
+<p><strong>Open Settings</strong></p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2016/01_28/VirtualBox-Main.png" alt="VirtualBox Main" /></p>
+
+<p><strong>Select &ldquo;Network&rdquo;</strong></p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2016/01_28/VirtualBox-NetworkSettings.png" alt="Network Settings" /></p>
+
+<p><strong>Add an entry to forward TCP port 8080 to 8080</strong></p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2016/01_28/VirtualBox-PortForwarding.png" alt="Port Forwarding" /></p>
+
+<p>Now the startup script will be able to communicate with Docker and your Eclipse CE Server.</p>
+
+<p>If you forget this step you&rsquo;ll likely run into the following error when you try and start CHE:</p>
+
+<blockquote>
+<p>!!! Running &lsquo;docker&rsquo; succeeded, but &#39;docker ps&rsquo; failed. This usually means that docker cannot reach its daemon.</p>
+</blockquote>
+
+<h1>Starting CHE</h1>
+
+<p>From the command-line, navigate to the directory where you extracted the CHE archive:</p>
+<pre class="highlight plaintext"><code>$ cd [directory path]
+</code></pre>
+<p>Now to start CHE:</p>
+
+<p><strong>OSX / Linux</strong></p>
+<pre class="highlight plaintext"><code>$ bin/che.sh -i run
+</code></pre>
+<p><strong>Windows</strong></p>
+<pre class="highlight plaintext"><code>$ bin\che.bat -i run
+</code></pre>
+<p>Once you see the following (with different timing of course) you&rsquo;re ready to go:</p>
+<pre class="highlight plaintext"><code>- Server startup in 9605 ms
+</code></pre>
+<p>If you followed the VirtualBox directions above navigate to http://localhost:8080 and you should see your CHE Dashboard:</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2016/01_28/CHE-Dashboard.png" alt="CHE Dashboard" /></p>
+
+<p>Otherwise, use the IP of your VirtualBox VM: </p>
+<pre class="highlight plaintext"><code>http://[your_vm_ip]:8080. 
+</code></pre>
+<p>Click on &ldquo;New Project&rdquo; and you&rsquo;ll see this:</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2016/01_28/CHE-NewProject.png" alt="CHE New Project" /></p>
+
+<p>Out of the box you&rsquo;ll have &ldquo;Stacks&rdquo; for Java, Node, PHP, and ASP.NET (Mono).</p>
+
+<p>At this point that&rsquo;s as far as I&rsquo;ve gone so for now I&rsquo;ll leave the experimentation as an exercise for the reader. I&rsquo;ll post again once I&rsquo;ve had more time to play with this.</p>
+
+<p>For those interested in why they should care there are a couple things that give me reason to be really excited about CHE:</p>
+
+<h1>Zero Impact Setup</h1>
+
+<p>According the the home page one of the stated goals is:</p>
+
+<blockquote>
+<p>We are building a world where anyone can contribute to a project without installing software.</p>
+</blockquote>
+
+<p>I have long been a proponent of developer productivity. When on-boarding a new team member I strive to make the experience as close to checkout-build-run as possible. I believe the developer should be able setup their dev environment according to their own preferences and not have to spend days or week(s) setting up the project. </p>
+
+<p>Also working on multiple branches should be just as painless. </p>
+
+<p>At work we are looking to adopt Docker for our new environments and on my list of research is using <a href="https://docs.docker.com/compose/" rel="nofollow">Docker Compose</a> to set up a full development environment. CHE would support not only the same goal but go even farther by not requiring the setup of a development environment - we could truly work from anywhere.</p>
+
+<h1>Microsoft Support</h1>
+
+<p>According to the <a href="http://www.eclipse.org/che/features/" rel="nofollow">CHE Features</a> page Microsoft is contributing to the CHE project. I haven&rsquo;t dug into the documentation yet (that&rsquo;s next) but given the work Microsoft have already done<a href="http://www.hanselman.com/blog/OmniSharpMakingCrossplatformNETARealityAndAPleasure.aspx" rel="nofollow"> supporting intellisense in OmniSharp</a> and Visual Studio Code I think we&rsquo;ll see support for C# and ASP.NET on par with the Java support already provided by CHE. There&rsquo;s already an ASP.NET stack that comes with CHE, just not intellisense yet.</p>
+
+<p>In and of itself this is really not that big a deal. However, Microsoft is getting ready to release <a href="https://msdn.microsoft.com/en-us/virtualization/windowscontainers/about/about_overview" rel="nofollow">Windows Server 2016 with native Docker support</a>, so I believe Microsoft will make sure that CHE works with Windows Containers as well. Since there are so many companies with heavy Microsoft investments and very complex setups I could see many (probably not all) could greatly benefit from what CHE is offering. </p>
+
+<p>Of course I&rsquo;m making a few assumptions here: </p>
+
+<ul>
+<li>Windows Containers will support the full .NET Framework, not just the newly minted .NET Core and ASP.NET Core. I&rsquo;m pretty sure this is true.</li>
+<li>Windows Containers will support full Windows Server installs, not just Windows Nano. I&rsquo;m not sure about this one.</li>
+</ul>
+
+<p>Depending on which of those assumptions are true will determine which projects could actually take advantage of such a scenario.</p>
+
+<p>I&rsquo;m excited to see this project as it progresses and if it meets my needs I hope to be able to contribute in some way.</p>
+
+<h1>Updates</h1>
+
+<ul>
+<li><strong>1/29/16:</strong> Updates based on recommendations by <a href="https://twitter.com/TylerJewell" rel="nofollow">@TylerJewell</a> and some errata.</li>
+<li><strong>2/1/16:</strong> Updates clarifying that there is no need to change VirtualBox network settings</li>
+</ul>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Eclipse CHE Cloud IDE: Setup and First Thoughts&amp;amp;url=http://www.developmentalmadness.com/2016/01/28/eclipse-che-cloud-ide-first-thoughts/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2016/01/28/eclipse-che-cloud-ide-first-thoughts/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2016/01/28/eclipse-che-cloud-ide-first-thoughts/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/01/18/301-permanent-redirect-for-ghost/'>
+<section class='post'>
+<h2>301 Permanent Redirect for Ghost</h2>
+<p>The Ghost blogging platform (currently v0.7.4) doesn&rsquo;t currently provide a way to support moving resource urls. If you&rsquo;re moving&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/02/01/aws-mount-and-format-an-ebs-data-volume-on-ec2-initialize/'>
+<section class='post'>
+<h2>AWS: Mount and Format an EBS Data Volume on EC2 Initialize</h2>
+<p>The developer guide for AWS EC2 has a section titled Making an Amazon EBS Volume Available for Use. It&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

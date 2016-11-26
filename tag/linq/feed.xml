@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: linq</title>
+  <subtitle>Posts tagged with linq</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/linq/feed.xml" rel="self"/>
+  <updated>2009-08-20T23:22:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>What isn't RIGHT with var</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/08/20/what-isnrsquot-right-with-var/"/>
+    <id>http://www.developmentalmadness.com/2009/08/20/what-isnrsquot-right-with-var/</id>
+    <published>2009-08-20T23:22:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Let me start by saying I have no qualms against using var to declare variables. I use it myself when it suits me. I find the best situations to take advantage of it are:
+
+
+When using anonymous types 
+When declaring variables which are instances of an
+</summary>
+  </entry>
+</feed>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: visual_studio_2008_sp_1</title>
+  <subtitle>Posts tagged with visual_studio_2008_sp_1</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/visual_studio_2008_sp_1/feed.xml" rel="self"/>
+  <updated>2008-08-14T17:54:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>SQL 2008 Installation Fails: "Previous Release of Microsoft Visual Studio 2008"</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/08/14/sql-2008-installation-fails-previous/"/>
+    <id>http://www.developmentalmadness.com/2008/08/14/sql-2008-installation-fails-previous/</id>
+    <published>2008-08-14T17:54:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I have been trying since yesterday to install the RTM of SQL 2008. But once I have selected the components to install I get a failure during the check of installation rules. The rule failing is “Previous releases of Microsoft Visual Studio 2008”. I have</summary>
+  </entry>
+  <entry>
+    <title>Visual Studio Testing: Code Coverage Property Window Crashes</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/21/visual_studio_testing_code_coverage_property_window_crashes/"/>
+    <id>http://www.developmentalmadness.com/2009/05/21/visual_studio_testing_code_coverage_property_window_crashes/</id>
+    <published>2009-05-21T20:19:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Problem: If you are using Visual Studio
+
+Workaround: If your solution contains a project (not Silverlight Class Library, these are ok for some reason) or a WSSF
+</summary>
+  </entry>
+</feed>

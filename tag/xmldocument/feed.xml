@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: xmldocument</title>
+  <subtitle>Posts tagged with xmldocument</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/xmldocument/feed.xml" rel="self"/>
+  <updated>2008-10-27T17:39:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Wrestling with XML Namespaces and WPF</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/10/27/wrestling-with-xml-namespaces-and-wpf/"/>
+    <id>http://www.developmentalmadness.com/2008/10/27/wrestling-with-xml-namespaces-and-wpf/</id>
+    <published>2008-10-27T17:39:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I have been using XML for internal data formats for many years. Mostly for the purpose of transforming data using XSLT. So while I’ve been working with XML for a long time, I have never had the need to work with namespaces other than those that were standard</summary>
+  </entry>
+</feed>

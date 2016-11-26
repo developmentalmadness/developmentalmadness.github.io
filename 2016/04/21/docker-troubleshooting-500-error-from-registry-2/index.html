@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Docker: Troubleshooting 500 Error From Registry 2</title>
+<meta content='Been fighting an HTTP 500 Internal Server Error from Docker Registry. We have several instances running on Amazon EC2 Container Service (ECS) be...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Docker: Troubleshooting 500 Error From Registry 2' property='og:title'>
+<meta content='Been fighting an HTTP 500 Internal Server Error from Docker Registry. We have several instances running on Amazon EC2 Container Service (ECS) be...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2016/04/21/docker-troubleshooting-500-error-from-registry-2/' property='og:url'>
+<meta content='2016-04-21' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Docker: Troubleshooting 500 Error From Registry 2' name='twitter:title'>
+<meta content='Been fighting an HTTP 500 Internal Server Error from Docker Registry. We have several instances running on Amazon EC2 Container Service (ECS) be...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2016/04/21/docker-troubleshooting-500-error-from-registry-2/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Docker: Troubleshooting 500 Error From Registry 2</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-04-21'>
+21 April 2016
+</time>
+on <a href='/tag/docker/'>docker</a>, <a href='/tag/troubleshooting/'>troubleshooting</a>
+</section>
+</header>
+<section class='post-content'><p>Been fighting an <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_Server_Error" rel="nofollow">HTTP 500 Internal Server Error</a> from Docker Registry. We have several instances running on Amazon EC2 Container Service (ECS) behind Elastic Load Balancer (ELB). Whenever we tried to push a new image up we&rsquo;d get:</p>
+
+<blockquote>
+<p>received unexpected HTTP status: 500 Internal Server Error</p>
+</blockquote>
+
+<h1>Enable Debug Mode</h1>
+
+<p>Docker logs wasn&rsquo;t telling me anything. But searching around I read you can enable debug mode <code>-D</code> for Docker. After locating in the ECS documentation <a href="http://docs.aws.amazon.com/AmazonECS/latest/developerguide/troubleshooting.html#docker-debug-mode" rel="nofollow">how to enable debug mode</a> I did the following on each EC2 instance:</p>
+<pre class="highlight plaintext"><code>sudo vi /etc/sysconfig/docker
+</code></pre>
+<p>And changed this line:</p>
+<pre class="highlight plaintext"><code>OPTIONS="--default-ulimit nofile=1024:4096"
+</code></pre>
+<p>To this:</p>
+<pre class="highlight plaintext"><code>OPTIONS="-D --default-ulimit nofile=1024:4096"
+</code></pre>
+<p>Then saved the file and restarted the Docker daemon:</p>
+<pre class="highlight plaintext"><code>sudo service docker restart
+</code></pre>
+<p>And restarted both the ECS Agent and my Docker registry container:</p>
+<pre class="highlight plaintext"><code>sudo docker start [ecs_container_id]
+sudo docker start [registry_container_id]
+</code></pre>
+<h1>Solution</h1>
+
+<p>Then after trying to push an image again I found this in our logs:&rsquo;</p>
+<pre class="highlight plaintext"><code>time="2016-04-21T22:18:48Z" level=error msg="response completed with error" err.code=unknown err.detail="s3aws: AccessDenied: Access Denied\n\tstatus code: 403, request id: XXXXXXXXXXXXXXXX" err.message="unknown error" go.version=go1.6.1 http.request.host=[hostname] http.request.id=[UUID value] http.request.method=PATCH http.request.remoteaddr=[IP Address] http.request.uri="/v2/[image_name]/blobs/uploads/[digest]?_state=[data]" http.request.useragent="docker/1.11.0 go/go1.5.4 git-commit/[hash] kernel/4.1.19-boot2docker os/linux arch/amd64 UpstreamClient(Docker-Client/1.11.0 \\(windows\\))" http.response.contenttype="application/json; charset=utf-8" http.response.duration=137.964693ms http.response.status=500 http.response.written=117 instance.id=[UUID value] vars.name=[image_name] vars.uuid=[UUID value] version=v2.4.0
+</code></pre>
+<p>The most helpful bit of the message was: </p>
+
+<blockquote>
+<p>err.detail=&ldquo;s3aws: AccessDenied: Access Denied\n\tstatus code: 403, request id: XXXXXXXXXXXXXXXX&rdquo;</p>
+</blockquote>
+
+<p>Telling me that the container was missing the correct S3 permissions.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Docker: Troubleshooting 500 Error From Registry 2&amp;amp;url=http://www.developmentalmadness.com/2016/04/21/docker-troubleshooting-500-error-from-registry-2/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2016/04/21/docker-troubleshooting-500-error-from-registry-2/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2016/04/21/docker-troubleshooting-500-error-from-registry-2/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/04/20/docker-open-a-bash-shell-in-a-docker-container-without-ssh/'>
+<section class='post'>
+<h2>Docker: Open a Bash Shell in a Docker Container Without SSH</h2>
+<p>You don&rsquo;t need to install SSHd on your Docker containers.. However, the method you use has changed. Now Docker&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/04/22/the-zen-of-akka-lambda-days-2016-notes/'>
+<section class='post'>
+<h2>The Zen of Akka (Lambda Days 2016) Cliff Notes</h2>
+<p>Below are all the points, what time to find them in the video and what I found were the&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

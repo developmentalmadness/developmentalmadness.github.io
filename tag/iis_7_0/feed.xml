@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: iis_7_0</title>
+  <subtitle>Posts tagged with iis_7_0</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/iis_7_0/feed.xml" rel="self"/>
+  <updated>2009-05-26T15:39:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>ASP.NET: System.BadImageFormatException</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/26/asp_net_system_bad_image_format_exception/"/>
+    <id>http://www.developmentalmadness.com/2009/05/26/asp_net_system_bad_image_format_exception/</id>
+    <published>2009-05-26T15:39:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">If you are running on Vista x64
+
+System.BadImageFormatException
+
+By default IIS 7 won’t load x86 (32 bit) assemblies, make sure you set your application pool’s “Enable 32-Bit Applications” setting to “True”.
+
+Internet Information Services (IIS) Manager</summary>
+  </entry>
+</feed>

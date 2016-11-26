@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: mono</title>
+  <subtitle>Posts tagged with mono</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/mono/feed.xml" rel="self"/>
+  <updated>2009-02-06T17:15:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Mono Project: I had no idea</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/06/mono-project-i-had-no-idea/"/>
+    <id>http://www.developmentalmadness.com/2009/02/06/mono-project-i-had-no-idea/</id>
+    <published>2009-02-06T17:15:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I usually prefer to blog about my own ideas and the learning process with new technologies. But when I read this article on InfoWorld I had to write about it.
+
+What’s Mono?
+
+Mono is an open source implementation of Microsoft’s .NET Framework. The big</summary>
+  </entry>
+  <entry>
+    <title>LAMP.NET (Linux Apache Mono.NET PostreSQL)</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/14/lamp_net_linux_apache_mono_net_postre_sql/"/>
+    <id>http://www.developmentalmadness.com/2009/05/14/lamp_net_linux_apache_mono_net_postre_sql/</id>
+    <published>2009-05-14T18:33:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">As an developer I’ve always worked for companies which had little or no support for any environments other than Windows. But the situation is reversed at my current client. Most development is done in or with an Oracle
+
+As a Microsoft developer I am in</summary>
+  </entry>
+</feed>

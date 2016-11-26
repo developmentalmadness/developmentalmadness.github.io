@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: scala</title>
+  <subtitle>Posts tagged with scala</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/scala/feed.xml" rel="self"/>
+  <updated>2016-02-23T20:16:05+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>scala: Connecting to Postgres via Slick 3</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/02/23/scala-connecting-to-postgres-via-slick-3/"/>
+    <id>http://www.developmentalmadness.com/2016/02/23/scala-connecting-to-postgres-via-slick-3/</id>
+    <published>2016-02-23T20:16:05+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Got Slick working with Postgres this morning and I thought I’d just write it up before I forget. I’m assuming you already know how to create a new scala project that uses sbt for build and dependencies.
+
+Environment Variables
+
+For this post you’ll need</summary>
+  </entry>
+</feed>

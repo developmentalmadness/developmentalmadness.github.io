@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Visual Studio 2008: Missing XAML Display Items From Fonts and Colors</title>
+<meta content='The members of my team and I have been playing around with our fonts and colors settings over the last few weeks. We’ve downloaded a couple publ...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Visual Studio 2008: Missing XAML Display Items From Fonts and Colors' property='og:title'>
+<meta content='The members of my team and I have been playing around with our fonts and colors settings over the last few weeks. We’ve downloaded a couple publ...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/03/03/visual_studio_2008_missing_xaml_display_items_from_fonts_and_colors/' property='og:url'>
+<meta content='2009-03-03' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Visual Studio 2008: Missing XAML Display Items From Fonts and Colors' name='twitter:title'>
+<meta content='The members of my team and I have been playing around with our fonts and colors settings over the last few weeks. We’ve downloaded a couple publ...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/03/03/visual_studio_2008_missing_xaml_display_items_from_fonts_and_colors/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Visual Studio 2008: Missing XAML Display Items From Fonts and Colors</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-03-03'>
+03 March 2009
+</time>
+</section>
+</header>
+<section class='post-content'><p>The members of my team and I have been playing around with our fonts and colors settings over the last few weeks. We’ve downloaded a couple published settings files from some well known bloggers such as Conery and Hanselman and tweaked them a little.</p>
+
+<p>I was sent a copy of some settings from Rob Conery and the XAML settings were unreadable. I don’t know where the settings originated or how old they were but the background was black and the foreground colors where bright red and blue. I couldn’t read them. Other than that I really like the color scheme.</p>
+
+<p>So I decided to go in and modify the color settings for XAML. But they were missing completely from my “Display Items” list. (Tools – Options… – Environment – Fonts and Colors – Display Items). I ran a search and a couple posts mentioned running &ldquo;devenv /setup” from the command line. But when I did I got the following error from Visual Studio:</p>
+
+<p><strong><font color="#ff0000">The operation could not be completed. The requested operation requires elevation.</font></strong></p>
+
+<p>I am running Vista x32 with a non-admin account. Usually I just get a prompt for administrator credentials, but not this time. So I decided to try runas from the command line:</p>
+
+<p>runas /user:administrator “devenv /setup”</p>
+
+<p>This worked – for the admin account. I opened an instance of Visual Studio and was still missing the XAML display items, but if I opened Visual Studio as administrator they XAML items were all there.</p>
+
+<p>So then I tried adding myself to the Administrators group in Windows. I figured, I’d temporarily elevate my privileges, run the command and then revert my access rights back to normal. Well, this didn’t work either, I still got the same error message.</p>
+
+<p>So finally after digging around a while longer, I found an off-topic post when mentioned running</p>
+
+<p>devenv /resetskippkgs</p>
+
+<p>I had done this before for something else and hadn’t had a problem. So I decided to try it. This worked. It didn’t require admin privileges and I got my XAML settings back. Afterwards, I just mirrored the XML settings to the XAML settings and I’m now enjoying Rob’s theme.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Visual Studio 2008: Missing XAML Display Items From Fonts and Colors&amp;amp;url=http://www.developmentalmadness.com/2009/03/03/visual_studio_2008_missing_xaml_display_items_from_fonts_and_colors/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/03/03/visual_studio_2008_missing_xaml_display_items_from_fonts_and_colors/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/03/03/visual_studio_2008_missing_xaml_display_items_from_fonts_and_colors/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/02/26/unit_testing_moq_doesn_t_support_property_indexers/'>
+<section class='post'>
+<h2>Unit Testing: Moq doesn’t support property indexers</h2>
+<p>I hit a road block today writing some tests which were dependent upon another class’s property indexer. When trying&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/03/10/silverlight_and_prism_decoupling_the_wcf_client_proxy/'>
+<section class='post'>
+<h2>Silverlight and Prism: Decoupling the WCF Client Proxy</h2>
+<p>I’m in the process of creating the . Hopefully, for once, I’ll see it through to the end and&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

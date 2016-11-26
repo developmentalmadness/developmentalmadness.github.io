@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Docker: Configure Insecure Registry for systemd</title>
+<meta content='If you&amp;rsquo;re running a flavor of Linux that uses systemd Docker recommends using it to configure and control your Docker daemon. I needed to ...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Docker: Configure Insecure Registry for systemd' property='og:title'>
+<meta content='If you&amp;rsquo;re running a flavor of Linux that uses systemd Docker recommends using it to configure and control your Docker daemon. I needed to ...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2016/03/09/docker-configure-insecure-registry-for-systemd/' property='og:url'>
+<meta content='2016-03-09' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Docker: Configure Insecure Registry for systemd' name='twitter:title'>
+<meta content='If you&amp;rsquo;re running a flavor of Linux that uses systemd Docker recommends using it to configure and control your Docker daemon. I needed to ...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2016/03/09/docker-configure-insecure-registry-for-systemd/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Docker: Configure Insecure Registry for systemd</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-03-09'>
+09 March 2016
+</time>
+on <a href='/tag/docker/'>docker</a>, <a href='/tag/systemd/'>systemd</a>
+</section>
+</header>
+<section class='post-content'><p>If you&rsquo;re running a flavor of Linux that uses systemd Docker recommends using it to <a href="https://docs.docker.com/engine/admin/systemd/" rel="nofollow">configure and control your Docker daemon</a>. I needed to connect my Docker daemon running on my Jenkins build server to my Docker Registry running in AWS (that&rsquo;s a post for another day). They connect through a private network so I&rsquo;m not using SSL which means I need to configure the daemon with the <a href="https://docs.docker.com/engine/reference/commandline/daemon/#insecure-registries" rel="nofollow">&ndash;insecure-registry</a> option. Here&rsquo;s how to do that:</p>
+
+<p><strong>NOTE:</strong> Some posts recommend just changing the <code>/lib/systemd/system/docker.service</code> file. This works but the <a href="https://docs.docker.com/engine/admin/systemd/" rel="nofollow">documentation advises against it</a>:</p>
+
+<blockquote>
+<p>The files located in /usr/lib/systemd/system or /lib/systemd/system contain the default options and should not be edited.</p>
+</blockquote>
+
+<p>If you&rsquo;d rather save a few steps you can skip the &ldquo;create&rdquo; section below and move ahead to the &ldquo;configure&rdquo; section. Other than the paths of the files you&rsquo;ll be editing everything else should be the same.</p>
+
+<h1>Create systemd Override Files</h1>
+
+<p>If the path <code>/etc/systemd/system/docker.service.d/docker.conf</code> already exists just open the <code>docker.conf</code> file and skip to the next section. If it doesn’t exist, create the directory <code>/etc/systemd/system/docker.service.d</code> directory and <code>docker.conf</code> file:</p>
+<pre class="highlight plaintext"><code>$ sudo mkdir /etc/systemd/system/docker.service.d
+$ sudo touch /etc/systemd/system/docker.service.d/docker.conf
+$ sudo vi /etc/systemd/system/docker.service.d/docker.conf
+</code></pre>
+<p>Then add the following contents to <code>docker.conf</code>:</p>
+<pre class="highlight plaintext"><code>$ sudo vi /etc/systemd/system/docker.service.d/docker.conf
+[Service]
+ExecStart=
+ExecStart=/usr/bin/docker daemon -H fd://
+</code></pre>
+<h1>Configure insecure-registry</h1>
+
+<p>Append the <code>--insecure-registry</code> option to the end of the <code>ExecStart</code> options so it looks something like this: (multiple entries follow array convention. <a href="https://docs.docker.com/engine/reference/commandline/daemon/" rel="nofollow">See docs</a>) </p>
+<pre class="highlight plaintext"><code>ExecStart=/usr/bin/docker daemon -H fd:// --insecure-registry myregistry.mydomain.com
+</code></pre>
+<p>Just make sure you replace <code>myregistry.mydoamin.com</code> with the url (and optionally the port if you&rsquo;re not using port 80) for your registry.</p>
+
+<p>Save the file, then flush changes and restart:</p>
+<pre class="highlight plaintext"><code>$ sudo systemctl daemon-reload
+$ sudo systemctl restart docker
+</code></pre>
+<p>Verify docker daemon is running</p>
+<pre class="highlight plaintext"><code>$ ps aux | grep docker | grep -v grep
+</code></pre>
+<h1>Or Use /etc/default/docker</h1>
+
+<p>It may be because using <code>systemd</code> is new or it may be personal preference. But if you want to use the <code>/etc/default/docker</code> file to configure your docker daemon then you just need to change a couple things. First change your <code>/etc/systemd/system/docker.service.d/docker.conf</code> file to look like this:</p>
+<pre class="highlight plaintext"><code>ExecStart=/usr/bin/docker daemon -H fd:// $DOCKER_OPTS
+EnvironmentFile=-/etc/default/docker
+</code></pre>
+<p>Now you can add the following to your <code>/etc/default/docker</code> file (create it if it doesn&rsquo;t exist) and replace <code>myregistry.mydomain.com</code> with the url (and optionally the port number if it isn&rsquo;t over port 80):</p>
+<pre class="highlight plaintext"><code>DOCKER_OPTS="--insecure-registry myregistry.mydomain.com"
+</code></pre>
+<p>Again save the file, flush changes and restart just like above.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Docker: Configure Insecure Registry for systemd&amp;amp;url=http://www.developmentalmadness.com/2016/03/09/docker-configure-insecure-registry-for-systemd/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2016/03/09/docker-configure-insecure-registry-for-systemd/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2016/03/09/docker-configure-insecure-registry-for-systemd/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/03/09/docker-configure-insecure-registry-in-boot2docker/'>
+<section class='post'>
+<h2>Docker: Configure Insecure Registry in Boot2Docker</h2>
+<p>I gotta say there&rsquo;s some confusing naming that goes on. Boot2Docker was originally a docker client that ran on&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/03/10/linux-crontab/'>
+<section class='post'>
+<h2>Linux: Scheduled Jobs With crontab</h2>
+<p>Today I learned about crontab, which for those of us coming from the Windows world is the equivalent of&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

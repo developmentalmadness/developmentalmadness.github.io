@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: bootstrapper</title>
+  <subtitle>Posts tagged with bootstrapper</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/bootstrapper/feed.xml" rel="self"/>
+  <updated>2009-10-03T11:50:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>MVVM with Prism 101 – Part 1: The Bootstrapper</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/"/>
+    <id>http://www.developmentalmadness.com/2009/10/03/mvvm-with-prism-101-ndash-part-1-the-bootstrapper/</id>
+    <published>2009-10-03T11:50:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Source Code
+
+
+Part 1: The Bootstrapper
+Part 2: The Shell
+
+Part 3: Regions
+
+
+Part 3b: View Injection and The Controller Pattern
+
+
+Part 4: Modules
+
+Part 5: The View-Model
+
+
+Part 5b: ServiceLocator vs Dependency Injection
+
+
+
+Part 6: Commands
+
+
+Part 6b: Wrapping
+
+
+</summary>
+  </entry>
+  <entry>
+    <title>MVVM with Prism 101 - Part 2: The Shell</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/10/12/mvvm-with-prism-101-ndash-part-2-the-shell/"/>
+    <id>http://www.developmentalmadness.com/2009/10/12/mvvm-with-prism-101-ndash-part-2-the-shell/</id>
+    <published>2009-10-12T12:18:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Source Code
+
+
+Part 1: The Bootstrapper
+Part 2: The Shell
+
+Part 3: Regions
+
+
+Part 3b: View Injection and The Controller Pattern
+
+
+Part 4: Modules
+
+Part 5: The View-Model
+
+
+Part 5b: ServiceLocator vs Dependency Injection
+
+
+
+Part 6: Commands
+
+
+Part 6b: Wrapping
+
+
+</summary>
+  </entry>
+</feed>

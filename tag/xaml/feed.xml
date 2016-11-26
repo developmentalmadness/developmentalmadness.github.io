@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: xaml</title>
+  <subtitle>Posts tagged with xaml</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/xaml/feed.xml" rel="self"/>
+  <updated>2009-08-27T00:13:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Xaml: Binding to the current DataContext</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/08/27/xaml-binding-to-the-current-datacontext/"/>
+    <id>http://www.developmentalmadness.com/2009/08/27/xaml-binding-to-the-current-datacontext/</id>
+    <published>2009-08-27T00:13:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Sometimes instead of binding to a property of the current DataContext you want to bind to the actual DataContext itself. For example, I am using DelegateCommand from Composite Application Library and needed to bind a command to perform an action on the</summary>
+  </entry>
+</feed>

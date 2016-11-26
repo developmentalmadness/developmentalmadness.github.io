@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Lost In Translation – Episode 3: Users and Schemas</title>
+<meta content='In my last post I mentioned I would be addressing tables next, but as I read through the documentation I realized something. Because Oracle does...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Lost In Translation – Episode 3: Users and Schemas' property='og:title'>
+<meta content='In my last post I mentioned I would be addressing tables next, but as I read through the documentation I realized something. Because Oracle does...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/02/02/lost-in-translation-episode-3-users-and/' property='og:url'>
+<meta content='2009-02-02' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Lost In Translation – Episode 3: Users and Schemas' name='twitter:title'>
+<meta content='In my last post I mentioned I would be addressing tables next, but as I read through the documentation I realized something. Because Oracle does...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/02/02/lost-in-translation-episode-3-users-and/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Lost In Translation – Episode 3: Users and Schemas</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-02-02'>
+02 February 2009
+</time>
+on <a href='/tag/lost_in_translation/'>lost_in_translation</a>, <a href='/tag/oracle/'>oracle</a>, <a href='/tag/sql_server/'>sql_server</a>
+</section>
+</header>
+<section class='post-content'><p>In my last post I mentioned I would be addressing tables next, but as I read through the documentation I realized something. Because Oracle doesn&rsquo;t have the same concept of databases as SQL Server I need to use schemas to segregate my data. In order to create a schema you must create a user. When you create a user in Oracle, a schema is implicitly created. Which means I need to create a user so I can place my tables and other database objects into a schema.</p>
+
+<p>I&rsquo;ll be using scripts in this episode instead of screenshots because scripts are more concise. There are multiple screens to each object and I didn&rsquo;t want to clutter this post with too many screen shots. The scripts here are pretty simple and you should be able to translate them into options in the Enterprise Manager UI.</p>
+
+<p>Create a User
+Creating a user isn&rsquo;t particularly difficult: you name the user and select a password, then you assign the user a default tablespace and temp tablespace. The following script accomplishes this for you:</p>
+<pre class="highlight plaintext"><code>CREATE USER Northwind
+  PROFILE DEFAULT 
+  IDENTIFIED BY "password"
+  DEFAULT TABLESPACE MyFirstOracleDb 
+  TEMPORARY TABLESPACE TEMP 
+  QUOTA UNLIMITED ON MyFirstOracleDb 
+  ACCOUNT LOCK;
+</code></pre>
+<p>If you use the Oracle Enterprise Manager tool your user will be automatically granted privileges to connect. I&rsquo;ve left that out of the script because I am simply creating a schema for my database objects.</p>
+
+<p>QUOTA is a way of allocating space limits to a user. If you forget this you won&rsquo;t be able to create any tables or other objects in this schema because by default the user gets allocated nothing and cannot do anything until an allocation limit is specified.</p>
+
+<p>You&rsquo;ll also notice that my CREATE USER statement ends with “ACCOUNT LOCK”. Again, right now I&rsquo;m creating a user for the schema, I don&rsquo;t plan on allowing this user to login. I&rsquo;m not sure what the recommended practice here is, but I did read that when you want to delete a user you have to delete the schema and all associated objects with it. So I plan on placing all my objects into schemas which are not associated with an active user. This will allow me to manage users without worrying about affecting my database objects.</p>
+
+<p>An important thing to note is that you need to be careful with quoted identifiers. If you&rsquo;re using the “Show SQL” button in Enterprise Manager you&rsquo;ll notice that all object names are quoted. The trouble you&rsquo;ll run into here is that if you create an object using a quoted identifier you&rsquo;re always required to use quotes when referencing that object. To quote from the Oracle documentation “Schema Object Names and Qualifiers”:</p>
+
+<p>A quoted identifier begins and ends with double quotation marks (&ldquo;). If you name a schema object using a quoted identifier, then you must use the double quotation marks whenever you refer to that object.</p>
+
+<p>So if your create user script looks like this:</p>
+<pre class="highlight plaintext"><code>CREATE USER "Northwind"
+  PROFILE DEFAULT
+  IDENTIFIED BY "password"
+  DEFAULT TABLESPACE MyFirstOracleDb 
+  TEMPORARY TABLESPACE "TEMP" 
+  QUOTA UNLIMITED ON MyFirstOracleDb 
+  ACCOUNT LOCK;
+</code></pre>
+<p>Then your CREATE TABLE script must look like this:</p>
+<pre class="highlight plaintext"><code>CREATE TABLE "Northwind".Customer ( 
+  CustomerID INTEGER NOT NULL , 
+  CustomerName VARCHAR2(50) NOT NULL , 
+  CONSTRAINT PK_CUSTOMER PRIMARY KEY (CustomerID) VALIDATE 
+) ORGANIZATION INDEX TABLESPACE MyFirstOracleDb;
+</code></pre>
+<p>And if your CREATE TABLE script looks like this:</p>
+<pre class="highlight plaintext"><code>CREATE TABLE "Northwind"."Customer" ( 
+  CustomerID INTEGER NOT NULL , 
+  CustomerName VARCHAR2(50) NOT NULL , 
+  CONSTRAINT PK_CUSTOMER PRIMARY KEY (CustomerID) VALIDATE 
+) ORGANIZATION INDEX TABLESPACE MyFirstOracleDb;
+</code></pre>
+<p>Then your SELECT, INSERT, UPDATE and DELETE statements will look like this:</p>
+<pre class="highlight plaintext"><code>SELECT * FROM "Northwind"."Customer"
+INSERT INTO "Northwind"."Customer" ....
+UPDATE "Northwind"."Customer"....
+DELETE FROM "Northwind"."Customer" ...
+</code></pre>
+<p>Plus, when you use quoted identifiers your object names are case-sensitive. So “northwind” and “NORTHWIND” would both cause errors in your SQL scripts.</p>
+
+<p>When you create your objects in Enterprise Manager they won&rsquo;t require quoted identifiers and they&rsquo;ll be case-insensitive. So you&rsquo;re safe there, just be careful when using Enterprise Manager as a learning tool for writing scripts.</p>
+
+<h1>Create a table</h1>
+
+<p>I&rsquo;m not going into go into detail about tables until my next post. For now lets just create a simple table so we can grant our user access to that table. Otherwise our user won&rsquo;t have permission to do anything but connect. So far, Oracle seems to be really good at not doing anything unless you explicitly tell it too. This can bite you, but as far as security goes it is certainly the right way to do it.</p>
+<pre class="highlight plaintext"><code>CREATE TABLE Northwind.Customer (
+  CustomerID INTEGER NOT NULL,
+  CustomerName VARCHAR2(50) NOT NULL,
+  CONSTRAINT PK_Customer PRIMARY KEY (CustomerID) VALIDATE
+) ORGANIZATION INDEX TABLESPACE MyFirstOracleDb;
+</code></pre>
+<h1>Create a role</h1>
+
+<p>Since as a general practice it is best to assign privileges to roles and not users, we&rsquo;re going to go ahead and create a role and grant it permission to access our table:</p>
+<pre class="highlight plaintext"><code>CREATE ROLE NorthwindPublic NOT IDENTIFIED;
+
+GRANT SELECT ON Northwind.Customer TO NorthwindPublic;
+</code></pre>
+<h1>Create a application user</h1>
+
+<p>Now with a few small differences from our first user we&rsquo;ll create a user which can connect to our database:</p>
+<pre class="highlight plaintext"><code>CREATE USER NorthwindUser
+    PROFILE DEFAULT
+    IDENTIFIED BY "password"
+    DEFAULT TABLESPACE MyFirstOracleDb
+    TEMPORARY TABLESPACE TEMP
+    ACCOUNT UNLOCK;
+
+GRANT CONNECT TO NorthwindUser;
+GRANT NorthwindPublic TO NorthwindUser;
+</code></pre>
+<p>Here we&rsquo;ve got an unlocked user, with no quota that can connect to our database and read data from our Customer table. If we want to give the user the ability to modify data we can update the role we created.</p>
+
+<h1>Connecting to the database</h1>
+
+<p>To connect with our new user, fire up SQL Developer from START –&gt; Programs –&gt; Oracle –&gt; Application Development –&gt; SQL Developer. Then select File –&gt; New… –&gt; Database Connection and enter your information like in the screenshot below:</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/dvm-public-assets/images/2009/02_02/Oracle_NewConnection_thumb.png" alt="Oracle newconnection thumb" /></p>
+
+<p>Click connect, then File –&gt; New… –&gt; SQL File. Click OK, then OK again to open a new script file. Type the following in the script window:</p>
+<pre class="highlight plaintext"><code>SELECT * FROM Northwind.Customer;
+</code></pre>
+<p>Hit F5 and you&rsquo;ll get a “select connection” prompt. Select the connection we just created and hit “OK”. There won&rsquo;t be any data, but you should get a success message. Go ahead and play with this for now and I&rsquo;ll have more on creating tables followed by DML statements in Oracle in the next episode.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Lost In Translation – Episode 3: Users and Schemas&amp;amp;url=http://www.developmentalmadness.com/2009/02/02/lost-in-translation-episode-3-users-and/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/02/02/lost-in-translation-episode-3-users-and/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/02/02/lost-in-translation-episode-3-users-and/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/01/29/lost-in-translation-episode-2/'>
+<section class='post'>
+<h2>Lost in Translation – Episode 2: Tablespaces</h2>
+<p>In Episode 1 I addressed database instances but I&rsquo;d like to correct a technicality. I compared SQL Server instances&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/02/05/aspnet-removing-systemweb-dependencies/'>
+<section class='post'>
+<h2>ASP.NET: Removing System.Web Dependencies</h2>
+<p>As a general rule I prefer to avoid referencing System.Web in my library classes. But if it can&rsquo;t be&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

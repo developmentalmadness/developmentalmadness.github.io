@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: azure</title>
+  <subtitle>Posts tagged with azure</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/azure/feed.xml" rel="self"/>
+  <updated>2016-05-17T17:47:55+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Docker: Run Azure Command-Line Client Container</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/05/17/docker-run-azure-command-line-client-container/"/>
+    <id>http://www.developmentalmadness.com/2016/05/17/docker-run-azure-command-line-client-container/</id>
+    <published>2016-05-17T17:47:55+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’ve been using AWS, but I’m starting to look into Apache Spark for an up-coming project and Amazon EMR doesn’t qualify under the AWS Free Tier so I decided to head on over to the world of Microsoft Azure to use my MSDN credits to do some experimentation</summary>
+  </entry>
+</feed>

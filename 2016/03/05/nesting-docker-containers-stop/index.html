@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: Nesting Docker Containers? Stop!</title>
+<meta content='In a recent blog post I pointed out Docker is about microservices, and you should compose your containers instead of building monolithic ones. I...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Nesting Docker Containers? Stop!' property='og:title'>
+<meta content='In a recent blog post I pointed out Docker is about microservices, and you should compose your containers instead of building monolithic ones. I...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2016/03/05/nesting-docker-containers-stop/' property='og:url'>
+<meta content='2016-03-05' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Nesting Docker Containers? Stop!' name='twitter:title'>
+<meta content='In a recent blog post I pointed out Docker is about microservices, and you should compose your containers instead of building monolithic ones. I...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2016/03/05/nesting-docker-containers-stop/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Nesting Docker Containers? Stop!</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-03-05'>
+05 March 2016
+</time>
+on <a href='/tag/docker/'>docker</a>, <a href='/tag/scala-build-tool-sbt/'>scala-build-tool-sbt</a>
+</section>
+</header>
+<section class='post-content'><p>In a recent blog post <a href="/2016/02/27/working-with-docker/" rel="nofollow">I pointed out Docker is about microservices</a>, and you should compose your containers instead of building monolithic ones. I was referring to adding tools and utilities for troubleshooting and whatnot. But today I have an even better example: building Docker images from within a container!</p>
+
+<p><code>sbt</code> (<a href="http://www.scala-sbt.org/index.html" rel="nofollow">Scala interactive built tool</a>) has a plugin called <code>sbt-native-packager</code> which allows you to configure your project to be built and then packaged as a Docker container. Which means all I have to do is this:</p>
+<pre class="highlight plaintext"><code>$ sbt docker:publish
+</code></pre>
+<p>And once my build finishes it will create the image and <code>push</code> it to whichever repository I&rsquo;ve configured in my <code>build.sbt</code> file.</p>
+
+<p>Except that most everyone on my team uses Windows. Which means that Java and sbt need to be installed on the Docker VM. But every time you restart your VM it gets wiped clean! </p>
+
+<p>Because of this, instead of just using the small, default boot2docker vm that comes packaged so nicely for you with the Docker install everyone goes through the process of installing a full Ubuntu VM and then configuring and installing Docker, Java and sbt. </p>
+
+<p>I&rsquo;m against the whole give the new guy a Word document with setup instructions. It&rsquo;s part of why I like Docker so much. And this whole setup smells like we&rsquo;re going right back down that path. So today I found a much better way.</p>
+
+<h1>Siblings Instead of Nesting</h1>
+
+<p>I can&rsquo;t claim credit for this, other than reading the documentation on the <a href="https://hub.docker.com/_/docker/" rel="nofollow">Docker-in-Docker (dind)</a> page on Docker Hub. Here&rsquo;s links to the two relevant posts:</p>
+
+<ul>
+<li><a href="https://docs.docker.com/engine/reference/run/#runtime-privilege-linux-capabilities-and-lxc-configuration" rel="nofollow">Using the <code>--privileged</code> flag</a> - Docker Run reference</li>
+<li><a href="https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/" rel="nofollow">Using Docker-in-Docker for your CI or testing environment? Think twice</a> - jpetazzo </li>
+</ul>
+
+<p>After reading those two posts I decided there was a much better way, and after learning <a href="/2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/" rel="nofollow">how to make my VirtualBox shared folders permanent mounts</a> I went looking for a Docker image which already had Java and sbt installed for me.</p>
+
+<p><strong>UPDATE (3/17/16):</strong> It was been pointed out that using shared folders is a security concern. This is correct. So let me add a disclaimer: the shared folders aspect of this post was included because I have been helping developers who thought they needed to install/configure all their build tools inside their Docker host in addition to their host OS so they could build their docker images. I&rsquo;m not advocating shared folders in any other context.</p>
+
+<h1>Sharing Docker Binaries</h1>
+
+<p>I settled on the excellent <a href="https://hub.docker.com/r/1science/sbt/" rel="nofollow">1science/sbt</a> image which is a mere 176 mb (not bad for an image with the Java SDK installed). There were three things I had to figure out to get all this to work together:</p>
+
+<p>First, how to share the Docker binaries with the 1science/sbt container:</p>
+<pre class="highlight plaintext"><code>$ docker run -it --rm -v "$HOME/.ivy2":/root/.ivy2 -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/bin/docker 1science/sbt sbt sbt-version
+</code></pre>
+<p>Let&rsquo;s break this down a little:</p>
+
+<ul>
+<li><p><code>-it</code> allows us to run the container like <code>tty</code> to an <a href="https://docs.docker.com/engine/reference/run/#foreground" rel="nofollow">interactive shell</a>. If you left off <code>sbt-version</code> you&rsquo;d be in the <code>sbt</code> interactive console.  </p></li>
+<li><p><code>--rm</code> <a href="https://docs.docker.com/engine/reference/run/#clean-up-rm" rel="nofollow">removes the container</a> as soon as the command is over. This is helpful since we just want to run the command in the foreground and then exit.</p></li>
+<li><p><code>-v &quot;$HOME/.ivy2&quot;:/root/.ivy2</code> maps the Ivy cache to a host volume so the cache will persist between runs and allow our builds to run faster after the first time.</p></li>
+<li><p><code>-v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/bin/docker</code> creates two more host mounted volumes that share the Docker binaries with the container. This is the most important piece since it&rsquo;s what allows <code>sbt</code> to build our container instead of just creating a <code>Dockerfile</code> for us to build ourselves.</p></li>
+<li><p><code>$(which docker)</code> is an evaluated statement. In Linux <code>which</code> shows the full path of shell commands - so the output is the path to the docker command. We could look it up, but this makes the <code>run</code> command shorter.</p></li>
+</ul>
+
+<p>The next step took me the longest to figure out because the <code>README</code> for the <code>1science/sbt</code> image indicated I needed to something different. So either I was doing it wrong or the docs are wrong. Feel free to correct me we&rsquo;re in this journey together.</p>
+<pre class="highlight plaintext"><code>$ docker run -it --rm -v "$HOME/.ivy2":/root/.ivy2 -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/bin/docker -v $(pwd):/app 1science/sbt ls
+</code></pre>
+<p>This command doesn&rsquo;t do much more than the last (notice we&rsquo;re only calling <code>ls</code>). But we&rsquo;ve added a volume for the root of our project: <code>-v $(pwd):/app</code>. If it worked correctly you should see your project root files listed in the output. This of course only works if your current working directory for the <code>run</code> command is the root of your source project. If not, replace <code>$(pwd)</code> with the path to your project root. It should be the path as seen by Docker, which means it&rsquo;s from the context of your Docker VM.</p>
+
+<p>The reason we needed to map the volume here is because the <code>1science/sbt</code> image sets <code>/app</code> as the <code>WORKINGDIR</code> for the image. Any commands will be executed from the context of <code>/app</code> which is empty, so we just map our project root to <code>/app</code> and <code>sbt</code> will find everything it needs (almost).</p>
+
+<p>Most of you should be able to run the following now from your project root:</p>
+<pre class="highlight plaintext"><code>$ docker run -it --rm -v "$HOME/.ivy2":/root/.ivy2 -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/bin/docker -v $(pwd):/app 1science/sbt sbt docker:publish
+</code></pre>
+<p>Or if you&rsquo;re not setup with a central registry yet use <code>publishLocal</code>:</p>
+<pre class="highlight plaintext"><code>$ docker run -it --rm -v "$HOME/.ivy2":/root/.ivy2 -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/bin/docker -v $(pwd):/app 1science/sbt sbt docker:publishLocal
+</code></pre>
+<p>If your <code>build.sbt</code> file is configured correctly your project will build as a Docker image and publish to your configured registry (Docker Hub is the default). However, if your project is a Play application created using <code>activator</code> then you probably are getting the following error:</p>
+
+<blockquote>
+<p>sbt.ResolveException: unresolved dependency: com.typesafe.sbtrc#client-2-11;0.3.1: not found
+unresolved dependency: com.typesafe.sbtrc#actor-client-2-11;0.3.1: not found</p>
+</blockquote>
+
+<p>This is an <a href="https://github.com/playframework/playframework/issues/4839" rel="nofollow">open issue</a> due to some funkyness with <code>activator</code> that doesn&rsquo;t work out of the box with <code>sbt</code>. But it&rsquo;s easily fixed. Just add the following to your <code>build.sbt</code> file:</p>
+<pre class="highlight plaintext"><code>resolvers += Resolver.url("Typesafe Ivy releases", url("https://repo.typesafe.com/typesafe/ivy-releases"))(Resolver.ivyStylePatterns)
+</code></pre>
+<p>And your build will be fixed. Repeat the above <code>run</code> command and this time it should work.</p>
+
+<p>This post is certainly laking in any actual <code>sbt</code> details, but I didn&rsquo;t want it to be too long. I&rsquo;ll work through a very simple example using Scala and post it soon.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Nesting Docker Containers? Stop!&amp;amp;url=http://www.developmentalmadness.com/2016/03/05/nesting-docker-containers-stop/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2016/03/05/nesting-docker-containers-stop/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2016/03/05/nesting-docker-containers-stop/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/'>
+<section class='post'>
+<h2>Docker: Permanently Mount a VirtualBox Shared Folder</h2>
+<p>While this technique works for both Windows and OSX, most Windows developers I know don&rsquo;t keep their source code&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/03/09/docker-configure-insecure-registry-in-boot2docker/'>
+<section class='post'>
+<h2>Docker: Configure Insecure Registry in Boot2Docker</h2>
+<p>I gotta say there&rsquo;s some confusing naming that goes on. Boot2Docker was originally a docker client that ran on&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

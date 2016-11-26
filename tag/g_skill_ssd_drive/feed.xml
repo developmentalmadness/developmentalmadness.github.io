@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: g_skill_ssd_drive</title>
+  <subtitle>Posts tagged with g_skill_ssd_drive</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/g_skill_ssd_drive/feed.xml" rel="self"/>
+  <updated>2009-05-25T13:57:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Installing Windows 7 On My New G.Skill SSD</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/25/installing_windows_7_on_my_new_g_skill_ssd/"/>
+    <id>http://www.developmentalmadness.com/2009/05/25/installing_windows_7_on_my_new_g_skill_ssd/</id>
+    <published>2009-05-25T13:57:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I got a new Thursday and I’ve been repaving my laptop with Windows 7 x64 RC
+
+The first thing was that Windows install time was about 30 min. This was my first confirmation that I was gonna love my new drive.
+
+The first thing I installed was Visual Studio</summary>
+  </entry>
+</feed>

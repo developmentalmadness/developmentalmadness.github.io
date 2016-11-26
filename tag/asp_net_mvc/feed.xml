@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: asp_net_mvc</title>
+  <subtitle>Posts tagged with asp_net_mvc</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/asp_net_mvc/feed.xml" rel="self"/>
+  <updated>2008-02-12T17:02:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Extend Anonymous Types using Reflection.Emit</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/02/12/extend-anonymous-types-using/"/>
+    <id>http://www.developmentalmadness.com/2008/02/12/extend-anonymous-types-using/</id>
+    <published>2008-02-12T17:02:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Update 2015 Dec 28: It has been brought to my attention that this code has been enhanced by Kyle Finley. You can read about his enhancements here and the source code is available on Github. Kyle has told me he plans to release a NuGet package which I</summary>
+  </entry>
+  <entry>
+    <title>ASP.NET MVC Custom Routing Logic</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/03/13/aspnet-mvc-custom-routing-logic/"/>
+    <id>http://www.developmentalmadness.com/2008/03/13/aspnet-mvc-custom-routing-logic/</id>
+    <published>2008-03-13T19:10:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’ve been working with the new ASP.NET MVC framework since the first CTP back in December. I love it and it keeps getting better.
+
+The application I’m working on uses custom Session management and so I have to manage the SessionId in the url myself. So</summary>
+  </entry>
+  <entry>
+    <title>ASP.NET MVC Error Handling</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/03/19/aspnet-mvc-error-handling/"/>
+    <id>http://www.developmentalmadness.com/2008/03/19/aspnet-mvc-error-handling/</id>
+    <published>2008-03-19T19:08:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">When working with the latest MVC release (Preview 2) I was having trouble working with the Application_Error event in global.asax. While this does work if you want to redirect to an html file, if you want to redirect to an aspx file you need to use the</summary>
+  </entry>
+  <entry>
+    <title>Using Ajax with ASP.NET MVC</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/"/>
+    <id>http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/</id>
+    <published>2008-04-23T18:59:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">One of the features I continue to wait for from the ASP.NET MVC team is a server control library to work with the MVC framework. So as I have been working on a project using ASP.NET MVC I have begun developing my own library of server controls.
+
+Recently</summary>
+  </entry>
+  <entry>
+    <title>ASP.NET MVC: Compile Your Views for Release Build Only</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/01/27/aspnet-mvc-compile-your-views-for/"/>
+    <id>http://www.developmentalmadness.com/2009/01/27/aspnet-mvc-compile-your-views-for/</id>
+    <published>2009-01-27T18:07:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">First of all I have to say I’m excited. Today Scott Guthrie announced the Release Candidate (RC) for ASP.NET MVC is now available. And just yesterday my client signed off on the use of ASP.NET MVC for the project I’m currently ramping up. 
+
+As I’m reading</summary>
+  </entry>
+  <entry>
+    <title>LAMP.NET (Linux Apache Mono.NET PostreSQL)</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/14/lamp_net_linux_apache_mono_net_postre_sql/"/>
+    <id>http://www.developmentalmadness.com/2009/05/14/lamp_net_linux_apache_mono_net_postre_sql/</id>
+    <published>2009-05-14T18:33:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">As an developer I’ve always worked for companies which had little or no support for any environments other than Windows. But the situation is reversed at my current client. Most development is done in or with an Oracle
+
+As a Microsoft developer I am in</summary>
+  </entry>
+</feed>

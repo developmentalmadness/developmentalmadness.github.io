@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>developMENTALmadness: PHP vs ASP.NET Rebuttal</title>
+<meta content='I should just ignore people sometimes, but today I couldn&amp;rsquo;t help it. I read this post which claims to compare PHP to ASP.NET. I don&amp;rsquo;...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='developMENTALmadness' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='PHP vs ASP.NET Rebuttal' property='og:title'>
+<meta content='I should just ignore people sometimes, but today I couldn&amp;rsquo;t help it. I read this post which claims to compare PHP to ASP.NET. I don&amp;rsquo;...' property='og:description'>
+<meta content='http://www.developmentalmadness.com/2009/09/11/php-vs-asp-net-rebuttal/' property='og:url'>
+<meta content='2009-09-11' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='PHP vs ASP.NET Rebuttal' name='twitter:title'>
+<meta content='I should just ignore people sometimes, but today I couldn&amp;rsquo;t help it. I read this post which claims to compare PHP to ASP.NET. I don&amp;rsquo;...' name='twitter:description'>
+<meta content='http://www.developmentalmadness.com/2009/09/11/php-vs-asp-net-rebuttal/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>PHP vs ASP.NET Rebuttal</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2009-09-11'>
+11 September 2009
+</time>
+on <a href='/tag/asp_net/'>asp_net</a>, <a href='/tag/php/'>php</a>
+</section>
+</header>
+<section class='post-content'><p>I should just ignore people sometimes, but today I couldn&rsquo;t help it. I read this post which claims to compare PHP to ASP.NET. I don&rsquo;t really care if someone likes one more than the other, but really this post didn&rsquo;t back up any claims and was full of false statements. I may get a few things wrong here as well, but I want to just set the record straight.</p>
+
+<p>(Disclaimer: I am an ASP.NET developer). This article is obviously biased and provides no support for its claims:</p>
+
+<h4>1. PHP is an Open Source Language</h4>
+
+<p>This is true. ASP.NET is proprietary. Wither this is a pro or a con is a matter of opinion and for you to decide. I am ambivalent on this point. But I will add that last year the ASP.NET MVC Framework was released and with it comes the license to fork it and modify it to your hearts content. That is if it isn&rsquo;t already flexible enough for you. Yes, MVC is built on a proprietary framework, but there is already an open source project which extends and replaces much of the default functionality.</p>
+
+<h4>2. PHP is Free</h4>
+
+<p>All the operations mentioned (Binary file, FTP/HTTP communication, encrypt passwords using MD5, send email) can all be done either natively from the .NET Framework, free open source alternatives are available or you can extend the framework to do it yourself. There is a broad community around .NET where you can find out how in either blogs or forums.</p>
+
+<h4>3. PHP is Flexible</h4>
+
+<p>ASP.NET can connect to all the database platforms mentioned. The choice of which is up to you - there is no requirement to use MS-SQL and many hosting providers allow you to chose between MS-SQL and MySQL. And about the performance degrade - prove it.</p>
+
+<h4>4. PHP is Portable</h4>
+
+<p>MONO exists as a port of .NET, including ASP.NET I remember reading about possible performance issues due to garbage collection and that it was in the process of being address. But I haven&rsquo;t used it so I can&rsquo;t really argue this point. However, I&rsquo;m guessing the author hasn&rsquo;t verified this either.</p>
+
+<h4>5. PHP has very familiar and well known Syntax</h4>
+
+<p>This point makes it painfully obvious the author has never used ASP.NET. He mentions the similarities in syntax between PHP and C++ as an advantage over ASP.NET. He then implies that this makes it easy to learn. Guess what C# is also similar to C++. Plus, ASP.NET doesn&rsquo;t force you use C#. You can also use VB.NET, IronPython, Delphi and other languages for ASP.NET - so you can choose the language and syntax that suits you best.</p>
+
+<h4>6. PHP has less Code Complexity</h4>
+
+<p>This is a rehash of #5, but at least acknowledges the existence of VB.NET and C#. &ndash;I&rsquo;ll acknowledge the point that to create a new ASP.NET site vs a new PHP site you can fire up a text editor dump some code into a single file and you&rsquo;ll be off and running. An ASP.NET site on the other hand requires a complex web.config file, global.asax, code-behind files for each .aspx page (optional) and a bin directory for compiled code. So for your basic small site or &ldquo;hello world&rdquo; example PHP is simpler.&ndash; I&rsquo;ll admit to never using PHP, but I started with classic ASP and they are similar enough for me to know that once you start building a larger site the complexity increases exponentially. Include files (a primary means of code-reuse for interpreted web languages), debugging and the lack of compile-time checks greatly hampers developing when using an interpreted script language (which is the case for PHP).</p>
+
+<p><strong>CORRECTION</strong>: Thanks to Jason Bunting for pointing out that I was wrong - an ASP.NET site requires nothing more than a single .aspx file. I guess I rely a little too much on the Visual Studio IDE sometimes. So again, PHP does not win on simplicity here either. I&rsquo;ll leave in the incorrect info above along with this correction.</p>
+
+<h4>7. PHP is Fast</h4>
+
+<p>I&rsquo;d like to ask the author again, back it up. While I don&rsquo;t normally put much stock in benchmarks, for the sake of this discussion I will at least provide 2 examples I quickly found online (that weren&rsquo;t done by M$).</p>
+
+<p><a href="http://www.pcmag.com/article2/0,2817,1172043,00.asp" rel="nofollow">Nile benchmark by PCMag</a></p>
+
+<p><a href="http://www.wrensoft.com/zoom/benchmarks.html" rel="nofollow">Wrensoft benchmark</a></p>
+
+<p>Benchmarks often depend on what you&rsquo;re doing, but I&rsquo;ll go out on a limb and say that most often compiled code beats interpreted script hands down. I&rsquo;ve heard of 3rd party commercial products (something the author is apparently against) which will pre-compile PHP code so this could be something that helps PHP, but I&rsquo;ll venture a guess that these run as native code once compiled instead of from the PHP interpreter.</p>
+
+<h4>8. Free Webhosting</h4>
+
+<p>The author is correct. I don&rsquo;t know of any free ASP.NET hosting providers. But remember the adage, &ldquo;You get what you pay for&rdquo;. I&rsquo;m all for free, but when it comes to web hosting, I wouldn&rsquo;t ever bank on a free provider for anything other than my personal family web site. Free hosting for an e-commerce app? Not on your life.</p>
+
+<h4>9. PHP has Free Tools and Libraries</h4>
+
+<p>Ever heard of Visual Studio Express Editions? They are free and I&rsquo;d have to say I&rsquo;ve never used an IDE better than Visual Studio - even the express editions. That&rsquo;s my personal opinion and you may not like Visual Studio, but there is still a free edition that includes debugging with edit-and-continue support as well as refactoring. And there are plenty of open source libraries written for .NET - try CodePlex.com over 10,000 open source projects on that site alone.</p>
+
+<h4>10. Code Compaction</h4>
+
+<p>First of all this is a ridiculous argument. It really depends on what you&rsquo;re doing. There are things that can be done very tersely in both languages and obviously he&rsquo;s never written a line of C#. But if something isn&rsquo;t terse enough for you, you can write your own code that will (if someone hasn&rsquo;t already done it for you on the internet) and reuse it anywhere you like. This is all PHP is, a library of objects and functions, in .NET you can write anything that doesn&rsquo;t already exist. As for the author&rsquo;s specific example, the model binding in ASP.NET MVC Framework allows for simple and very complex binding of GET and POST variables from scalar values to collections of complex objects - all strongly typed for you - no need for the ASP Request object.</p>
+
+<h4>11. PHP is Light Weighted Language</h4>
+
+<p>Again, for small projects absolutely he&rsquo;s right because of the basic files required for an ASP.NET project I mentioned above. But take two large and complex sites and it really depends on what you&rsquo;re doing and how you&rsquo;re doing it. You can write bloated code in any language - I guarantee it.</p>
+
+<h4>12. Security</h4>
+
+<p>I won&rsquo;t argue the comparison of Apache and IIS. I&rsquo;ll concede this, but I bet there&rsquo;s a lot of insecure PHP applications out there which are just as vulnerable to SQL Injection and XSS as any ASP.NET application. But if you ignore the web server (I know I&rsquo;m asking a lot here - seriously) by default, there are more protections in ASP.NET than PHP. As an example, if you just lazily dump together an ASP.NET application and one in PHP, ASP.NET request validation forces you explicitly allow HTML tags in POST variables before it will let them be submitted my a user.</p>
+
+<h4>13. Architecture</h4>
+
+<p>You&rsquo;ve got to be kidding me! This guy really has never been anywhere near ASP.NET. He&rsquo;s claiming that the parsing engine runs in a different process space than the ASP.NET Engine!?! First of all, as of IIS 7.0 ASP.NET no longer runs in a separate process space from IIS - it&rsquo;s integrated. But even if you were running in classic mode or a version of IIS previous to 7.0, IIS passes off a request to the ASP.NET engine which then handles the entire job in its own process and then sends the raw response back to IIS to be streamed (no parsing or anything required) back to the client.</p>
+
+<h4>14. PHP/MYSQL combination is more efficient that ASP.NET/SQLSERVER combination</h4>
+
+<p>See my link to the PCMag benchmark above, nuff said.</p>
+
+<h4>15. PHP Website can be hosted on any Sever very efficiently</h4>
+
+<p>It does cost more to host an ASP.NET application, true story. And w/o Mono you can&rsquo;t host it anywhere but Windows. But if you want to take your application elsewhere for better service and uptime - you&rsquo;re free to do it and with no more pain than any other platform. But yes, add the requirement for Linux and well that just doesn&rsquo;t fly as well.</p>
+
+<h4>16. PHP is easy to learn</h4>
+
+<p>Did the author have some kind of quota to fill? See #5 and #6. Oh and again, VB isn&rsquo;t the only language you can use to write ASP.NET. It isn&rsquo;t even the most widely used - C# is use by far more ASP.NET developers than VB.NET - I can count the latter that I know personally on one hand.</p>
+
+<h4>17. PHP is easily debuggable [sic]</h4>
+
+<p>Are we talking about debugging PHP itself or your web application written in PHP? If we are talking about the former, then yes don&rsquo;t count on getting a fix when there&rsquo;s a problem anytime soon unless you&rsquo;re a paying customer. But the entire source code for the .NET Framework is available for debugging purposes and BTW the Visual Studio debugger is one of the most advanced there is. So if we&rsquo;re talking about the latter, don&rsquo;t even bother because not only is VS equipped with deep debugging support, but the next version even has more advanced support for multi-threaded debugging than before.</p>
+
+<p>Which brings up a side point - what kind of support does PHP have for multi-threading, something very important to applications which require intensive calculations? Also ASP.NET provides support for asynchronous requests, something entirely different than multi-threaded operations. To improve scalability, you can free up threads on blocking operations (File I/O, network and database calls, etc) by using asynchronous calls. This allows your current thread to be used elsewhere until your blocking call returns - a big plus when you&rsquo;re in need of a lot of throughput for a high traffic web site.</p>
+
+<h4>18. Database Support</h4>
+
+<p>Here we are with the quota-filling again. ASP.NET can connect to every database that PHP can.</p>
+
+<h4>19. PHP has so many free built-in functionalities</h4>
+
+<p>Deja vu! See #2 - all this stuff is available, natively, from open source or you can roll your own if you don&rsquo;t like what&rsquo;s available.</p>
+
+<h4>20. PHP is Popular</h4>
+
+<p>I don&rsquo;t know which has more (because the author didn&rsquo;t bother to back up his statement with any recent surveys), but I do know that I have unlimited resources on ASP.NET for which I never have to look far to find answers I need. There are plenty of jobs as well. And in my purely anecdotal experience the jobs I see pay better for ASP.NET.</p>
+
+<h4>21. PHP is easily available</h4>
+
+<p>Rudux of #20! This guy was really trying to stretch to meet his quota.</p>
+
+<h4>Conclusion</h4>
+
+<p>I resubmit that the author made no real comparison between PHP and ASP.NET. I have not attempted to either, because I freely admit I do not have the experience with PHP to make a fair comparison. I have rarely seen such a biased, unsupported post. I am fine if others like PHP better than ASP.NET but at least get your facts straight. If you want to know the advantages of PHP talk to someone who knows it, same goes for ASP.NET but don&rsquo;t fall for lazy stuff like this.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mark-j-miller/'>Mark J. Miller</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mark-j-miller/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=PHP vs ASP.NET Rebuttal&amp;amp;url=http://www.developmentalmadness.com/2009/09/11/php-vs-asp-net-rebuttal/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.developmentalmadness.com/2009/09/11/php-vs-asp-net-rebuttal/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://www.developmentalmadness.com/2009/09/11/php-vs-asp-net-rebuttal/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2009/08/27/silverlightwpf-customizing-the-datepicker-control/'>
+<section class='post'>
+<h2>Silverlight/WPF: Customizing the DatePicker Control</h2>
+<p>Source Code I&rsquo;m working on a Silverlight scheduling application and wanted to make the DatePicker control from the Silverlight&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2009/09/19/utah-code-camp-files/'>
+<section class='post'>
+<h2>Utah Code Camp – Implementing MVVM with Prism</h2>
+<p>Below is a link to both the source code and my slide deck from Utah Code Camp on Saturday,&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>developMENTALmadness</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="../../../../javascripts/application.js"></script>
+</body>
+</html>

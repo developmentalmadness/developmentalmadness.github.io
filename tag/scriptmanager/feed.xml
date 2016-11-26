@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: scriptmanager</title>
+  <subtitle>Posts tagged with scriptmanager</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/scriptmanager/feed.xml" rel="self"/>
+  <updated>2008-04-23T18:59:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>Using Ajax with ASP.NET MVC</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/"/>
+    <id>http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/</id>
+    <published>2008-04-23T18:59:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">One of the features I continue to wait for from the ASP.NET MVC team is a server control library to work with the MVC framework. So as I have been working on a project using ASP.NET MVC I have begun developing my own library of server controls.
+
+Recently</summary>
+  </entry>
+  <entry>
+    <title>Abstracting System.Web.UI.ScriptManager away from the Web Forms model</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/25/abstracting-systemwebuiscriptmanager/"/>
+    <id>http://www.developmentalmadness.com/2008/04/25/abstracting-systemwebuiscriptmanager/</id>
+    <published>2008-04-25T18:48:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">As I continue to work with the ASP.NET MVC framework I continue to be inspired to dig deeper into things, to find out how they work and how I can make them work with this awesome new framework.
+
+The case in point here is using ASP.NET Ajax controls with</summary>
+  </entry>
+</feed>

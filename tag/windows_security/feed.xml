@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: windows_security</title>
+  <subtitle>Posts tagged with windows_security</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/windows_security/feed.xml" rel="self"/>
+  <updated>2006-07-22T19:36:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>System.Diagnostics.PerformanceCounter Privileges Required to Monitor Remote Machines</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2006/07/22/systemdiagnosticsperformancecounter/"/>
+    <id>http://www.developmentalmadness.com/2006/07/22/systemdiagnosticsperformancecounter/</id>
+    <published>2006-07-22T19:36:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’ve been pretty busy and haven’t had time to post in a while, but this week I ran into something I thought was worthy of posting. I’m working on writing a “poor man’s” load balancer for our databases. I won’t go into the background this time as I will</summary>
+  </entry>
+</feed>

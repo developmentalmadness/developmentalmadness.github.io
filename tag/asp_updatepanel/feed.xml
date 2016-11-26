@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>developMENTALmadness: asp_updatepanel</title>
+  <subtitle>Posts tagged with asp_updatepanel</subtitle>
+  <id>http://www.developmentalmadness.com</id>
+  <link href="http://www.developmentalmadness.com"/>
+  <link href="http://www.developmentalmadness.com/tag/asp_updatepanel/feed.xml" rel="self"/>
+  <updated>2008-03-11T19:16:00+00:00</updated>
+  <author>
+    <name>Mark J. Miller</name>
+  </author>
+  <entry>
+    <title>ASP.NET AJAX - Update Panel Timeout</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/03/11/aspnet-ajax-update-panel-timeout/"/>
+    <id>http://www.developmentalmadness.com/2008/03/11/aspnet-ajax-update-panel-timeout/</id>
+    <published>2008-03-11T19:16:00+00:00</published>
+    <updated>2016-11-26T15:23:19+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">When using the asp:UpdatePanel server control for asyncronous communication with the web server the default timeout is 90 seconds. For some processes this may not be long enough.
+
+For example, I am currently working on a reporting application and at the</summary>
+  </entry>
+</feed>
