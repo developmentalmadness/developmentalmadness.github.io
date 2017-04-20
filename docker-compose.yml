@@ -1,0 +1,10 @@
+version: '2'
+services:
+  www:
+    image: ruby:2.4
+    ports:
+      - "8081:4567"
+    volumes:
+      - ./:/usr/src/app
+    working_dir: /usr/src/app
+    command: bash
