@@ -23,3 +23,6 @@ gem 'redcarpet', '~> 3.3.4'
 
 # For "summary"-Helper
 gem 'nokogiri', '~> 1.6.8'
+
+# For ExecJS commands
+gem 'therubyracer'
