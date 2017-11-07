@@ -11,12 +11,11 @@ Public www for developmentalmadness.com
 `cd` to cloned source directory
 
     $ git checkout master-source
-    $ docker-compose run --rm --service-ports node-custodian
+    $ docker-compose up -d
 
 Once the container starts up:
 
-    $ bundle install
-    $ bundle exec middleman
+ * visit http://localhost:8081
 
 # Blogging
 
