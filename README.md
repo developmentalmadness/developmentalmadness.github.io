@@ -43,3 +43,30 @@ For example:
 # Publishing to public site (AWS S3 static site)
 
 
+## AWS CodePipeline
+Create a pipeline which pulls from the `master` branch and uses a CodeBuild step to publish using `s3 sync`.
+
+### IAM Policy
+    {
+        "Sid": "DeployWWW",
+        "Effect": "Allow",
+        "Action": [
+            "s3:PutObject",
+            "s3:DeleteObject",
+            "s3:PutObjectAcl",
+            "s3:ListBucket"
+        ],
+        "Resource": [
+            "arn:aws:s3:::developmentalmadness.com/*",
+            "arn:aws:s3:::developmentalmadness.com"
+        ]
+    }
+
+### buildspec.yml
+    version: 1.2
+    
+    phases:
+      build:
+        commands:
+          - aws s3 sync --acl public-read --delete . s3://developmentalmadness.com
+
