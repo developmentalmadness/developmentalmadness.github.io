@@ -5,7 +5,6 @@ Public www for developmentalmadness.com
 # Dependencies
 
 - docker-compose >= 1.6
-- aws cli
 
 # Setup
 
