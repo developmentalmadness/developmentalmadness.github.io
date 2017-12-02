@@ -14,18 +14,29 @@
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/01/20/entity-framework-poco-adapter/"/>
     <id>http://www.developmentalmadness.com/2009/01/20/entity-framework-poco-adapter/</id>
     <published>2009-01-20T18:10:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
     <summary type="html">This month I started with a new client. I’m excited because we’ll be rewriting a legacy app using Entity Framework against an Oracle backend, and possibly ASP.NET MVC. The team is full of good, experinced developers, any of which could lead their own</summary>
   </entry>
   <entry>
+    <title>Entity Framework: How to Prevent Eager Loading</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/24/entity_framework_how_to_prevent_eager_loading/"/>
+    <id>http://www.developmentalmadness.com/2009/02/24/entity_framework_how_to_prevent_eager_loading/</id>
+    <published>2009-02-24T23:09:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">As we have been using Entity Framework on my current project I have found that it can be easy to kill eager loading on your queries. This can be a real problem if you are counting on it. I have been working on cross-cutting concerns up to this point,</summary>
+  </entry>
+  <entry>
     <title>Entity Framework: Connection Strings</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/10/entity_framework_connection_strings/"/>
     <id>http://www.developmentalmadness.com/2009/02/10/entity_framework_connection_strings/</id>
     <published>2009-02-10T22:29:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -38,22 +49,11 @@
  Initial Catalog=AdventureWorks;Integrated Security=True;Connection Timeout</summary>
   </entry>
   <entry>
-    <title>Entity Framework: How to Prevent Eager Loading</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/24/entity_framework_how_to_prevent_eager_loading/"/>
-    <id>http://www.developmentalmadness.com/2009/02/24/entity_framework_how_to_prevent_eager_loading/</id>
-    <published>2009-02-24T23:09:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">As we have been using Entity Framework on my current project I have found that it can be easy to kill eager loading on your queries. This can be a real problem if you are counting on it. I have been working on cross-cutting concerns up to this point,</summary>
-  </entry>
-  <entry>
     <title>Entity Framework: Abstracting ObjectContext</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/25/entity_framework_abstracting_object_context/"/>
     <id>http://www.developmentalmadness.com/2009/02/25/entity_framework_abstracting_object_context/</id>
     <published>2009-02-25T23:40:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>

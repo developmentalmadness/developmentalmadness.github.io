@@ -5,42 +5,54 @@
   <id>http://www.developmentalmadness.com</id>
   <link href="http://www.developmentalmadness.com"/>
   <link href="http://www.developmentalmadness.com/tag/docker/feed.xml" rel="self"/>
-  <updated>2016-01-18T19:32:23+00:00</updated>
+  <updated>2016-03-05T19:30:04+00:00</updated>
   <author>
     <name>Mark J. Miller</name>
   </author>
   <entry>
-    <title>301 Permanent Redirect for Ghost</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2016/01/18/301-permanent-redirect-for-ghost/"/>
-    <id>http://www.developmentalmadness.com/2016/01/18/301-permanent-redirect-for-ghost/</id>
-    <published>2016-01-18T19:32:23+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <title>Nesting Docker Containers? Stop!</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/03/05/nesting-docker-containers-stop/"/>
+    <id>http://www.developmentalmadness.com/2016/03/05/nesting-docker-containers-stop/</id>
+    <published>2016-03-05T19:30:04+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
-    <summary type="html">The Ghost blogging platform (currently v0.7.4) doesn’t currently provide a way to support moving resource urls. If you’re moving from a blogging platform with a different url scheme there’s no native support. Instead the recommended practice is to use</summary>
+    <summary type="html">In a recent blog post I pointed out Docker is about microservices, and you should compose your containers instead of building monolithic ones. I was referring to adding tools and utilities for troubleshooting and whatnot. But today I have an even better</summary>
   </entry>
   <entry>
-    <title>Eclipse CHE Cloud IDE: Setup and First Thoughts</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2016/01/28/eclipse-che-cloud-ide-first-thoughts/"/>
-    <id>http://www.developmentalmadness.com/2016/01/28/eclipse-che-cloud-ide-first-thoughts/</id>
-    <published>2016-01-28T18:56:49+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <title>Docker: Configure Insecure Registry in Boot2Docker</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/03/09/docker-configure-insecure-registry-in-boot2docker/"/>
+    <id>http://www.developmentalmadness.com/2016/03/09/docker-configure-insecure-registry-in-boot2docker/</id>
+    <published>2016-03-09T18:00:46+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
-    <summary type="html">Just saw an announcement for Eclipse CHE beta last night. Currently I’m more of an IntelliJ fan and I was even excited to hear about the development of an IntelliJ-based IDE for .NET (Project Rider). 
+    <summary type="html">I gotta say there’s some confusing naming that goes on. Boot2Docker was originally a docker client that ran on OSX and Windows. That has been replaced by docker-machine. However, there is also a VirtualBox image (the default one) called Boot2Docker. In</summary>
+  </entry>
+  <entry>
+    <title>Docker: Permanently Mount a VirtualBox Shared Folder</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/"/>
+    <id>http://www.developmentalmadness.com/2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/</id>
+    <published>2016-03-05T17:54:29+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">While this technique works for both Windows and OSX, most Windows developers I know don’t keep their source code in the Users folder on the system drive. Historically there have been too many problems:
 
-Setting Up CHE
 
-For those just interested in getting</summary>
+The path used to start with C:\Documents and Settings
+
+</summary>
   </entry>
   <entry>
     <title>scala: Connecting to Postgres via Slick 3</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2016/02/23/scala-connecting-to-postgres-via-slick-3/"/>
     <id>http://www.developmentalmadness.com/2016/02/23/scala-connecting-to-postgres-via-slick-3/</id>
     <published>2016-02-23T20:16:05+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -55,7 +67,7 @@ For this post you’ll need</summary>
     <link rel="alternate" href="http://www.developmentalmadness.com/2016/02/27/working-with-docker/"/>
     <id>http://www.developmentalmadness.com/2016/02/27/working-with-docker/</id>
     <published>2016-02-27T00:02:11+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -64,30 +76,17 @@ For this post you’ll need</summary>
 I thought as I started working with Docker I would need to setup either</summary>
   </entry>
   <entry>
-    <title>Docker: Permanently Mount a VirtualBox Shared Folder</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/"/>
-    <id>http://www.developmentalmadness.com/2016/03/05/docker-permanently-mount-a-virtualbox-shared-folder/</id>
-    <published>2016-03-05T17:54:29+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <title>Docker: Copy Arbitrary Files Between Docker Containers</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2016/03/28/docker-copy-command-2/"/>
+    <id>http://www.developmentalmadness.com/2016/03/28/docker-copy-command-2/</id>
+    <published>2016-03-28T23:34:18+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
-    <summary type="html">While this technique works for both Windows and OSX, most Windows developers I know don’t keep their source code in the Users folder on the system drive. Historically there have been too many problems:
+    <summary type="html">Do you need to copy an arbitrary file from within a Docker container to your host file system? The docker cp command has got your back!
+$ docker cp [container_id]:[container_path] [localpath]
 
-
-The path used to start with C:\Documents and Settings
-
-</summary>
-  </entry>
-  <entry>
-    <title>Nesting Docker Containers? Stop!</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2016/03/05/nesting-docker-containers-stop/"/>
-    <id>http://www.developmentalmadness.com/2016/03/05/nesting-docker-containers-stop/</id>
-    <published>2016-03-05T19:30:04+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">In a recent blog post I pointed out Docker is about microservices, and you should compose your containers instead of building monolithic ones. I was referring to adding tools and utilities for troubleshooting and whatnot. But today I have an even better</summary>
+So to copy a file named output.log to the current working</summary>
   </entry>
 </feed>

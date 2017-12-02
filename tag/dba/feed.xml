@@ -5,16 +5,27 @@
   <id>http://www.developmentalmadness.com</id>
   <link href="http://www.developmentalmadness.com"/>
   <link href="http://www.developmentalmadness.com/tag/dba/feed.xml" rel="self"/>
-  <updated>2006-06-22T20:00:00+00:00</updated>
+  <updated>2008-04-01T19:02:00+00:00</updated>
   <author>
     <name>Mark J. Miller</name>
   </author>
+  <entry>
+    <title>Fast RowCount for SQL 2005</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/01/fast-rowcount-for-sql-2005/"/>
+    <id>http://www.developmentalmadness.com/2008/04/01/fast-rowcount-for-sql-2005/</id>
+    <published>2008-04-01T19:02:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">This is nothing new or revolutionary, but is important nonetheless for those maintaining large-scale SQL Server databases. For years I’ve used the sysindexes system table to find out how many rows are in a large table. The reason for this is to prevent</summary>
+  </entry>
   <entry>
     <title>SQL Profiler - Replaying Traces</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2006/06/22/sql-profiler-replaying-traces/"/>
     <id>http://www.developmentalmadness.com/2006/06/22/sql-profiler-replaying-traces/</id>
     <published>2006-06-22T20:00:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -23,36 +34,25 @@
 3 months ago I captured trace logs spanning 1 week. My intent was over the summer (our companies “off-season”) to use the trace logs to stress test the database to determine the</summary>
   </entry>
   <entry>
-    <title>SQL Server 2005 Unattended Install</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2006/06/30/sql-server-2005-unattended-install/"/>
-    <id>http://www.developmentalmadness.com/2006/06/30/sql-server-2005-unattended-install/</id>
-    <published>2006-06-30T19:41:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">As always I try and post about my experiences which cause my biggest headaches. So today’s topic is about setting up an unattended install for SQL Server 2005. I have spent the entire day trying to create an unattended install to a Virtual Server installation</summary>
-  </entry>
-  <entry>
     <title>Better Generate Scripts Tool for SQL 2005</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2008/02/13/better-generate-scripts-tool-for-sql/"/>
     <id>http://www.developmentalmadness.com/2008/02/13/better-generate-scripts-tool-for-sql/</id>
     <published>2008-02-13T20:20:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
     <summary type="html">Frustrated by the inability to script SQL Server 2005 objects with BOTH a CREATE and DROP statement? Generally, I write all my scripts with both statements and then save them and include them in source control, so this hasn’t really been a problem for</summary>
   </entry>
   <entry>
-    <title>Fast RowCount for SQL 2005</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/01/fast-rowcount-for-sql-2005/"/>
-    <id>http://www.developmentalmadness.com/2008/04/01/fast-rowcount-for-sql-2005/</id>
-    <published>2008-04-01T19:02:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <title>SQL Server 2005 Unattended Install</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2006/06/30/sql-server-2005-unattended-install/"/>
+    <id>http://www.developmentalmadness.com/2006/06/30/sql-server-2005-unattended-install/</id>
+    <published>2006-06-30T19:41:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
-    <summary type="html">This is nothing new or revolutionary, but is important nonetheless for those maintaining large-scale SQL Server databases. For years I’ve used the sysindexes system table to find out how many rows are in a large table. The reason for this is to prevent</summary>
+    <summary type="html">As always I try and post about my experiences which cause my biggest headaches. So today’s topic is about setting up an unattended install for SQL Server 2005. I have spent the entire day trying to create an unattended install to a Virtual Server installation</summary>
   </entry>
 </feed>

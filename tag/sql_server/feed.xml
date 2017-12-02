@@ -5,62 +5,27 @@
   <id>http://www.developmentalmadness.com</id>
   <link href="http://www.developmentalmadness.com"/>
   <link href="http://www.developmentalmadness.com/tag/sql_server/feed.xml" rel="self"/>
-  <updated>2006-06-22T20:00:00+00:00</updated>
+  <updated>2007-03-05T20:24:00+00:00</updated>
   <author>
     <name>Mark J. Miller</name>
   </author>
   <entry>
-    <title>SQL Profiler - Replaying Traces</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2006/06/22/sql-profiler-replaying-traces/"/>
-    <id>http://www.developmentalmadness.com/2006/06/22/sql-profiler-replaying-traces/</id>
-    <published>2006-06-22T20:00:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <title>SQL Server CLR Integration Part 1: Security</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2007/03/05/sql-server-clr-integration-part-1/"/>
+    <id>http://www.developmentalmadness.com/2007/03/05/sql-server-clr-integration-part-1/</id>
+    <published>2007-03-05T20:24:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
-    <summary type="html">SQL Profiler has been aptly referred to as the “poor man’s load tester”.
-
-3 months ago I captured trace logs spanning 1 week. My intent was over the summer (our companies “off-season”) to use the trace logs to stress test the database to determine the</summary>
-  </entry>
-  <entry>
-    <title>SQL Server 2005 Unattended Install</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2006/06/30/sql-server-2005-unattended-install/"/>
-    <id>http://www.developmentalmadness.com/2006/06/30/sql-server-2005-unattended-install/</id>
-    <published>2006-06-30T19:41:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">As always I try and post about my experiences which cause my biggest headaches. So today’s topic is about setting up an unattended install for SQL Server 2005. I have spent the entire day trying to create an unattended install to a Virtual Server installation</summary>
-  </entry>
-  <entry>
-    <title>Adventures in Mirroring</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2006/07/05/adventures-in-mirroring/"/>
-    <id>http://www.developmentalmadness.com/2006/07/05/adventures-in-mirroring/</id>
-    <published>2006-07-05T19:38:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">SQL Server 2005 has introduced an exciting new feature - data mirroring. And the timing couldn’t be better. This summer as we upgrade our infrastructure we’re working to increase our uptime and start doing some things right. Since we don’t have a DBA</summary>
-  </entry>
-  <entry>
-    <title>Database Load Balancing Service for SQL Server</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2006/07/25/database-load-balancing-service-for/"/>
-    <id>http://www.developmentalmadness.com/2006/07/25/database-load-balancing-service-for/</id>
-    <published>2006-07-25T19:35:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">I have been working on a “load balancing” application for OLAP applications and one or two of my previous posts touch on some things I’ve learned in the process. But now that I’ve got a working beta version I’ve decided to write my first “formal” article</summary>
+    <summary type="html">As I mentioned in my last post I’ve begun investigating the SQL Server CLR. I decided after getting warmed up to commit to an entire series of articles and I’ve just finished the first one on security. I figured it would be the best place to start as</summary>
   </entry>
   <entry>
     <title>Viewing XML Query Plans in SSMS</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2006/11/21/viewing-xml-query-plans-in-ssms/"/>
     <id>http://www.developmentalmadness.com/2006/11/21/viewing-xml-query-plans-in-ssms/</id>
     <published>2006-11-21T20:31:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -69,14 +34,53 @@
 Keepin’ it simple at this point. I’ve resumed studying for MCTS exams and I’ve been reading about dynamic management views. I love them. What’s more, I love the detail they provide and the</summary>
   </entry>
   <entry>
-    <title>SQL Server CLR Integration Part 1: Security</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2007/03/05/sql-server-clr-integration-part-1/"/>
-    <id>http://www.developmentalmadness.com/2007/03/05/sql-server-clr-integration-part-1/</id>
-    <published>2007-03-05T20:24:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <title>Search the source of SQL Server views and stored procedures</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/02/18/search-source-of-sql-server-views/"/>
+    <id>http://www.developmentalmadness.com/2008/02/18/search-source-of-sql-server-views/</id>
+    <published>2008-02-18T20:18:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
-    <summary type="html">As I mentioned in my last post I’ve begun investigating the SQL Server CLR. I decided after getting warmed up to commit to an entire series of articles and I’ve just finished the first one on security. I figured it would be the best place to start as</summary>
+    <summary type="html">Ever have to work on a database with a large number of views and you needed to search the content of the objects? Well, here’s a query which will allow you to search inside your view objects:
+DECLARE @search VARCHAR(1000)
+SET @search = '[text]'
+
+SELECT</summary>
+  </entry>
+  <entry>
+    <title>Lost In Translation - Episode 1: Database Instances</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-1-database/"/>
+    <id>http://www.developmentalmadness.com/2009/01/29/lost-in-translation-episode-1-database/</id>
+    <published>2009-01-29T16:04:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I have been using SQL Server for about 8 years now. When compared to my peers (read: coworkers) I would classify myself as a SQL Server guru. When compared to many I meet on sites like SQLServerCentral.com where there seem to be those I would classify</summary>
+  </entry>
+  <entry>
+    <title>Database Loadbalancer Revisited</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2007/03/07/database-loadbalancer-revisited/"/>
+    <id>http://www.developmentalmadness.com/2007/03/07/database-loadbalancer-revisited/</id>
+    <published>2007-03-07T20:22:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">The load balancer I wrote last year never made it into full production. While it was still in Q&amp;amp;A we hit our deadline and we stopped new development as we hit our “busy season”. At MaxPreps, once the fall season starts and football is in full swing our</summary>
+  </entry>
+  <entry>
+    <title>Data Access: Stored Procedures vs. ORM (ad hoc) Queries</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/06/23/data_access_stored_procedures_vs_orm_ad_hoc_queries/"/>
+    <id>http://www.developmentalmadness.com/2009/06/23/data_access_stored_procedures_vs_orm_ad_hoc_queries/</id>
+    <published>2009-06-23T20:48:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’ve had many spirited discussions over time with my colleagues on this issue. And I will most likely invite a flame war from the developer community for this post, but after reading this post
+
+As a disclaimer I don’t take issue with the decision to use</summary>
   </entry>
 </feed>

@@ -5,53 +5,27 @@
   <id>http://www.developmentalmadness.com</id>
   <link href="http://www.developmentalmadness.com"/>
   <link href="http://www.developmentalmadness.com/tag/ajax/feed.xml" rel="self"/>
-  <updated>2008-04-23T18:59:00+00:00</updated>
+  <updated>2008-11-05T18:37:00+00:00</updated>
   <author>
     <name>Mark J. Miller</name>
   </author>
-  <entry>
-    <title>Using Ajax with ASP.NET MVC</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/"/>
-    <id>http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/</id>
-    <published>2008-04-23T18:59:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">One of the features I continue to wait for from the ASP.NET MVC team is a server control library to work with the MVC framework. So as I have been working on a project using ASP.NET MVC I have begun developing my own library of server controls.
-
-Recently</summary>
-  </entry>
   <entry>
     <title>Sending DateTime Parameters from AJAX to WCF Operations (methods)</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2008/11/05/sending-datetime-parameters-from-ajax/"/>
     <id>http://www.developmentalmadness.com/2008/11/05/sending-datetime-parameters-from-ajax/</id>
     <published>2008-11-05T18:37:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
     <summary type="html">Yesterday I got stuck on a problem with a DateTime parameter I was attempting to submit to a WCF operation (method). I was trying to call call the operation using POST and the format was JSON. I was getting the value from the javascript Date object like</summary>
   </entry>
   <entry>
-    <title>Building a Single Sign On Provider Using ASP.NET and WCF: Part 1</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/"/>
-    <id>http://www.developmentalmadness.com/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/</id>
-    <published>2009-07-01T16:47:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">This is the first in a 4 part series on building a single sign on provider using the ASP.NET platform (ASP.NET and WCF). Originally, I wrote the article as a single post but it was pretty long, even for me.
-
-Part 1 addresses the problem in general and</summary>
-  </entry>
-  <entry>
     <title>Building a Single Sign On Provider Using ASP.NET and WCF: Part 3</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/06/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_3/"/>
     <id>http://www.developmentalmadness.com/2009/07/06/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_3/</id>
     <published>2009-07-06T18:00:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -64,7 +38,7 @@ This is the third article in a four part series on building a single sign on () 
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/07/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_4/"/>
     <id>http://www.developmentalmadness.com/2009/07/07/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_4/</id>
     <published>2009-07-07T06:00:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -75,5 +49,31 @@ Source Code
 Implementing a Single Signon Provider
 
 This is all a rehash since I’ve covered each point in detail</summary>
+  </entry>
+  <entry>
+    <title>Building a Single Sign On Provider Using ASP.NET and WCF: Part 1</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/"/>
+    <id>http://www.developmentalmadness.com/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/</id>
+    <published>2009-07-01T16:47:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">This is the first in a 4 part series on building a single sign on provider using the ASP.NET platform (ASP.NET and WCF). Originally, I wrote the article as a single post but it was pretty long, even for me.
+
+Part 1 addresses the problem in general and</summary>
+  </entry>
+  <entry>
+    <title>Using Ajax with ASP.NET MVC</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/"/>
+    <id>http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/</id>
+    <published>2008-04-23T18:59:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">One of the features I continue to wait for from the ASP.NET MVC team is a server control library to work with the MVC framework. So as I have been working on a project using ASP.NET MVC I have begun developing my own library of server controls.
+
+Recently</summary>
   </entry>
 </feed>

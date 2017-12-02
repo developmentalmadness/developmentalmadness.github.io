@@ -5,16 +5,27 @@
   <id>http://www.developmentalmadness.com</id>
   <link href="http://www.developmentalmadness.com"/>
   <link href="http://www.developmentalmadness.com/tag/moq/feed.xml" rel="self"/>
-  <updated>2009-02-26T22:52:00+00:00</updated>
+  <updated>2009-03-11T16:39:00+00:00</updated>
   <author>
     <name>Mark J. Miller</name>
   </author>
+  <entry>
+    <title>Moq: Missing Expect methods (Expect, ExpectGet, ExpectSet)</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/03/11/moq_missing_expect_methods_expect_expect_get_expect_set/"/>
+    <id>http://www.developmentalmadness.com/2009/03/11/moq_missing_expect_methods_expect_expect_get_expect_set/</id>
+    <published>2009-03-11T16:39:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I got stuck on a really stupid problem yesterday and I just figured it out as I was writing a post on the Moq forums. It seems really dumb and maybe that’s why I couldn’t find any help on it, but since I didn’t find anything anywhere I decided to at least</summary>
+  </entry>
   <entry>
     <title>Unit Testing: Moq doesn’t support property indexers</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/26/unit_testing_moq_doesn_t_support_property_indexers/"/>
     <id>http://www.developmentalmadness.com/2009/02/26/unit_testing_moq_doesn_t_support_property_indexers/</id>
     <published>2009-02-26T22:52:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -31,16 +42,5 @@
  5:  
 
  6: Object actual</summary>
-  </entry>
-  <entry>
-    <title>Moq: Missing Expect methods (Expect, ExpectGet, ExpectSet)</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2009/03/11/moq_missing_expect_methods_expect_expect_get_expect_set/"/>
-    <id>http://www.developmentalmadness.com/2009/03/11/moq_missing_expect_methods_expect_expect_get_expect_set/</id>
-    <published>2009-03-11T16:39:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">I got stuck on a really stupid problem yesterday and I just figured it out as I was writing a post on the Moq forums. It seems really dumb and maybe that’s why I couldn’t find any help on it, but since I didn’t find anything anywhere I decided to at least</summary>
   </entry>
 </feed>

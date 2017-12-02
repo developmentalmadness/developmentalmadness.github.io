@@ -5,60 +5,16 @@
   <id>http://www.developmentalmadness.com</id>
   <link href="http://www.developmentalmadness.com"/>
   <link href="http://www.developmentalmadness.com/tag/wcf/feed.xml" rel="self"/>
-  <updated>2008-05-08T18:34:00+00:00</updated>
+  <updated>2009-03-10T23:49:00+00:00</updated>
   <author>
     <name>Mark J. Miller</name>
   </author>
-  <entry>
-    <title>Intro to WCF for Ajax</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2008/05/08/ntro-to-wcf-for-ajax/"/>
-    <id>http://www.developmentalmadness.com/2008/05/08/ntro-to-wcf-for-ajax/</id>
-    <published>2008-05-08T18:34:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">It’s finally time to dig into what all the buzz with WCF is about. From what I hear it should perform better than WebServices, has better security and be more flexible. But I’m a bit frustrated by some of the documentation out there. So much of what I</summary>
-  </entry>
-  <entry>
-    <title>Using ExtJs with WCF</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2008/07/17/using-extjs-with-wcf/"/>
-    <id>http://www.developmentalmadness.com/2008/07/17/using-extjs-with-wcf/</id>
-    <published>2008-07-17T18:09:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">Been wanting to get to this part of development for a while now and since I struggled a bit to get this working I thought it would make a good post. With the release of the .NET Framework 3.5 WCF seems to be growing in popularity (or maybe it’s just me</summary>
-  </entry>
-  <entry>
-    <title>WCF: Unknown error (0xc000009a) Couldn't get process information from performance counter</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2008/09/25/wcf-unknown-error-0xc000009a-couldnt/"/>
-    <id>http://www.developmentalmadness.com/2008/09/25/wcf-unknown-error-0xc000009a-couldnt/</id>
-    <published>2008-09-25T17:44:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">I’ve been working with WCF in an intranet environment over the last couple weeks and have been getting some good experience which is forcing me to dig in more an more. My disclaimer is: I still only have a surface level understanding of how it works and</summary>
-  </entry>
-  <entry>
-    <title>Sending DateTime Parameters from AJAX to WCF Operations (methods)</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2008/11/05/sending-datetime-parameters-from-ajax/"/>
-    <id>http://www.developmentalmadness.com/2008/11/05/sending-datetime-parameters-from-ajax/</id>
-    <published>2008-11-05T18:37:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">Yesterday I got stuck on a problem with a DateTime parameter I was attempting to submit to a WCF operation (method). I was trying to call call the operation using POST and the format was JSON. I was getting the value from the javascript Date object like</summary>
-  </entry>
   <entry>
     <title>Silverlight and Prism: Decoupling the WCF Client Proxy</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/03/10/silverlight_and_prism_decoupling_the_wcf_client_proxy/"/>
     <id>http://www.developmentalmadness.com/2009/03/10/silverlight_and_prism_decoupling_the_wcf_client_proxy/</id>
     <published>2009-03-10T23:49:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -67,11 +23,22 @@
 Anyhow, I’ve taken the recent release of Prism v2, which</summary>
   </entry>
   <entry>
+    <title>WCF: Unknown error (0xc000009a) Couldn't get process information from performance counter</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/09/25/wcf-unknown-error-0xc000009a-couldnt/"/>
+    <id>http://www.developmentalmadness.com/2008/09/25/wcf-unknown-error-0xc000009a-couldnt/</id>
+    <published>2008-09-25T17:44:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I’ve been working with WCF in an intranet environment over the last couple weeks and have been getting some good experience which is forcing me to dig in more an more. My disclaimer is: I still only have a surface level understanding of how it works and</summary>
+  </entry>
+  <entry>
     <title>Prism for Silverlight 2: Taking ‘Hello World’ to a Whole New Level</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/06/08/prism_for_silverlight_2_taking_hello_world_to_a_whole_new_level/"/>
     <id>http://www.developmentalmadness.com/2009/06/08/prism_for_silverlight_2_taking_hello_world_to_a_whole_new_level/</id>
     <published>2009-06-08T18:09:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -89,5 +56,40 @@ Commanding support
 
 
 I chose to use the (aka Prism 2) since</summary>
+  </entry>
+  <entry>
+    <title>Sending DateTime Parameters from AJAX to WCF Operations (methods)</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/11/05/sending-datetime-parameters-from-ajax/"/>
+    <id>http://www.developmentalmadness.com/2008/11/05/sending-datetime-parameters-from-ajax/</id>
+    <published>2008-11-05T18:37:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Yesterday I got stuck on a problem with a DateTime parameter I was attempting to submit to a WCF operation (method). I was trying to call call the operation using POST and the format was JSON. I was getting the value from the javascript Date object like</summary>
+  </entry>
+  <entry>
+    <title>Building a Single Sign On Provider Using ASP.NET and WCF: Part 3</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/06/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_3/"/>
+    <id>http://www.developmentalmadness.com/2009/07/06/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_3/</id>
+    <published>2009-07-06T18:00:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Using JSONP with WCF
+
+This is the third article in a four part series on building a single sign on () provider using the platform. If you just want to know about and and aren’t interested in implementing SSO read ahead. Otherwise, make sure to check out</summary>
+  </entry>
+  <entry>
+    <title>Using ExtJs with WCF</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/07/17/using-extjs-with-wcf/"/>
+    <id>http://www.developmentalmadness.com/2008/07/17/using-extjs-with-wcf/</id>
+    <published>2008-07-17T18:09:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Been wanting to get to this part of development for a while now and since I struggled a bit to get this working I thought it would make a good post. With the release of the .NET Framework 3.5 WCF seems to be growing in popularity (or maybe it’s just me</summary>
   </entry>
 </feed>

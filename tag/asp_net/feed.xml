@@ -5,62 +5,16 @@
   <id>http://www.developmentalmadness.com</id>
   <link href="http://www.developmentalmadness.com"/>
   <link href="http://www.developmentalmadness.com/tag/asp_net/feed.xml" rel="self"/>
-  <updated>2006-06-24T19:45:00+00:00</updated>
+  <updated>2009-05-26T15:39:00+00:00</updated>
   <author>
     <name>Mark J. Miller</name>
   </author>
-  <entry>
-    <title>BUG: ASP.NET 2.0 HttpApplication cannot find IHttpHandlerFactory when HttpContext.RewritePath(string) includes PathInfo</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2006/06/24/bug-aspnet-20-httpapplication-cannot/"/>
-    <id>http://www.developmentalmadness.com/2006/06/24/bug-aspnet-20-httpapplication-cannot/</id>
-    <published>2006-06-24T19:45:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">This week we’ve been testing our migration configuration for our upgrade from the .Net 1.1 Framework to 2.0. Last summer I wrote an HttpModule which masks our urls. Internally our url structure resembles “http://domain/path/page.aspx/pathinfo?querystring</summary>
-  </entry>
-  <entry>
-    <title>Extend Anonymous Types using Reflection.Emit</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2008/02/12/extend-anonymous-types-using/"/>
-    <id>http://www.developmentalmadness.com/2008/02/12/extend-anonymous-types-using/</id>
-    <published>2008-02-12T17:02:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">Update 2015 Dec 28: It has been brought to my attention that this code has been enhanced by Kyle Finley. You can read about his enhancements here and the source code is available on Github. Kyle has told me he plans to release a NuGet package which I</summary>
-  </entry>
-  <entry>
-    <title>Using Ajax with ASP.NET MVC</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/"/>
-    <id>http://www.developmentalmadness.com/2008/04/23/using-ajax-with-aspnet-mvc/</id>
-    <published>2008-04-23T18:59:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">One of the features I continue to wait for from the ASP.NET MVC team is a server control library to work with the MVC framework. So as I have been working on a project using ASP.NET MVC I have begun developing my own library of server controls.
-
-Recently</summary>
-  </entry>
-  <entry>
-    <title>ASP.NET: Removing System.Web Dependencies</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/05/aspnet-removing-systemweb-dependencies/"/>
-    <id>http://www.developmentalmadness.com/2009/02/05/aspnet-removing-systemweb-dependencies/</id>
-    <published>2009-02-05T17:21:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">As a general rule I prefer to avoid referencing System.Web in my library classes. But if it can’t be avoided it’s still a good idea to avoid the use of HttpContext.Current. It must be nice to live in a perfect world you say? Yes, there are times that</summary>
-  </entry>
   <entry>
     <title>ASP.NET: System.BadImageFormatException</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/26/asp_net_system_bad_image_format_exception/"/>
     <id>http://www.developmentalmadness.com/2009/05/26/asp_net_system_bad_image_format_exception/</id>
     <published>2009-05-26T15:39:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -73,20 +27,64 @@ By default IIS 7 won’t load x86 (32 bit) assemblies, make sure you set your ap
 Internet Information Services (IIS) Manager</summary>
   </entry>
   <entry>
-    <title>ASP.NET MVC: An Application Platform</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2009/06/24/asp_net_mvc_an_application_platform/"/>
-    <id>http://www.developmentalmadness.com/2009/06/24/asp_net_mvc_an_application_platform/</id>
-    <published>2009-06-24T18:28:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <title>ASP.NET: Removing System.Web Dependencies</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/05/aspnet-removing-systemweb-dependencies/"/>
+    <id>http://www.developmentalmadness.com/2009/02/05/aspnet-removing-systemweb-dependencies/</id>
+    <published>2009-02-05T17:21:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
-    <summary type="html">The MVC / WebForms Debate
+    <summary type="html">As a general rule I prefer to avoid referencing System.Web in my library classes. But if it can’t be avoided it’s still a good idea to avoid the use of HttpContext.Current. It must be nice to live in a perfect world you say? Yes, there are times that</summary>
+  </entry>
+  <entry>
+    <title>PHP vs ASP.NET Rebuttal</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/09/11/php-vs-asp-net-rebuttal/"/>
+    <id>http://www.developmentalmadness.com/2009/09/11/php-vs-asp-net-rebuttal/</id>
+    <published>2009-09-11T11:44:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">I should just ignore people sometimes, but today I couldn’t help it. I read this post which claims to compare PHP to ASP.NET. I don’t really care if someone likes one more than the other, but really this post didn’t back up any claims and was full of</summary>
+  </entry>
+  <entry>
+    <title>Building a Single Sign On Provider Using ASP.NET and WCF: Part 4</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/07/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_4/"/>
+    <id>http://www.developmentalmadness.com/2009/07/07/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_4/</id>
+    <published>2009-07-07T06:00:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">This is the fourth and final article in a four part series on building a using the ASP.NET platform. Make sure to check out , and part 3
 
-Yesterday I wrote about the stored procedure/dynamic sql debate - I must be feeling a bit argumentative lately, because today I was reading post on WebForms versus MVC
+Source Code
 
+Implementing a Single Signon Provider
 
-“The best advice I’ve seen so far is that WebForms is
-</summary>
+This is all a rehash since I’ve covered each point in detail</summary>
+  </entry>
+  <entry>
+    <title>BUG: ASP.NET 2.0 HttpApplication cannot find IHttpHandlerFactory when HttpContext.RewritePath(string) includes PathInfo</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2006/06/24/bug-aspnet-20-httpapplication-cannot/"/>
+    <id>http://www.developmentalmadness.com/2006/06/24/bug-aspnet-20-httpapplication-cannot/</id>
+    <published>2006-06-24T19:45:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">This week we’ve been testing our migration configuration for our upgrade from the .Net 1.1 Framework to 2.0. Last summer I wrote an HttpModule which masks our urls. Internally our url structure resembles “http://domain/path/page.aspx/pathinfo?querystring</summary>
+  </entry>
+  <entry>
+    <title>Extend Anonymous Types using Reflection.Emit</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/02/12/extend-anonymous-types-using/"/>
+    <id>http://www.developmentalmadness.com/2008/02/12/extend-anonymous-types-using/</id>
+    <published>2008-02-12T17:02:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Update 2015 Dec 28: It has been brought to my attention that this code has been enhanced by Kyle Finley. You can read about his enhancements here and the source code is available on Github. Kyle has told me he plans to release a NuGet package which I</summary>
   </entry>
 </feed>

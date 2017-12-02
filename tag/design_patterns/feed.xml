@@ -5,40 +5,16 @@
   <id>http://www.developmentalmadness.com</id>
   <link href="http://www.developmentalmadness.com"/>
   <link href="http://www.developmentalmadness.com/tag/design_patterns/feed.xml" rel="self"/>
-  <updated>2008-04-25T18:48:00+00:00</updated>
+  <updated>2009-03-10T23:49:00+00:00</updated>
   <author>
     <name>Mark J. Miller</name>
   </author>
-  <entry>
-    <title>Abstracting System.Web.UI.ScriptManager away from the Web Forms model</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/25/abstracting-systemwebuiscriptmanager/"/>
-    <id>http://www.developmentalmadness.com/2008/04/25/abstracting-systemwebuiscriptmanager/</id>
-    <published>2008-04-25T18:48:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">As I continue to work with the ASP.NET MVC framework I continue to be inspired to dig deeper into things, to find out how they work and how I can make them work with this awesome new framework.
-
-The case in point here is using ASP.NET Ajax controls with</summary>
-  </entry>
-  <entry>
-    <title>Entity Framework: Abstracting ObjectContext</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/25/entity_framework_abstracting_object_context/"/>
-    <id>http://www.developmentalmadness.com/2009/02/25/entity_framework_abstracting_object_context/</id>
-    <published>2009-02-25T23:40:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">Wither you are a TDD purest or not, if you are developing with Entity Framework and testability is important to you, then you have tried some workaround or applied some pattern to make testing possible in your project. When you have a class or method</summary>
-  </entry>
   <entry>
     <title>Silverlight and Prism: Decoupling the WCF Client Proxy</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/03/10/silverlight_and_prism_decoupling_the_wcf_client_proxy/"/>
     <id>http://www.developmentalmadness.com/2009/03/10/silverlight_and_prism_decoupling_the_wcf_client_proxy/</id>
     <published>2009-03-10T23:49:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -51,7 +27,7 @@ Anyhow, I’ve taken the recent release of Prism v2, which</summary>
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/06/08/prism_for_silverlight_2_taking_hello_world_to_a_whole_new_level/"/>
     <id>http://www.developmentalmadness.com/2009/06/08/prism_for_silverlight_2_taking_hello_world_to_a_whole_new_level/</id>
     <published>2009-06-08T18:09:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -69,5 +45,29 @@ Commanding support
 
 
 I chose to use the (aka Prism 2) since</summary>
+  </entry>
+  <entry>
+    <title>Abstracting System.Web.UI.ScriptManager away from the Web Forms model</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/25/abstracting-systemwebuiscriptmanager/"/>
+    <id>http://www.developmentalmadness.com/2008/04/25/abstracting-systemwebuiscriptmanager/</id>
+    <published>2008-04-25T18:48:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">As I continue to work with the ASP.NET MVC framework I continue to be inspired to dig deeper into things, to find out how they work and how I can make them work with this awesome new framework.
+
+The case in point here is using ASP.NET Ajax controls with</summary>
+  </entry>
+  <entry>
+    <title>Entity Framework: Abstracting ObjectContext</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/25/entity_framework_abstracting_object_context/"/>
+    <id>http://www.developmentalmadness.com/2009/02/25/entity_framework_abstracting_object_context/</id>
+    <published>2009-02-25T23:40:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Wither you are a TDD purest or not, if you are developing with Entity Framework and testability is important to you, then you have tried some workaround or applied some pattern to make testing possible in your project. When you have a class or method</summary>
   </entry>
 </feed>

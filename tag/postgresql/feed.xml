@@ -5,29 +5,16 @@
   <id>http://www.developmentalmadness.com</id>
   <link href="http://www.developmentalmadness.com"/>
   <link href="http://www.developmentalmadness.com/tag/postgresql/feed.xml" rel="self"/>
-  <updated>2009-05-14T18:33:00+00:00</updated>
+  <updated>2016-02-23T20:16:05+00:00</updated>
   <author>
     <name>Mark J. Miller</name>
   </author>
-  <entry>
-    <title>LAMP.NET (Linux Apache Mono.NET PostreSQL)</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/14/lamp_net_linux_apache_mono_net_postre_sql/"/>
-    <id>http://www.developmentalmadness.com/2009/05/14/lamp_net_linux_apache_mono_net_postre_sql/</id>
-    <published>2009-05-14T18:33:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">As an developer I’ve always worked for companies which had little or no support for any environments other than Windows. But the situation is reversed at my current client. Most development is done in or with an Oracle
-
-As a Microsoft developer I am in</summary>
-  </entry>
   <entry>
     <title>scala: Connecting to Postgres via Slick 3</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2016/02/23/scala-connecting-to-postgres-via-slick-3/"/>
     <id>http://www.developmentalmadness.com/2016/02/23/scala-connecting-to-postgres-via-slick-3/</id>
     <published>2016-02-23T20:16:05+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -36,5 +23,18 @@ As a Microsoft developer I am in</summary>
 Environment Variables
 
 For this post you’ll need</summary>
+  </entry>
+  <entry>
+    <title>LAMP.NET (Linux Apache Mono.NET PostreSQL)</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/14/lamp_net_linux_apache_mono_net_postre_sql/"/>
+    <id>http://www.developmentalmadness.com/2009/05/14/lamp_net_linux_apache_mono_net_postre_sql/</id>
+    <published>2009-05-14T18:33:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">As an developer I’ve always worked for companies which had little or no support for any environments other than Windows. But the situation is reversed at my current client. Most development is done in or with an Oracle
+
+As a Microsoft developer I am in</summary>
   </entry>
 </feed>

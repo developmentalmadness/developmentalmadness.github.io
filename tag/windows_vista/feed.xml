@@ -5,16 +5,33 @@
   <id>http://www.developmentalmadness.com</id>
   <link href="http://www.developmentalmadness.com"/>
   <link href="http://www.developmentalmadness.com/tag/windows_vista/feed.xml" rel="self"/>
-  <updated>2007-01-22T20:28:00+00:00</updated>
+  <updated>2009-05-26T15:39:00+00:00</updated>
   <author>
     <name>Mark J. Miller</name>
   </author>
+  <entry>
+    <title>ASP.NET: System.BadImageFormatException</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/26/asp_net_system_bad_image_format_exception/"/>
+    <id>http://www.developmentalmadness.com/2009/05/26/asp_net_system_bad_image_format_exception/</id>
+    <published>2009-05-26T15:39:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">If you are running on Vista x64
+
+System.BadImageFormatException
+
+By default IIS 7 won’t load x86 (32 bit) assemblies, make sure you set your application pool’s “Enable 32-Bit Applications” setting to “True”.
+
+Internet Information Services (IIS) Manager</summary>
+  </entry>
   <entry>
     <title>Using a Vista Sidebar Gadget to Consume an Image Feed</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2007/01/22/using-vista-sidebar-gadget-to-consume/"/>
     <id>http://www.developmentalmadness.com/2007/01/22/using-vista-sidebar-gadget-to-consume/</id>
     <published>2007-01-22T20:28:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -25,7 +42,7 @@
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/25/windows_critics_get_a_life/"/>
     <id>http://www.developmentalmadness.com/2009/05/25/windows_critics_get_a_life/</id>
     <published>2009-05-25T13:23:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -40,22 +57,5 @@ It’s just a Vista
 
 
 I’d like to take a minute or two to answer those from my own perspective. First to the criticism</summary>
-  </entry>
-  <entry>
-    <title>ASP.NET: System.BadImageFormatException</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/26/asp_net_system_bad_image_format_exception/"/>
-    <id>http://www.developmentalmadness.com/2009/05/26/asp_net_system_bad_image_format_exception/</id>
-    <published>2009-05-26T15:39:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">If you are running on Vista x64
-
-System.BadImageFormatException
-
-By default IIS 7 won’t load x86 (32 bit) assemblies, make sure you set your application pool’s “Enable 32-Bit Applications” setting to “True”.
-
-Internet Information Services (IIS) Manager</summary>
   </entry>
 </feed>

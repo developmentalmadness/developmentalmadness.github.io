@@ -5,27 +5,16 @@
   <id>http://www.developmentalmadness.com</id>
   <link href="http://www.developmentalmadness.com"/>
   <link href="http://www.developmentalmadness.com/tag/net_framework_3_5/feed.xml" rel="self"/>
-  <updated>2008-02-12T17:02:00+00:00</updated>
+  <updated>2009-02-05T17:21:00+00:00</updated>
   <author>
     <name>Mark J. Miller</name>
   </author>
-  <entry>
-    <title>Extend Anonymous Types using Reflection.Emit</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2008/02/12/extend-anonymous-types-using/"/>
-    <id>http://www.developmentalmadness.com/2008/02/12/extend-anonymous-types-using/</id>
-    <published>2008-02-12T17:02:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">Update 2015 Dec 28: It has been brought to my attention that this code has been enhanced by Kyle Finley. You can read about his enhancements here and the source code is available on Github. Kyle has told me he plans to release a NuGet package which I</summary>
-  </entry>
   <entry>
     <title>ASP.NET: Removing System.Web Dependencies</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/05/aspnet-removing-systemweb-dependencies/"/>
     <id>http://www.developmentalmadness.com/2009/02/05/aspnet-removing-systemweb-dependencies/</id>
     <published>2009-02-05T17:21:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -36,7 +25,7 @@
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/10/entity_framework_connection_strings/"/>
     <id>http://www.developmentalmadness.com/2009/02/10/entity_framework_connection_strings/</id>
     <published>2009-02-10T22:29:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -49,24 +38,41 @@
  Initial Catalog=AdventureWorks;Integrated Security=True;Connection Timeout</summary>
   </entry>
   <entry>
-    <title>Building a Single Sign On Provider Using ASP.NET and WCF: Part 1</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/"/>
-    <id>http://www.developmentalmadness.com/2009/07/01/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_1/</id>
-    <published>2009-07-01T16:47:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <title>Building a Single Sign On Provider Using ASP.NET and WCF: Part 3</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/06/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_3/"/>
+    <id>http://www.developmentalmadness.com/2009/07/06/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_3/</id>
+    <published>2009-07-06T18:00:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
-    <summary type="html">This is the first in a 4 part series on building a single sign on provider using the ASP.NET platform (ASP.NET and WCF). Originally, I wrote the article as a single post but it was pretty long, even for me.
+    <summary type="html">Using JSONP with WCF
 
-Part 1 addresses the problem in general and</summary>
+This is the third article in a four part series on building a single sign on () provider using the platform. If you just want to know about and and aren’t interested in implementing SSO read ahead. Otherwise, make sure to check out</summary>
+  </entry>
+  <entry>
+    <title>Building a Single Sign On Provider Using ASP.NET and WCF: Part 4</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/07/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_4/"/>
+    <id>http://www.developmentalmadness.com/2009/07/07/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_4/</id>
+    <published>2009-07-07T06:00:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">This is the fourth and final article in a four part series on building a using the ASP.NET platform. Make sure to check out , and part 3
+
+Source Code
+
+Implementing a Single Signon Provider
+
+This is all a rehash since I’ve covered each point in detail</summary>
   </entry>
   <entry>
     <title>Building a Single Sign On Provider Using ASP.NET and WCF: Part 2</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/02/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_2/"/>
     <id>http://www.developmentalmadness.com/2009/07/02/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_2/</id>
     <published>2009-07-02T06:00:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -75,16 +81,14 @@ Part 1 addresses the problem in general and</summary>
 This is the second article in a four part series on building a single sign on () provider using the platform. If you just want to know about forms authentication and and aren’t interested in implementing SSO read ahead</summary>
   </entry>
   <entry>
-    <title>Building a Single Sign On Provider Using ASP.NET and WCF: Part 3</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2009/07/06/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_3/"/>
-    <id>http://www.developmentalmadness.com/2009/07/06/building_a_single_sign_on_provider_using_asp_net_and_wcf_part_3/</id>
-    <published>2009-07-06T18:00:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <title>Extend Anonymous Types using Reflection.Emit</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/02/12/extend-anonymous-types-using/"/>
+    <id>http://www.developmentalmadness.com/2008/02/12/extend-anonymous-types-using/</id>
+    <published>2008-02-12T17:02:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
-    <summary type="html">Using JSONP with WCF
-
-This is the third article in a four part series on building a single sign on () provider using the platform. If you just want to know about and and aren’t interested in implementing SSO read ahead. Otherwise, make sure to check out</summary>
+    <summary type="html">Update 2015 Dec 28: It has been brought to my attention that this code has been enhanced by Kyle Finley. You can read about his enhancements here and the source code is available on Github. Kyle has told me he plans to release a NuGet package which I</summary>
   </entry>
 </feed>

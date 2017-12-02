@@ -5,27 +5,29 @@
   <id>http://www.developmentalmadness.com</id>
   <link href="http://www.developmentalmadness.com"/>
   <link href="http://www.developmentalmadness.com/tag/unit_testing/feed.xml" rel="self"/>
-  <updated>2009-02-25T23:40:00+00:00</updated>
+  <updated>2009-03-10T23:49:00+00:00</updated>
   <author>
     <name>Mark J. Miller</name>
   </author>
   <entry>
-    <title>Entity Framework: Abstracting ObjectContext</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/25/entity_framework_abstracting_object_context/"/>
-    <id>http://www.developmentalmadness.com/2009/02/25/entity_framework_abstracting_object_context/</id>
-    <published>2009-02-25T23:40:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <title>Silverlight and Prism: Decoupling the WCF Client Proxy</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/03/10/silverlight_and_prism_decoupling_the_wcf_client_proxy/"/>
+    <id>http://www.developmentalmadness.com/2009/03/10/silverlight_and_prism_decoupling_the_wcf_client_proxy/</id>
+    <published>2009-03-10T23:49:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
-    <summary type="html">Wither you are a TDD purest or not, if you are developing with Entity Framework and testability is important to you, then you have tried some workaround or applied some pattern to make testing possible in your project. When you have a class or method</summary>
+    <summary type="html">I’m in the process of creating the . Hopefully, for once, I’ll see it through to the end and also post the source and an insightful blog entry to help everybody who’s struggling to do the same
+
+Anyhow, I’ve taken the recent release of Prism v2, which</summary>
   </entry>
   <entry>
     <title>Unit Testing: Moq doesn’t support property indexers</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/26/unit_testing_moq_doesn_t_support_property_indexers/"/>
     <id>http://www.developmentalmadness.com/2009/02/26/unit_testing_moq_doesn_t_support_property_indexers/</id>
     <published>2009-02-26T22:52:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -44,24 +46,11 @@
  6: Object actual</summary>
   </entry>
   <entry>
-    <title>Silverlight and Prism: Decoupling the WCF Client Proxy</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2009/03/10/silverlight_and_prism_decoupling_the_wcf_client_proxy/"/>
-    <id>http://www.developmentalmadness.com/2009/03/10/silverlight_and_prism_decoupling_the_wcf_client_proxy/</id>
-    <published>2009-03-10T23:49:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">I’m in the process of creating the . Hopefully, for once, I’ll see it through to the end and also post the source and an insightful blog entry to help everybody who’s struggling to do the same
-
-Anyhow, I’ve taken the recent release of Prism v2, which</summary>
-  </entry>
-  <entry>
     <title>Visual Studio Testing: Code Coverage Property Window Crashes</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/05/21/visual_studio_testing_code_coverage_property_window_crashes/"/>
     <id>http://www.developmentalmadness.com/2009/05/21/visual_studio_testing_code_coverage_property_window_crashes/</id>
     <published>2009-05-21T20:19:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -69,5 +58,16 @@ Anyhow, I’ve taken the recent release of Prism v2, which</summary>
 
 Workaround: If your solution contains a project (not Silverlight Class Library, these are ok for some reason) or a WSSF
 </summary>
+  </entry>
+  <entry>
+    <title>Entity Framework: Abstracting ObjectContext</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/02/25/entity_framework_abstracting_object_context/"/>
+    <id>http://www.developmentalmadness.com/2009/02/25/entity_framework_abstracting_object_context/</id>
+    <published>2009-02-25T23:40:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Wither you are a TDD purest or not, if you are developing with Entity Framework and testability is important to you, then you have tried some workaround or applied some pattern to make testing possible in your project. When you have a class or method</summary>
   </entry>
 </feed>

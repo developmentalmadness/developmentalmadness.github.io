@@ -5,16 +5,27 @@
   <id>http://www.developmentalmadness.com</id>
   <link href="http://www.developmentalmadness.com"/>
   <link href="http://www.developmentalmadness.com/tag/asp_net_ajax/feed.xml" rel="self"/>
-  <updated>2008-03-11T19:16:00+00:00</updated>
+  <updated>2008-04-24T18:57:00+00:00</updated>
   <author>
     <name>Mark J. Miller</name>
   </author>
+  <entry>
+    <title>"FIX" for Sys.WebForms.PageRequestManagerServerErrorException 12019 Problem with MultipleIEs</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/24/fix-for-syswebformspagerequestmanagerse/"/>
+    <id>http://www.developmentalmadness.com/2008/04/24/fix-for-syswebformspagerequestmanagerse/</id>
+    <published>2008-04-24T18:57:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">Before I started working with ASP.NET Ajax I found using MultipleIEs very valuable for testing pages for both IE6 and IE7. But then I started working on a project which had been developed using the ASP.NET UpdatePanel and IE6 became worthless. I got the</summary>
+  </entry>
   <entry>
     <title>ASP.NET AJAX - Update Panel Timeout</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2008/03/11/aspnet-ajax-update-panel-timeout/"/>
     <id>http://www.developmentalmadness.com/2008/03/11/aspnet-ajax-update-panel-timeout/</id>
     <published>2008-03-11T19:16:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -23,22 +34,11 @@
 For example, I am currently working on a reporting application and at the</summary>
   </entry>
   <entry>
-    <title>"FIX" for Sys.WebForms.PageRequestManagerServerErrorException 12019 Problem with MultipleIEs</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2008/04/24/fix-for-syswebformspagerequestmanagerse/"/>
-    <id>http://www.developmentalmadness.com/2008/04/24/fix-for-syswebformspagerequestmanagerse/</id>
-    <published>2008-04-24T18:57:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">Before I started working with ASP.NET Ajax I found using MultipleIEs very valuable for testing pages for both IE6 and IE7. But then I started working on a project which had been developed using the ASP.NET UpdatePanel and IE6 became worthless. I got the</summary>
-  </entry>
-  <entry>
     <title>Intro to WCF for Ajax</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2008/05/08/ntro-to-wcf-for-ajax/"/>
     <id>http://www.developmentalmadness.com/2008/05/08/ntro-to-wcf-for-ajax/</id>
     <published>2008-05-08T18:34:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>

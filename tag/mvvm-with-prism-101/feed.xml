@@ -5,52 +5,16 @@
   <id>http://www.developmentalmadness.com</id>
   <link href="http://www.developmentalmadness.com"/>
   <link href="http://www.developmentalmadness.com/tag/mvvm-with-prism-101/feed.xml" rel="self"/>
-  <updated>2009-10-15T12:37:00+00:00</updated>
+  <updated>2010-03-08T19:00:00+00:00</updated>
   <author>
     <name>Mark J. Miller</name>
   </author>
   <entry>
-    <title>MVVM with Prism 101 - Part 3b: View Injection and the Controller Pattern</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2009/10/15/mvvm-with-prism-101-ndash-part-3b-view-injection-and/"/>
-    <id>http://www.developmentalmadness.com/2009/10/15/mvvm-with-prism-101-ndash-part-3b-view-injection-and/</id>
-    <published>2009-10-15T12:37:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
-    <author>
-      <name>Mark J. Miller</name>
-    </author>
-    <summary type="html">
-Part 1: The Bootstrapper
-Part 2: The Shell
-
-Part 3: Regions
-
-
-Part 3b: View Injection and The Controller Pattern
-
-
-Part 4: Modules
-
-Part 5: The View-Model
-
-
-Part 5b: ServiceLocator vs Dependency Injection
-
-
-
-Part 6: Commands
-
-
-Part 6b: Wrapping IClientChannel
-
-
-</summary>
-  </entry>
-  <entry>
-    <title>MVVM with Prism 101 – Part 4: Modules</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2009/10/23/mvvm-with-prism-101-ndash-part-4-modules/"/>
-    <id>http://www.developmentalmadness.com/2009/10/23/mvvm-with-prism-101-ndash-part-4-modules/</id>
-    <published>2009-10-23T22:45:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <title>MVVM with Prism 101 – Part 6b: Wrapping IClientChannel</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2010/03/08/mvvm-with-prism-101-ndash-part-6b-wrapping-iclientchannel/"/>
+    <id>http://www.developmentalmadness.com/2010/03/08/mvvm-with-prism-101-ndash-part-6b-wrapping-iclientchannel/</id>
+    <published>2010-03-08T19:00:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -84,11 +48,47 @@ Part 6b: Wrapping
 </summary>
   </entry>
   <entry>
+    <title>MVVM with Prism 101 - Part 3b: View Injection and the Controller Pattern</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/10/15/mvvm-with-prism-101-ndash-part-3b-view-injection-and/"/>
+    <id>http://www.developmentalmadness.com/2009/10/15/mvvm-with-prism-101-ndash-part-3b-view-injection-and/</id>
+    <published>2009-10-15T12:37:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
+    <author>
+      <name>Mark J. Miller</name>
+    </author>
+    <summary type="html">
+Part 1: The Bootstrapper
+Part 2: The Shell
+
+Part 3: Regions
+
+
+Part 3b: View Injection and The Controller Pattern
+
+
+Part 4: Modules
+
+Part 5: The View-Model
+
+
+Part 5b: ServiceLocator vs Dependency Injection
+
+
+
+Part 6: Commands
+
+
+Part 6b: Wrapping IClientChannel
+
+
+</summary>
+  </entry>
+  <entry>
     <title>MVVM with Prism 101 – Part 5: View-Model</title>
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/10/28/mvvm-with-prism-101-ndash-part-5-view-model/"/>
     <id>http://www.developmentalmadness.com/2009/10/28/mvvm-with-prism-101-ndash-part-5-view-model/</id>
     <published>2009-10-28T23:06:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -126,7 +126,7 @@ Part 6b: Wrapping
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/11/02/mvvm-with-prism-101-ndash-part-5b-servicelocator-vs-depdency/"/>
     <id>http://www.developmentalmadness.com/2009/11/02/mvvm-with-prism-101-ndash-part-5b-servicelocator-vs-depdency/</id>
     <published>2009-11-02T19:24:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -164,7 +164,7 @@ Part 6b: Wrapping
     <link rel="alternate" href="http://www.developmentalmadness.com/2009/11/04/mvvm-with-prism-101-ndash-part-6-commands/"/>
     <id>http://www.developmentalmadness.com/2009/11/04/mvvm-with-prism-101-ndash-part-6-commands/</id>
     <published>2009-11-04T19:00:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
@@ -198,11 +198,11 @@ Part 6b: Wrapping
 </summary>
   </entry>
   <entry>
-    <title>MVVM with Prism 101 – Part 6b: Wrapping IClientChannel</title>
-    <link rel="alternate" href="http://www.developmentalmadness.com/2010/03/08/mvvm-with-prism-101-ndash-part-6b-wrapping-iclientchannel/"/>
-    <id>http://www.developmentalmadness.com/2010/03/08/mvvm-with-prism-101-ndash-part-6b-wrapping-iclientchannel/</id>
-    <published>2010-03-08T19:00:00+00:00</published>
-    <updated>2016-11-26T15:23:19+00:00</updated>
+    <title>MVVM with Prism 101 – Part 4: Modules</title>
+    <link rel="alternate" href="http://www.developmentalmadness.com/2009/10/23/mvvm-with-prism-101-ndash-part-4-modules/"/>
+    <id>http://www.developmentalmadness.com/2009/10/23/mvvm-with-prism-101-ndash-part-4-modules/</id>
+    <published>2009-10-23T22:45:00+00:00</published>
+    <updated>2017-11-23T13:41:47+00:00</updated>
     <author>
       <name>Mark J. Miller</name>
     </author>
