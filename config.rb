@@ -1,3 +1,6 @@
+# see: https://forum.middlemanapp.com/t/comparison-of-string-with-current-path-failed/2422/2
+Tilt::SYMBOL_ARRAY_SORTABLE = false
+
 ###
 # middleman-casper configuration
 ###
