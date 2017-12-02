@@ -152,4 +152,5 @@ configure :build do
   ignore 'javascripts/vendor/*'
   ignore 'stylesheets/_*'
   ignore 'stylesheets/vendor/*'
+  ignore '*.hide'
 end
